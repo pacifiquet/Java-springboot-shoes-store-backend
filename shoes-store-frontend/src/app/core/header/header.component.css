@@ -1,0 +1,67 @@
+nav{
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 16rem;
+margin-top: 2.5rem;
+}
+
+nav .navbar{
+    display: flex;
+    align-items: center;
+    gap: 16rem;
+}
+nav .navbar .logo {
+    padding: 0.3125rem;
+}
+
+nav .navbar .logo h1{
+    color: #000;
+    font-family: "Poppins",sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+}
+
+nav .navbar form input{
+    width: 24.4375rem;
+    padding: 0.625rem;
+    border-radius: 0.625rem;
+    border: 1px solid #214E34;
+    outline: none;
+    color: rgba(0, 0, 0, 1);
+    font-family: "Raleway",sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+
+}
+
+nav .navbar .login button{
+    border-radius: 0.3125rem;
+    border: 1px solid #214E34;
+    background: #FFF;
+    /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); */
+    padding: 0.625rem 2.5rem;
+}
+
+.cart{
+    display: flex;
+    position: relative;
+}
+
+.cart p {
+    width: 2rem;
+    height: 2rem;
+    color: #F69522;
+    text-align: center;
+    font-family: "Poppins",sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    position: absolute;
+    right: -0.7rem;
+    top: -0.8rem;
+    background-color: #000;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

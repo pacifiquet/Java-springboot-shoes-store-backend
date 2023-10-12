@@ -1,0 +1,30 @@
+.footer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 3rem 0 1rem 0;
+}
+
+.footer nav ul{
+    display: flex;
+    gap: 3.12rem;
+}
+
+.footer nav ul li a{
+    color: #000;
+    font-family: "Raleway",sans-serif;
+    font-size: 1.35rem;
+    font-weight: 500;
+}
+
+
+.footer p {
+    padding: 0.62rem;
+    font-size: 1.2rem;
+}
+
+.social{
+    display: flex;
+    gap: 1.25rem;
+}
