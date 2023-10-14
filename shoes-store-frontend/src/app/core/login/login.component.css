@@ -1,0 +1,83 @@
+.content{
+    background-color: #fff;
+    width: 42rem;
+    max-height: 100%;
+    margin: 3rem auto 0;
+}
+
+.content .modal-header{
+    position: relative;
+    padding: 2rem;
+    margin: 1rem;
+}
+.content .modal-header h1{
+    text-align: center;
+    padding: 0.625rem;
+    color: #000;
+    text-align: center;
+    font-family: "Raleway",sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.content .modal-header button{
+    position:absolute;
+    right: 1rem;
+    top: 1rem;
+    background-color: #fff;
+    padding: 0.6rem;
+}
+
+.modal-body form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+.modal-body form input[type="text"],.modal-body form input[type="password"]{
+    width: 60%;
+    padding: 1rem;
+    border: 1px solid #214E34;
+    outline: none;
+}
+
+
+.modal-body form button{
+    border-radius: 0.3125rem;
+    border: 1px solid #214E34;
+    background: #FFF;
+    padding: 0.625rem 2.5rem;
+}
+
+.modal-body p{
+    margin-left: 3rem;
+    margin-top: -1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #000;
+    font-family: "Raleway",sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 0.4rem;
+
+}
+
+.modal-body p strong{
+    color: #E3432B ;
+    font-family: "Raleway",sans-serif;  
+    font-size: 1.01rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.modal-body p strong:hover{
+    border-bottom: 0.0632rem solid #214E34;
+}
+
+svg{
+    width: 3rem;
+    height: 1.8rem;
+}
+

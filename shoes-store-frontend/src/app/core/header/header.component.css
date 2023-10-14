@@ -2,7 +2,7 @@ nav{
 display: flex;
 align-items: center;
 justify-content: center;
-gap: 16rem;
+gap: 13rem;
 margin-top: 2.5rem;
 }
 
@@ -15,7 +15,7 @@ nav .navbar .logo {
     padding: 0.3125rem;
 }
 
-nav .navbar .logo h1{
+nav .navbar .logo a{
     color: #000;
     font-family: "Poppins",sans-serif;
     font-size: 3rem;
@@ -35,17 +35,35 @@ nav .navbar form input{
 
 }
 
-nav .navbar .login button{
-    border-radius: 0.3125rem;
-    border: 1px solid #214E34;
-    background: #FFF;
-    /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); */
-    padding: 0.625rem 2.5rem;
+nav .navbar .login-signup{
+    display: flex;
+    gap: 2rem;
+}
+
+nav .navbar .login-signup a, nav .navbar .login-signup button{
+    padding: 0.6rem 2rem;
+    font-size: 1.3rem;
+    font-weight: 400;
+    font-family: "Poppins",sans-serif;
+}
+
+
+nav .navbar .login-signup button.signup{
+    background-color: #FFF;
+    border-radius: 1.7rem;
+    border: 0.063rem solid #214E34;
 }
 
 .cart{
     display: flex;
     position: relative;
+}
+
+.cart button{
+    cursor: pointer;
+}
+.cart button svg{
+    cursor: pointer;
 }
 
 .cart p {

@@ -6,9 +6,11 @@ import { HomeComponent } from './home/home.component';
 import { RecommendedComponent } from './recommended/recommended.component';
 import { NewArrivalComponent } from './new-arrival/new-arrival.component';
 import { FooterComponent } from './footer/footer.component';
+import { RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-
-
+import { SignupComponent } from './signup/signup.component';
+import { CartComponent } from './cart/cart.component';
+import { ProductDetailsComponent } from './product-details/product-details.component';
 
 @NgModule({
   declarations: [
@@ -18,11 +20,12 @@ import { LoginComponent } from './login/login.component';
     RecommendedComponent,
     NewArrivalComponent,
     FooterComponent,
-    LoginComponent
+    LoginComponent,
+    SignupComponent,
+    CartComponent,
+    ProductDetailsComponent,
   ],
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule, RouterModule],
   exports: [
     HeaderComponent,
     HeroComponent,
@@ -30,7 +33,10 @@ import { LoginComponent } from './login/login.component';
     RecommendedComponent,
     NewArrivalComponent,
     FooterComponent,
-    LoginComponent
-  ]
+    LoginComponent,
+    SignupComponent,
+    CartComponent,
+    ProductDetailsComponent,
+  ],
 })
-export class CoreModule { }
+export class CoreModule {}

@@ -1,19 +1,21 @@
 <nav>
     <div class="navbar">
         <div class="logo">
-            <h1>SH</h1>
+            <a [routerLink]="['/home']">SH</a>
         </div>
         <div class="search">
             <form>
                 <input type="text" placeholder="search">
             </form>
         </div>
-        <div class="login">
-            <button (click)="login()">Login</button>
+        <div class="login-signup">
+            <a class="login" [routerLink]="['/dashboard']" routerLinkActive="router-link-active">dashboard</a>
+            <button class="login" (click)="login()">Login</button>
+            <button class="signup shadow-md" (click)="signup()">Signup</button>
         </div>
     </div>
     <div class="cart">
-        <a href="#">
+        <button (click)="showCart()">
             <svg width="61" height="60" viewBox="0 0 61 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="mdi-light:cart">
                     <path id="Vector"
@@ -22,6 +24,11 @@
                 </g>
             </svg>
             <p>45</p>
-        </a>
+        </button>
     </div>
 </nav>
+<app-login *ngIf="openLoginModal" (closeLoginEvent)="closeLoginModal($event)"
+    (openRegisterEvent)="showRegisterModal($event)"></app-login>
+<app-signup *ngIf="openSignupModal" (registerEvent)="closeRegisterModal($event)"
+    (loginEvent)="showLoginModal($event)"></app-signup>
+<app-cart *ngIf="openCartModal" (closeCartEvent)="closeCartModal($event)"></app-cart>

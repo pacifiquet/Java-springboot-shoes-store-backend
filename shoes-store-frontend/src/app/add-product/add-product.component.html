@@ -1,0 +1,37 @@
+<div class="add-product-modal">
+    <div class="content">
+        <div class="modal-header">
+            <!-- modal header-->
+            <h1>Add Product</h1>
+            <button (click)="closeProductModal()" class="rounded-lg shadow-md shadow-gray-500">
+                <svg width="49" height="48" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.5 8L40.5 40M8.5 40L40.5 8" stroke="black" stroke-width="4" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- modal body-->
+        <div class="modal-body">
+            <form>
+                <div class="fields">
+                    <div class="left-form">
+                        <input type="text" placeholder="Product Name">
+                        <input type="file">
+                        <input type="text" placeholder="category">
+                    </div>
+
+                    <div class="right">
+                        <textarea placeholder="Description"></textarea>
+                        <div>
+                            <input type="text" placeholder="Price">
+                            <input type="text" placeholder="Stock">
+                        </div>
+                    </div>
+
+                </div>
+                <button>Add Product</button>
+            </form>
+        </div>
+    </div>
+</div>

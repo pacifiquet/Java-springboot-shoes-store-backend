@@ -14,7 +14,7 @@
             <!--Item 1-->
             <div class="item">
                 <div class="image">
-                    <img src="../../../assets/item-one.png" alt="item-image">
+                    <img src="../../../assets/item-one-min.png" alt="item-image">
                 </div>
                 <div class="price-ratings">
                     <div class="price">
@@ -71,14 +71,16 @@
                         aliquam deleniti quod vitae optio provident eaque quo.</p>
                 </div>
                 <div class="actions">
-                    <button class="view">view</button>
+                    <button class="view" (click)="openProductDetails()">view</button>
                     <button class="add-cart">add to cart</button>
                 </div>
+                <app-product-details *ngIf="openProductModal" (productEvent)="productEventFromProductDetails($event)"
+                    (productDetailsEvent)="hideProductDetails($event)"></app-product-details>
             </div>
             <!--Item 2-->
             <div class="item">
                 <div class="image">
-                    <img src="../../../assets/item-2.png" alt="item-image">
+                    <img src="../../../assets/item-2-min.png" alt="item-image">
                 </div>
                 <div class="price-ratings">
                     <div class="price">
@@ -142,7 +144,7 @@
             <!--Item 3-->
             <div class="item">
                 <div class="image">
-                    <img src="../../../assets/item-three.png" alt="item-image">
+                    <img src="../../../assets/item-three-min.png" alt="item-image">
                 </div>
                 <div class="price-ratings">
                     <div class="price">

@@ -1,0 +1,44 @@
+.add-product-modal{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.content {
+    width: 90rem;
+    height: 80%;
+    margin: 3rem auto;
+    background-color: #fff;
+}
+
+.content .modal-header{
+    position: relative;
+}
+
+.content .modal-header h1 {
+    text-align: center;
+    top: 3rem;
+    padding: 2rem;
+    font-size: 2rem;
+    color: #1F1A1A;
+    font-weight: 600;
+    font-family: "Raleway",sans-serif;
+}
+
+.content .modal-header button {
+    position: absolute;
+    right: 3rem;
+    top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background-color: #f4f4f5;
+
+}
+.content .modal-header button svg{
+    width: 2.5rem;
+    height: 1.6rem;
+}

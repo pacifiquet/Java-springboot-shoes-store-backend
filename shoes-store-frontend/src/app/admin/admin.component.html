@@ -1,0 +1,199 @@
+<div class="admin shadow shadow-gray-500 rounded-lg">
+    <nav class="shadow-md shadow-gray-500 rounded-lg">
+        <h1>SH</h1>
+        <ul>
+            <li><button [ngClass]="{active: isDashboardActive}"
+                    class="shadow-md ring-1 ring-green-900 rounded-lg">Dashboard</button></li>
+            <li><button [ngClass]="{active: isAddProductActive}" (click)="addProduct()"
+                    class="shadow-md ring-1 ring-green-900 rounded-lg">AddProduct</button>
+            </li>
+        </ul>
+        <div class="logout ring-1 ring-green-900 rounded-[1rem]" (click)="logoutHadler()" tabindex="-1">
+            <img src="../../assets/profile.png" alt="profile" class="img-center">
+            <p>Pacifique Twagirayesu</p>
+            <svg class="-mr-1 h-10 w-10 text-green-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                    clip-rule="evenodd" />
+            </svg>
+            <div *ngIf="isLogout" class="dropdown shadow-lg shadow-gray-500 rounded-lg">
+                <div>
+                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm">Account settings</a>
+                    <button (click)="logoutUser()" class="text-gray-700 block px-4 py-2 text-sm" type="button">Sign
+                        out</button>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+    <app-add-product (addProductModalEvent)="hideAddProductModal($event)" *ngIf="isAddProductActive"></app-add-product>
+    <div class="stats">
+        <div class="solds">
+            <h1>Total Sold:</h1>
+            <div class="solds-actions">
+                <button (click)="dayStats()" class="rounded-lg ring-1 ring-green-900"
+                    [ngClass]="{'active':isDayActive}">DAY</button>
+                <button (click)="weekStats()" class="rounded-lg ring-1 ring-green-900"
+                    [ngClass]="{'active':isWeekActive}">WEEK</button>
+                <button (click)="monthStats()" class="rounded-lg ring-1 ring-green-900"
+                    [ngClass]="{'active':isMonthActive}">MONTH</button>
+                <button (click)="yearStats()" class="rounded-lg ring-1 ring-green-900"
+                    [ngClass]="{'active':isYearActive}">YEAR</button>
+            </div>
+            <div class="value shadow hover:ring-zinc-900">
+                <span>450</span>
+            </div>
+        </div>
+        <div class="filtering">
+            <div class="ordering">
+                <button class="shadow">ASC</button>
+                <button class="shadow">DESC</button>
+            </div>
+            <ul>
+                <li [ngClass]="{active: isMenNavActive}"><button>Men</button></li>
+                <li><button>Women</button></li>
+                <li><button>Kids</button></li>
+            </ul>
+            <div>
+                <form>
+                    <input type="search" placeholder="search">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="products-table shadow rounded-lg">
+        <table class="table-auto">
+            <!--table head-->
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Stock</th>
+                    <th>Price</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <!--table body-->
+            <tbody>
+                <tr class="spaceUnder shadow-md rounded-lg y-2xl">
+                    <td>250</td>
+                    <td>
+                        <img src="../../assets/item-one-min.png" alt="image-product" class="img-center">
+                    </td>
+                    <td class="product-name">Product Name</td>
+                    <td>Men</td>
+                    <td>34</td>
+                    <td>$200</td>
+                    <td>12/11/2023</td>
+                    <td class="delete-edit">
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
+                                fill="none">
+                                <path
+                                    d="M7.5 7H6.5C5.96957 7 5.46086 7.21071 5.08579 7.58579C4.71071 7.96086 4.5 8.46957 4.5 9V18C4.5 18.5304 4.71071 19.0391 5.08579 19.4142C5.46086 19.7893 5.96957 20 6.5 20H15.5C16.0304 20 16.5391 19.7893 16.9142 19.4142C17.2893 19.0391 17.5 18.5304 17.5 18V17"
+                                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M16.5 4.99998L19.5 7.99998M20.885 6.58499C21.2788 6.19114 21.5001 5.65697 21.5001 5.09998C21.5001 4.543 21.2788 4.00883 20.885 3.61498C20.4912 3.22114 19.957 2.99988 19.4 2.99988C18.843 2.99988 18.3088 3.22114 17.915 3.61498L9.5 12V15H12.5L20.885 6.58499Z"
+                                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
+                                fill="none">
+                                <path
+                                    d="M6.5 19C6.5 19.5304 6.71071 20.0391 7.08579 20.4142C7.46086 20.7893 7.96957 21 8.5 21H16.5C17.0304 21 17.5391 20.7893 17.9142 20.4142C18.2893 20.0391 18.5 19.5304 18.5 19V7H6.5V19ZM8.5 9H16.5V19H8.5V9ZM16 4L15 3H10L9 4H5.5V6H19.5V4H16Z"
+                                    fill="#F79522" />
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+                <tr class="shadow-md rounded-lg">
+                    <td>250</td>
+                    <td>
+                        <img src="../../assets/item-2-min.png" alt="image-product" class="img-center">
+                    </td>
+                    <td class="product-name">Product Name</td>
+                    <td>Men</td>
+                    <td>34</td>
+                    <td>$200</td>
+                    <td>12/11/2023</td>
+                    <td class="delete-edit">
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
+                                fill="none">
+                                <path
+                                    d="M7.5 7H6.5C5.96957 7 5.46086 7.21071 5.08579 7.58579C4.71071 7.96086 4.5 8.46957 4.5 9V18C4.5 18.5304 4.71071 19.0391 5.08579 19.4142C5.46086 19.7893 5.96957 20 6.5 20H15.5C16.0304 20 16.5391 19.7893 16.9142 19.4142C17.2893 19.0391 17.5 18.5304 17.5 18V17"
+                                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M16.5 4.99998L19.5 7.99998M20.885 6.58499C21.2788 6.19114 21.5001 5.65697 21.5001 5.09998C21.5001 4.543 21.2788 4.00883 20.885 3.61498C20.4912 3.22114 19.957 2.99988 19.4 2.99988C18.843 2.99988 18.3088 3.22114 17.915 3.61498L9.5 12V15H12.5L20.885 6.58499Z"
+                                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
+                                fill="none">
+                                <path
+                                    d="M6.5 19C6.5 19.5304 6.71071 20.0391 7.08579 20.4142C7.46086 20.7893 7.96957 21 8.5 21H16.5C17.0304 21 17.5391 20.7893 17.9142 20.4142C18.2893 20.0391 18.5 19.5304 18.5 19V7H6.5V19ZM8.5 9H16.5V19H8.5V9ZM16 4L15 3H10L9 4H5.5V6H19.5V4H16Z"
+                                    fill="#F79522" />
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+                <tr class="shadow-md rounded-lg">
+                    <td>250</td>
+                    <td>
+                        <img src="../../assets/item-three-min.png" alt="image-product" class="img-center">
+                    </td>
+                    <td class="product-name">Product Name</td>
+                    <td>Women</td>
+                    <td>34</td>
+                    <td>$200</td>
+                    <td>12/11/2023</td>
+                    <td class="delete-edit">
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
+                                fill="none">
+                                <path
+                                    d="M7.5 7H6.5C5.96957 7 5.46086 7.21071 5.08579 7.58579C4.71071 7.96086 4.5 8.46957 4.5 9V18C4.5 18.5304 4.71071 19.0391 5.08579 19.4142C5.46086 19.7893 5.96957 20 6.5 20H15.5C16.0304 20 16.5391 19.7893 16.9142 19.4142C17.2893 19.0391 17.5 18.5304 17.5 18V17"
+                                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M16.5 4.99998L19.5 7.99998M20.885 6.58499C21.2788 6.19114 21.5001 5.65697 21.5001 5.09998C21.5001 4.543 21.2788 4.00883 20.885 3.61498C20.4912 3.22114 19.957 2.99988 19.4 2.99988C18.843 2.99988 18.3088 3.22114 17.915 3.61498L9.5 12V15H12.5L20.885 6.58499Z"
+                                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
+                                fill="none">
+                                <path
+                                    d="M6.5 19C6.5 19.5304 6.71071 20.0391 7.08579 20.4142C7.46086 20.7893 7.96957 21 8.5 21H16.5C17.0304 21 17.5391 20.7893 17.9142 20.4142C18.2893 20.0391 18.5 19.5304 18.5 19V7H6.5V19ZM8.5 9H16.5V19H8.5V9ZM16 4L15 3H10L9 4H5.5V6H19.5V4H16Z"
+                                    fill="#F79522" />
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="product-actions">
+            <div class="export-import">
+                <form>
+                    <label for="fileInput">Import Product CSV</label>
+                    <input type="file" id="fileInput">
+                    <button type="submit">Submit</button>
+                </form>
+
+                <button>Export Product CSV</button>
+            </div>
+            <div class="pagination shadow-lg rounded-lg shadow-gray-500">
+                <button>NEXT</button>
+                <span>1</span>
+                <button>PREV</button>
+            </div>
+        </div>
+    </div>
+</div>
