@@ -3,16 +3,51 @@
         <div class="logo">
             <a [routerLink]="['/home']">SH</a>
         </div>
-        <div class="search">
-            <form>
-                <input type="text" placeholder="search">
-            </form>
-        </div>
-        <div class="login-signup">
-            <a class="login" [routerLink]="['/dashboard']" routerLinkActive="router-link-active">dashboard</a>
-            <button class="login" (click)="login()">Login</button>
-            <button class="signup shadow-md" (click)="signup()">Signup</button>
-        </div>
+        <ul>
+            <li>
+                <div class="search">
+                    <form>
+                        <input type="text" placeholder="search">
+                    </form>
+                </div>
+            </li>
+            <li>
+                <a class=" login" [routerLink]="['/home']" routerLinkActive="router-link-active">Home</a>
+            </li>
+            <li class="block">
+                <a class="login" [routerLink]="['/dashboard']" routerLinkActive="router-link-active">Dashboard</a>
+            </li>
+            <li class="block">
+                <a class="login" (click)="login()">Log In</a>
+            </li>
+            <li class="block">
+                <a class="signup" (click)="signup()">Sign Up</a>
+            </li>
+            <li class="block">
+                <div class="logout ring-1 ring-green-900 rounded-[1rem]" (click)="logoutHadler()" tabindex="-1">
+                    <img src="../../assets/profile.png" alt="profile" class="img-center">
+                    <p>Pacifique Twagirayesu</p>
+                    <svg class="-mr-1 h-10 w-10 text-green-900" viewBox="0 0 20 20" fill="currentColor"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <div class="notifiy rounded-full shadow-gray-500 shadow-lg"></div>
+                    <div *ngIf="isLoggedIn" class="dropdown shadow-lg shadow-gray-500 rounded-lg">
+                        <div>
+                            <a routerLink="/user-profile" class="text-gray-700 block px-4 py-4 text-sm">Account
+                                settings</a>
+                            <a (click)="openNotifications()" class="text-gray-700 block px-4 py-2 text-sm"
+                                type="button">Notifications
+                                <span class="rounded-full shadow-gray-500 shadow-lg">23</span></a>
+                            <a (click)="logoutUser()" class="text-gray-700 block px-4 py-2 text-sm" type="button">Sign
+                                out</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
     <div class="cart">
         <button (click)="showCart()">
@@ -23,12 +58,15 @@
                         fill="#699BF7" />
                 </g>
             </svg>
-            <p>45</p>
+            <p class="rounded-full shadow-gray-500 shadow-lg">20</p>
         </button>
     </div>
+
+
 </nav>
-<app-login *ngIf="openLoginModal" (closeLoginEvent)="closeLoginModal($event)"
+<app-login *ngIf=" openLoginModal" (closeLoginEvent)="closeLoginModal($event)"
     (openRegisterEvent)="showRegisterModal($event)"></app-login>
 <app-signup *ngIf="openSignupModal" (registerEvent)="closeRegisterModal($event)"
     (loginEvent)="showLoginModal($event)"></app-signup>
 <app-cart *ngIf="openCartModal" (closeCartEvent)="closeCartModal($event)"></app-cart>
+<app-notifications (notificationEvent)="closeNotificationModal($event)" *ngIf="isOpenNotifications"></app-notifications>

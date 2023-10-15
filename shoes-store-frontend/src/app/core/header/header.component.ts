@@ -9,6 +9,23 @@ export class HeaderComponent {
   openLoginModal: boolean = false;
   openCartModal: boolean = false;
   openSignupModal: boolean = false;
+  isLoggedIn: boolean = false;
+  isOpenNotifications: boolean = false;
+
+  openNotifications() {
+    this.isOpenNotifications = true;
+  }
+
+  closeNotificationModal(event: boolean) {
+    this.isOpenNotifications = event;
+  }
+  logoutHadler() {
+    this.isLoggedIn = !this.isLoggedIn;
+  }
+
+  logoutUser() {
+    console.log('logout occured');
+  }
 
   login() {
     this.openLoginModal = !this.openLoginModal;

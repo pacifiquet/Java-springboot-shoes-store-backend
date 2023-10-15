@@ -6,9 +6,17 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { AdminComponent } from './admin/admin.component';
 import { AddProductComponent } from './add-product/add-product.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 
 @NgModule({
-  declarations: [AppComponent, AdminComponent, AddProductComponent],
+  declarations: [
+    AppComponent,
+    AdminComponent,
+    AddProductComponent,
+    UserProfileComponent,
+    DeleteModalComponent,
+  ],
   imports: [BrowserModule, AppRoutingModule, CoreModule],
   providers: [],
   bootstrap: [AppComponent],

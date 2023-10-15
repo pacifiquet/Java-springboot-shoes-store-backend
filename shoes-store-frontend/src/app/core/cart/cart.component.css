@@ -7,6 +7,7 @@
     background-color: rgba(0, 0, 0, 0.4);
     overflow-x: hidden;
     overflow-y: auto;
+    z-index: 5000;
 
 }
 
@@ -49,16 +50,26 @@
     gap: 2rem;
     margin-top: 1rem;
     background-color: #fff;
+    cursor: pointer;
 }
 
+.modal-body ul li:hover,.modal-body ul li:nth-child(even):hover{
+    background-color: green;
+    color: #f4f4f5;
+}
 .modal-body ul li:nth-child(even){
     background: #E5E2E0;
 }
 
 .modal-body ul li h5{
-    color: #000;
     font-family: "Poppins",sans-serif;
     font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.modal-body ul li h3{
+    font-family: "Poppins",sans-serif;
+    font-size: 1rem;
     font-weight: 400;
 }
 .modal-body ul li img{
@@ -93,6 +104,7 @@ strong {
    gap: 5rem;
    margin-right: 4rem;
    align-items: center;
+   justify-content: center;
 }
 
 .modal-body .check-out{
@@ -102,9 +114,15 @@ strong {
 .modal-body .check-out button{
     background-color: #fff;
     border: 0.065rem solid #214E34;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+    padding: 0.5rem 2rem;
+    font-size: 1.2rem;
     font-weight: 500;
+    font-family: "Poppins",sans-serif;
+}
+
+.modal-body .check-out button:hover{
+    background-color: #214E34;
+    color: #f4f4f5;
 }
 
 .modal-body .check-out h1 {

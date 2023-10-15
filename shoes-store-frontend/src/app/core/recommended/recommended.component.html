@@ -10,15 +10,16 @@
         </nav>
     </div>
     <div class="products">
-        <div class="items">
+        <ul>
             <!--Item 1-->
-            <div class="item">
+            <li>
                 <div class="image">
                     <img src="../../../assets/item-one-min.png" alt="item-image">
+
                 </div>
                 <div class="price-ratings">
                     <div class="price">
-                        <p>Price <span>:</span> <span>$200</span></p>
+                        <p>Price<span>:</span> <span>$200</span> </p>
                     </div>
                     <div class="ratings">
                         <!--1-->
@@ -64,6 +65,8 @@
                         </svg>
 
                     </div>
+                    <strong class="sold-out">Sold
+                        Out</strong>
                 </div>
                 <div class="item-desc">
                     <h3>Consectetur Adipisicing Elit.</h3>
@@ -71,14 +74,12 @@
                         aliquam deleniti quod vitae optio provident eaque quo.</p>
                 </div>
                 <div class="actions">
-                    <button class="view" (click)="openProductDetails()">view</button>
+                    <a [routerLink]="['/product-details/1']" class="view">view</a>
                     <button class="add-cart">add to cart</button>
                 </div>
-                <app-product-details *ngIf="openProductModal" (productEvent)="productEventFromProductDetails($event)"
-                    (productDetailsEvent)="hideProductDetails($event)"></app-product-details>
-            </div>
+            </li>
             <!--Item 2-->
-            <div class="item">
+            <li>
                 <div class="image">
                     <img src="../../../assets/item-2-min.png" alt="item-image">
                 </div>
@@ -137,12 +138,12 @@
                         aliquam deleniti quod vitae optio provident eaque quo.</p>
                 </div>
                 <div class="actions">
-                    <button class="view">view</button>
+                    <a [routerLink]="['/product-details/1']" class="view">view</a>
                     <button class="add-cart">add to cart</button>
                 </div>
-            </div>
+            </li>
             <!--Item 3-->
-            <div class="item">
+            <li>
                 <div class="image">
                     <img src="../../../assets/item-three-min.png" alt="item-image">
                 </div>
@@ -201,12 +202,11 @@
                         aliquam deleniti quod vitae optio provident eaque quo.</p>
                 </div>
                 <div class="actions">
-                    <button class="view">view</button>
+                    <a [routerLink]="['/product-details/1']" class="view">view</a>
                     <button class="add-cart">add to cart</button>
                 </div>
-            </div>
-        </div>
-
+            </li>
+        </ul>
         <div class="pagination shadow-md rounded-xl">
             <button class="shadow-md rounded">NEXT</button>
             <p>1</p>

@@ -11,6 +11,7 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { CartComponent } from './cart/cart.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
     SignupComponent,
     CartComponent,
     ProductDetailsComponent,
+    NotificationsComponent,
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -37,6 +39,7 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
     SignupComponent,
     CartComponent,
     ProductDetailsComponent,
+    NotificationsComponent,
   ],
 })
 export class CoreModule {}

@@ -1,0 +1,44 @@
+.content {
+    width: 40rem;
+    height: 20rem;
+    background-color: #fff;
+    margin: 4rem auto 0;
+
+}
+
+.modal-header h3 {
+text-align: center;
+padding: 3rem;
+font-size: 1.5rem;
+font-weight: 600;
+font-family: "Poppins",sans-serif;
+margin-top: -3rem;
+}
+
+.modal-body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+}
+
+button{
+    padding: 1rem 3rem;
+    border-radius: 0.8rem;
+}
+
+button.delete{
+    background-color: #214E34;
+    color: #f4f4f5;
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: "Poopins",sans-serif;
+}
+
+button.cancel{
+    background-color: #E3432B;
+    color: #f4f4f5;
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: "Poopins",sans-serif;
+}

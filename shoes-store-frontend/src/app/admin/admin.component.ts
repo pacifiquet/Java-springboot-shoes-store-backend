@@ -13,27 +13,36 @@ export class AdminComponent {
   isYearActive: boolean = false;
   isDashboardActive: boolean = true;
   isAddProductActive: boolean = false;
+  isDeletingProduct: boolean = false;
 
   isMenNavActive: boolean = true;
   isWomenNavActive: boolean = true;
   isKidsNavActive: boolean = false;
+
+  deleteProduct() {
+    this.isDeletingProduct = true;
+  }
+
+  approveDeleteProduct(event: boolean) {
+    this.isDeletingProduct = event;
+  }
+
+  cancelDeleteProduct(event: boolean) {
+    this.isDeletingProduct = event;
+  }
 
   addProduct() {
     this.isDashboardActive = false;
     this.isAddProductActive = true;
   }
 
+  viewProductAndEdit() {
+    this.isAddProductActive = true;
+  }
+
   hideAddProductModal(event: boolean) {
     this.isAddProductActive = !event;
     this.isDashboardActive = true;
-  }
-
-  logoutHadler() {
-    this.isLogout = !this.isLogout;
-  }
-
-  logoutUser() {
-    console.log('logout occured');
   }
 
   dayStats() {

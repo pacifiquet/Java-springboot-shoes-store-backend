@@ -1,32 +1,11 @@
 <div class="admin shadow shadow-gray-500 rounded-lg">
-    <nav class="shadow-md shadow-gray-500 rounded-lg">
-        <h1>SH</h1>
-        <ul>
-            <li><button [ngClass]="{active: isDashboardActive}"
-                    class="shadow-md ring-1 ring-green-900 rounded-lg">Dashboard</button></li>
-            <li><button [ngClass]="{active: isAddProductActive}" (click)="addProduct()"
-                    class="shadow-md ring-1 ring-green-900 rounded-lg">AddProduct</button>
-            </li>
-        </ul>
-        <div class="logout ring-1 ring-green-900 rounded-[1rem]" (click)="logoutHadler()" tabindex="-1">
-            <img src="../../assets/profile.png" alt="profile" class="img-center">
-            <p>Pacifique Twagirayesu</p>
-            <svg class="-mr-1 h-10 w-10 text-green-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                    clip-rule="evenodd" />
-            </svg>
-            <div *ngIf="isLogout" class="dropdown shadow-lg shadow-gray-500 rounded-lg">
-                <div>
-                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm">Account settings</a>
-                    <button (click)="logoutUser()" class="text-gray-700 block px-4 py-2 text-sm" type="button">Sign
-                        out</button>
-                </div>
-            </div>
+    <button (click)="addProduct()"
+        class="absolute bg-zinc-100 text-xl shadow-lg ring-1 p-4 ring-white-900 rounded-lg">Add
+        Product</button>
 
-        </div>
-    </nav>
     <app-add-product (addProductModalEvent)="hideAddProductModal($event)" *ngIf="isAddProductActive"></app-add-product>
+    <app-delete-modal (cancelEvent)="cancelDeleteProduct($event)" (deleteEvent)="approveDeleteProduct($event)"
+        *ngIf="isDeletingProduct"></app-delete-modal>
     <div class="stats">
         <div class="solds">
             <h1>Total Sold:</h1>
@@ -91,7 +70,7 @@
                     <td>$200</td>
                     <td>12/11/2023</td>
                     <td class="delete-edit">
-                        <button>
+                        <button (click)="viewProductAndEdit()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
                                 fill="none">
                                 <path
@@ -102,7 +81,7 @@
                                     stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </button>
-                        <button>
+                        <button (click)="deleteProduct()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
                                 fill="none">
                                 <path
@@ -123,7 +102,7 @@
                     <td>$200</td>
                     <td>12/11/2023</td>
                     <td class="delete-edit">
-                        <button>
+                        <button (click)="viewProductAndEdit()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
                                 fill="none">
                                 <path
@@ -134,7 +113,7 @@
                                     stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </button>
-                        <button>
+                        <button (click)="deleteProduct()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
                                 fill="none">
                                 <path
@@ -155,7 +134,7 @@
                     <td>$200</td>
                     <td>12/11/2023</td>
                     <td class="delete-edit">
-                        <button>
+                        <button (click)="viewProductAndEdit()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
                                 fill="none">
                                 <path
@@ -166,7 +145,7 @@
                                     stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </button>
-                        <button>
+                        <button (click)="deleteProduct()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
                                 fill="none">
                                 <path
@@ -182,17 +161,17 @@
         <div class="product-actions">
             <div class="export-import">
                 <form>
-                    <label for="fileInput">Import Product CSV</label>
+                    <label for="fileInput">Import Products CSV</label>
                     <input type="file" id="fileInput">
-                    <button type="submit">Submit</button>
+                    <button class="ml-4" type="submit">Submit</button>
                 </form>
 
                 <button>Export Product CSV</button>
             </div>
             <div class="pagination shadow-lg rounded-lg shadow-gray-500">
-                <button>NEXT</button>
-                <span>1</span>
                 <button>PREV</button>
+                <span>1</span>
+                <button>NEXT</button>
             </div>
         </div>
     </div>

@@ -3,9 +3,9 @@
         <h3 class="shadow-md rounded-md">New Arrival</h3>
     </div>
     <div class="products">
-        <div class="items">
+        <ul>
             <!--Item 1-->
-            <div class="item">
+            <li>
                 <div class="image">
                     <img src="../../../assets/item-one-min.png" alt="item-image">
                 </div>
@@ -64,12 +64,12 @@
                         aliquam deleniti quod vitae optio provident eaque quo.</p>
                 </div>
                 <div class="actions">
-                    <button class="view">view</button>
+                    <a [routerLink]="['/product-details/1']" class="view">view</a>
                     <button class="add-cart">add to cart</button>
                 </div>
-            </div>
+            </li>
             <!--Item 2-->
-            <div class="item">
+            <li>
                 <div class="image">
                     <img src="../../../assets/item-2-min.png" alt="item-image">
                 </div>
@@ -128,12 +128,12 @@
                         aliquam deleniti quod vitae optio provident eaque quo.</p>
                 </div>
                 <div class="actions">
-                    <button class="view">view</button>
+                    <a [routerLink]="['/product-details/1']" class="view">view</a>
                     <button class="add-cart">add to cart</button>
                 </div>
-            </div>
+            </li>
             <!--Item 3-->
-            <div class="item">
+            <li>
                 <div class="image">
                     <img src="../../../assets/item-three-min.png" alt="item-image">
                 </div>
@@ -192,11 +192,11 @@
                         aliquam deleniti quod vitae optio provident eaque quo.</p>
                 </div>
                 <div class="actions">
-                    <button class="view">view</button>
+                    <a [routerLink]="['/product-details/1']" class="view">view</a>
                     <button class="add-cart">add to cart</button>
                 </div>
-            </div>
-        </div>
+            </li>
+        </ul>
 
         <div class="pagination shadow-md rounded-xl">
             <button class="shadow-md rounded">NEXT</button>
