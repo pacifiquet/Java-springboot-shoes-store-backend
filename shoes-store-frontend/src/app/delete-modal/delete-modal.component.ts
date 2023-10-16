@@ -6,6 +6,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./delete-modal.component.css'],
 })
 export class DeleteModalComponent {
+  message: string = 'Are you sure to approve this request?';
   isDeleting: boolean = true;
   isCanceling: boolean = true;
 

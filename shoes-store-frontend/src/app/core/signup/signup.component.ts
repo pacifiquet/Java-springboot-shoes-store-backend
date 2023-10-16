@@ -24,10 +24,4 @@ export class SignupComponent {
   hideSignUpModal() {
     this.registerEvent.emit(this.closeSignUpModal);
   }
-  @HostListener('window:click', ['$event'])
-  clickOut(event: any) {
-    if (this.elementRef.nativeElement.contains(event.target)) {
-      this.registerEvent.emit(this.closeSignUpModal);
-    }
-  }
 }

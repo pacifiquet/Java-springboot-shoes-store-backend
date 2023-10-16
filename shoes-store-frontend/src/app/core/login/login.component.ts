@@ -26,11 +26,4 @@ export class LoginComponent {
   showRegistersModal() {
     this.openRegisterEvent.emit(this.showLoginModal);
   }
-
-  @HostListener('document:click', ['$event'])
-  clickOut(event: any) {
-    if (this.eRef.nativeElement.contains(event.target)) {
-      this.closeLoginEvent.emit(this.showLoginModal);
-    }
-  }
 }

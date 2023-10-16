@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,6 +18,9 @@ export class UserProfileComponent {
   isMarkerCancaled: boolean = false;
   isMarkerToRecieve: boolean = false;
   isCancelOrder: boolean = false;
+
+  @Input() deleteMessage: string =
+    'did you request to delete your account? your acount is deleted parmanently';
 
   deleteAccount() {
     this.isDeleteAccount = true;
