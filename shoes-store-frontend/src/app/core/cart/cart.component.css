@@ -111,7 +111,7 @@ strong {
     padding: 0.5rem 1rem;
 }
 
-.modal-body .check-out button{
+.modal-body .check-out a{
     background-color: #fff;
     border: 0.065rem solid #214E34;
     padding: 0.5rem 2rem;
@@ -120,7 +120,7 @@ strong {
     font-family: "Poppins",sans-serif;
 }
 
-.modal-body .check-out button:hover{
+.modal-body .check-out a:hover{
     background-color: #214E34;
     color: #f4f4f5;
 }

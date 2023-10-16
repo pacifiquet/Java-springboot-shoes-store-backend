@@ -2,7 +2,7 @@
     width: 90rem;
     height: 80%;
     margin: 1rem auto 0;
-    background-color: #fff;
+    background-color: #f4f4f5;
     border-radius: 1rem;
 }
 
@@ -31,4 +31,96 @@
 .content .modal-header button svg{
     width: 2.5rem;
     height: 1.6rem;
+}
+
+.fields{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    justify-content: center;
+    flex-direction: column;
+    /* height: 40rem; */
+}
+
+form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+label{
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+
+input:focus{
+    outline: none;
+}
+option:focus{
+    outline: none;
+}
+
+form input[type='text'] {
+    padding: 1rem;
+    background-color: #fff;
+}
+
+form label {
+    text-align: left;
+}
+
+button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.6rem 3rem;
+    background-color: #fff;
+}
+
+
+button:hover{
+    background-color: seagreen;
+    color:#f4f4f5;
+}
+
+input[type='file']{
+    display: none;
+}
+
+input{
+    width: 32rem;
+    padding: 0.6rem;
+}
+.stock-price{
+    display: flex;
+    gap: 1rem;
+    width: 20rem;
+}
+#price,#stock{
+    width: 15.5rem;
+}
+
+textarea{
+    width: 32rem;
+    height:  10rem;;
+    padding: 0.6rem;
+}
+
+#product-image{
+    width: 15rem;
+    height: 3rem; 
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    background-color: #fff;
+}
+
+textarea:focus{
+    outline: none;
 }

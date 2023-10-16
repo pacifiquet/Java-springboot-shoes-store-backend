@@ -1,0 +1,79 @@
+.check-page{
+    width: 70%;
+    margin: 2rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+button{
+    margin-top: 1rem;
+    padding: 0.4rem 3rem;
+    border: 1px solid seagreen;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+
+.check-page h1{
+    font-size: 2rem;
+    font-family: "Poppins",sans-serif;
+    font-weight: 600;
+}
+
+.check-page .actions{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+input,select {
+    width: 30rem;
+}
+
+label{
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+form label{
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+input:focus,select:focus{
+    outline: none;
+}
+option:focus{
+    outline: none;
+}
+
+form input,select {
+    padding: 1rem;
+    background-color: #fff;
+}
+form label {
+    text-align: left;
+}
+
+button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.6rem 3rem;
+    gap: 1rem;
+}
+
+
+button:hover{
+    background-color: seagreen;
+    color:#f4f4f5;
+}

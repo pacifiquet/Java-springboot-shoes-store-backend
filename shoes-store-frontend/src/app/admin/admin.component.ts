@@ -46,7 +46,7 @@ export class AdminComponent {
   }
 
   dayStats() {
-    this.isWeekActive = true;
+    this.isDayActive = true;
     this.isWeekActive = false;
     this.isMonthActive = false;
     this.isYearActive = false;

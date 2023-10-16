@@ -8,6 +8,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AddProductComponent } from './add-product/add-product.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
+import { CheckoutPageComponent } from './checkout-page/checkout-page.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { DeleteModalComponent } from './delete-modal/delete-modal.component';
     AddProductComponent,
     UserProfileComponent,
     DeleteModalComponent,
+    CheckoutPageComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, CoreModule],
   providers: [],

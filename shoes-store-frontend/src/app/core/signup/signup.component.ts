@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Output,
+} from '@angular/core';
 
 @Component({
   selector: 'app-signup',
@@ -8,7 +14,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class SignupComponent {
   openLoginModal: boolean = true;
   closeSignUpModal: boolean = true;
-
+  constructor(private elementRef: ElementRef) {}
   @Output() registerEvent = new EventEmitter<boolean>();
   @Output() loginEvent = new EventEmitter<boolean>();
   showLoginModal() {
@@ -17,5 +23,11 @@ export class SignupComponent {
 
   hideSignUpModal() {
     this.registerEvent.emit(this.closeSignUpModal);
+  }
+  @HostListener('window:click', ['$event'])
+  clickOut(event: any) {
+    if (this.elementRef.nativeElement.contains(event.target)) {
+      this.registerEvent.emit(this.closeSignUpModal);
+    }
   }
 }

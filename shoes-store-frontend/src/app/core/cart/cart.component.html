@@ -65,7 +65,8 @@
             </ul>
             <div class="check-out">
                 <h1>Total Price : <span>$600</span> </h1>
-                <button class="shadow-md shadow-gray-500 rounded-lg">Check Out</button>
+                <a (click)="handleCheckOut()" [routerLink]="['/checkout']"
+                    class="shadow-md shadow-gray-500 rounded-lg">Check Out</a>
             </div>
         </div>
     </div>

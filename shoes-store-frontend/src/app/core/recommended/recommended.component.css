@@ -12,7 +12,6 @@
 }
 .recommended .reco  h3{
     padding: 0.6rem 2rem;
-    color: #000;
     font-family: "Raleway",sans-serif;
     font-size: 1.6rem;
     font-weight: 700;
@@ -35,7 +34,6 @@
 }
 
 .recommended .reco nav ul li a {
-    color: #000;
     font-family: "Raleway",sans-serif;
     font-size: 1.25rem;
     font-weight: 400;

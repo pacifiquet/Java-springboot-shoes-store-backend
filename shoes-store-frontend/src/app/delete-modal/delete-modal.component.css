@@ -23,19 +23,18 @@ margin-top: -3rem;
 }
 
 button{
-    padding: 1rem 3rem;
-    border-radius: 0.8rem;
+    padding: 0.6rem 1rem;
+    border-radius:0.6rem
 }
 
-button.delete{
-    background-color: #214E34;
-    color: #f4f4f5;
+button.cancel{
+    background-color: #f4f4f5;
     font-size: 1.2rem;
     font-weight: 600;
     font-family: "Poopins",sans-serif;
 }
 
-button.cancel{
+button.delete{
     background-color: #E3432B;
     color: #f4f4f5;
     font-size: 1.2rem;

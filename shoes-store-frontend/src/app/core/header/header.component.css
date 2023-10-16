@@ -15,7 +15,7 @@ nav ul li a {
     padding: 0.8rem 1rem;
     font-size: 1.2rem;
     font-weight: 500;
-    border: 0.0623rem solid green;
+    border: 0.0623rem solid seagreen;
     border-radius: 0.5rem;
     position: relative;
 }
@@ -47,7 +47,7 @@ nav .navbar {
     justify-content: space-evenly;
 }
 
-nav .navbar .logo a {
+nav .navbar .logo a img {
     padding: 0.4rem 1rem;
     color: #000;
     font-family: "Poppins",sans-serif;
@@ -61,7 +61,7 @@ nav .navbar ul li form input{
     width: 24.4375rem;
     padding: 0.625rem;
     border-radius: 0.625rem;
-    border: 1px solid #214E34;
+    border: 1px solid seagreen;
     outline: none;
     color: rgba(0, 0, 0, 1);
     font-family: "Raleway",sans-serif;
@@ -141,13 +141,19 @@ nav .logout .dropdown{
     top: 3rem;
     background-color: white;
     width: 15rem;
-    height: 11rem;
+    height: 16rem;
     z-index: 1000;
+}
+
+.logout .dropdown > div{
+    margin: 1rem 0;
 }
 
 .logout .dropdown > div a, button{
     margin: 0.3rem 1rem;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
+
+
 }
 .logout .dropdown > div a:hover {
     background-color: #F3F4F6;

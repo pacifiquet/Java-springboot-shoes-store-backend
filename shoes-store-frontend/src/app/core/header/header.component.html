@@ -1,7 +1,9 @@
 <nav>
     <div class="navbar">
         <div class="logo">
-            <a [routerLink]="['/home']">SH</a>
+            <a [routerLink]="['/home']">
+                <img src="../../../assets/shopping-bag_4032857.png">
+            </a>
         </div>
         <ul>
             <li>
@@ -24,8 +26,8 @@
                 <a class="signup" (click)="signup()">Sign Up</a>
             </li>
             <li class="block">
-                <div class="logout ring-1 ring-green-900 rounded-[1rem]" (click)="logoutHadler()" tabindex="-1">
-                    <img src="../../assets/profile.png" alt="profile" class="img-center">
+                <div class="logout ring-1 ring-green-900 rounded-[1rem]" (click)="profileNav()" tabindex="-1">
+                    <img src="../../../assets/no-profile.png" alt="profile" class="img-center">
                     <p>Pacifique Twagirayesu</p>
                     <svg class="-mr-1 h-10 w-10 text-green-900" viewBox="0 0 20 20" fill="currentColor"
                         aria-hidden="true">
@@ -34,7 +36,7 @@
                             clip-rule="evenodd" />
                     </svg>
                     <div class="notifiy rounded-full shadow-gray-500 shadow-lg"></div>
-                    <div *ngIf="isLoggedIn" class="dropdown shadow-lg shadow-gray-500 rounded-lg">
+                    <div *ngIf="hideProfileNav" class="dropdown shadow-lg shadow-gray-500 rounded-lg">
                         <div>
                             <a routerLink="/user-profile" class="text-gray-700 block px-4 py-4 text-sm">Account
                                 settings</a>

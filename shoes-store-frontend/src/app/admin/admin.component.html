@@ -1,7 +1,8 @@
 <div class="admin shadow shadow-gray-500 rounded-lg">
     <button (click)="addProduct()"
-        class="absolute bg-zinc-100 text-xl shadow-lg ring-1 p-4 ring-white-900 rounded-lg">Add
-        Product</button>
+        class="absolute flex  bg-zinc-100 text-xl shadow-lg ring-1 p-4 ring-white-900 rounded-lg">Add
+        Product <img src="../../assets/ic_baseline-plus.svg" alt="add-product">
+    </button>
 
     <app-add-product (addProductModalEvent)="hideAddProductModal($event)" *ngIf="isAddProductActive"></app-add-product>
     <app-delete-modal (cancelEvent)="cancelDeleteProduct($event)" (deleteEvent)="approveDeleteProduct($event)"
@@ -10,7 +11,7 @@
         <div class="solds">
             <h1>Total Sold:</h1>
             <div class="solds-actions">
-                <button (click)="dayStats()" class="rounded-lg ring-1 ring-green-900"
+                <button (click)="dayStats()" [ngClass]="{'active':isDayActive}" class="rounded-lg ring-1 ring-green-900"
                     [ngClass]="{'active':isDayActive}">DAY</button>
                 <button (click)="weekStats()" class="rounded-lg ring-1 ring-green-900"
                     [ngClass]="{'active':isWeekActive}">WEEK</button>

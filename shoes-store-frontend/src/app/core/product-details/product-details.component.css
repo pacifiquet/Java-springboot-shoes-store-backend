@@ -30,7 +30,6 @@
     align-items: center;
 }
 .reviews h3{
-    color: #000;
     font-family: "Poppins",sans-serif;
     font-size: 1rem;
     font-weight: 600;
@@ -62,7 +61,6 @@
 }
 
 .desc-price-cart .desc p{
-    color: #000;
     font-family: "Raleway",sans-serif;
     font-size: 1.2rem;
     font-weight: 400;
@@ -79,7 +77,6 @@
 
 .price-cart h4{
     padding: 0.6rem;
-    color: #000;
     text-align: center;
     font-family: "Poppins",sans-serif;
     font-size: 1.625rem;
@@ -93,7 +90,7 @@
     font-size: 1.2rem;
     border-radius: 0.3125rem;
     font-weight: 500;
-    border: 1px solid #214E34;
+    border: 1px solid seagreen;
 }
 
 .add-review{
@@ -110,7 +107,7 @@
     font-size: 1.2rem;
     border-radius: 0.3125rem;
     font-weight: 500;
-    border: 1px solid #214E34;
+    border: 1px solid seagreen;
 }
 .add-review .user-loggedIn{
     display: flex;

@@ -31,6 +31,6 @@
     cursor: pointer;
 }
 .modal-body ul li:hover{
-    background-color: green;
+    background-color: seagreen;
     color: #f4f4f5;
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -11,6 +11,7 @@ export class HeaderComponent {
   openSignupModal: boolean = false;
   isLoggedIn: boolean = false;
   isOpenNotifications: boolean = false;
+  hideProfileNav: boolean = false;
 
   openNotifications() {
     this.isOpenNotifications = true;
@@ -19,12 +20,14 @@ export class HeaderComponent {
   closeNotificationModal(event: boolean) {
     this.isOpenNotifications = event;
   }
-  logoutHadler() {
-    this.isLoggedIn = !this.isLoggedIn;
+
+  profileNav() {
+    this.hideProfileNav = !this.hideProfileNav;
   }
 
   logoutUser() {
     console.log('logout occured');
+    this.hideProfileNav = true;
   }
 
   login() {
