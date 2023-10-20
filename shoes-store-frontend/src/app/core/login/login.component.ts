@@ -13,11 +13,13 @@ import {
 })
 export class LoginComponent {
   showLoginModal: boolean = false;
+  resetModal: boolean = false;
 
   constructor(private eRef: ElementRef) {}
 
   @Output() closeLoginEvent = new EventEmitter<boolean>();
   @Output() openRegisterEvent = new EventEmitter<boolean>();
+  @Output() openResetEvent = new EventEmitter<boolean>();
 
   hideLoginModal() {
     this.closeLoginEvent.emit(this.showLoginModal);
@@ -25,5 +27,9 @@ export class LoginComponent {
 
   showRegistersModal() {
     this.openRegisterEvent.emit(this.showLoginModal);
+  }
+
+  showResetModal() {
+    this.openResetEvent.emit(!this.resetModal);
   }
 }

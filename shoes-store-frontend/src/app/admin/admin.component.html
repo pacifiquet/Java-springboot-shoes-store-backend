@@ -60,80 +60,16 @@
 
             <!--table body-->
             <tbody>
-                <tr class="spaceUnder shadow-md rounded-lg y-2xl">
-                    <td>250</td>
+                <tr *ngFor="let product of productList" class="spaceUnder shadow-md rounded-lg y-2xl">
+                    <td>{{product.id}}</td>
                     <td>
-                        <img src="../../assets/item-one-min.png" alt="image-product" class="img-center">
+                        <img [src]="product.productUrl" [alt]="product.productName" class="img-center">
                     </td>
-                    <td class="product-name">Product Name</td>
-                    <td>Men</td>
-                    <td>34</td>
-                    <td>$200</td>
-                    <td>12/11/2023</td>
-                    <td class="delete-edit">
-                        <button (click)="viewProductAndEdit()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
-                                fill="none">
-                                <path
-                                    d="M7.5 7H6.5C5.96957 7 5.46086 7.21071 5.08579 7.58579C4.71071 7.96086 4.5 8.46957 4.5 9V18C4.5 18.5304 4.71071 19.0391 5.08579 19.4142C5.46086 19.7893 5.96957 20 6.5 20H15.5C16.0304 20 16.5391 19.7893 16.9142 19.4142C17.2893 19.0391 17.5 18.5304 17.5 18V17"
-                                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                <path
-                                    d="M16.5 4.99998L19.5 7.99998M20.885 6.58499C21.2788 6.19114 21.5001 5.65697 21.5001 5.09998C21.5001 4.543 21.2788 4.00883 20.885 3.61498C20.4912 3.22114 19.957 2.99988 19.4 2.99988C18.843 2.99988 18.3088 3.22114 17.915 3.61498L9.5 12V15H12.5L20.885 6.58499Z"
-                                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                        <button (click)="deleteProduct()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
-                                fill="none">
-                                <path
-                                    d="M6.5 19C6.5 19.5304 6.71071 20.0391 7.08579 20.4142C7.46086 20.7893 7.96957 21 8.5 21H16.5C17.0304 21 17.5391 20.7893 17.9142 20.4142C18.2893 20.0391 18.5 19.5304 18.5 19V7H6.5V19ZM8.5 9H16.5V19H8.5V9ZM16 4L15 3H10L9 4H5.5V6H19.5V4H16Z"
-                                    fill="#F79522" />
-                            </svg>
-                        </button>
-                    </td>
-                </tr>
-                <tr class="shadow-md rounded-lg">
-                    <td>250</td>
-                    <td>
-                        <img src="../../assets/item-2-min.png" alt="image-product" class="img-center">
-                    </td>
-                    <td class="product-name">Product Name</td>
-                    <td>Men</td>
-                    <td>34</td>
-                    <td>$200</td>
-                    <td>12/11/2023</td>
-                    <td class="delete-edit">
-                        <button (click)="viewProductAndEdit()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
-                                fill="none">
-                                <path
-                                    d="M7.5 7H6.5C5.96957 7 5.46086 7.21071 5.08579 7.58579C4.71071 7.96086 4.5 8.46957 4.5 9V18C4.5 18.5304 4.71071 19.0391 5.08579 19.4142C5.46086 19.7893 5.96957 20 6.5 20H15.5C16.0304 20 16.5391 19.7893 16.9142 19.4142C17.2893 19.0391 17.5 18.5304 17.5 18V17"
-                                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                <path
-                                    d="M16.5 4.99998L19.5 7.99998M20.885 6.58499C21.2788 6.19114 21.5001 5.65697 21.5001 5.09998C21.5001 4.543 21.2788 4.00883 20.885 3.61498C20.4912 3.22114 19.957 2.99988 19.4 2.99988C18.843 2.99988 18.3088 3.22114 17.915 3.61498L9.5 12V15H12.5L20.885 6.58499Z"
-                                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                        <button (click)="deleteProduct()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
-                                fill="none">
-                                <path
-                                    d="M6.5 19C6.5 19.5304 6.71071 20.0391 7.08579 20.4142C7.46086 20.7893 7.96957 21 8.5 21H16.5C17.0304 21 17.5391 20.7893 17.9142 20.4142C18.2893 20.0391 18.5 19.5304 18.5 19V7H6.5V19ZM8.5 9H16.5V19H8.5V9ZM16 4L15 3H10L9 4H5.5V6H19.5V4H16Z"
-                                    fill="#F79522" />
-                            </svg>
-                        </button>
-                    </td>
-                </tr>
-                <tr class="shadow-md rounded-lg">
-                    <td>250</td>
-                    <td>
-                        <img src="../../assets/item-three-min.png" alt="image-product" class="img-center">
-                    </td>
-                    <td class="product-name">Product Name</td>
-                    <td>Women</td>
-                    <td>34</td>
-                    <td>$200</td>
-                    <td>12/11/2023</td>
+                    <td class="product-name">{{product.productName}}</td>
+                    <td>{{product.category}}</td>
+                    <td>{{product.stock}}</td>
+                    <td>{{product.price | currency}}</td>
+                    <td>{{product.createAt |date:'medium'}}</td>
                     <td class="delete-edit">
                         <button (click)="viewProductAndEdit()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"

@@ -41,8 +41,15 @@
     outline: none;
 }
 
+input[type="button"]{
+    width: 60%;
+    padding: 1rem;
+    cursor: pointer;
+    background-color: #fff;
+    font-size: 1.2rem;
+}
 
-.modal-body form button{
+.modal-body form input[type="button"]{
     border-radius: 0.3125rem;
     border: 1px solid seagreen;
     background: #FFF;
@@ -51,25 +58,20 @@
     font-weight: 600;
 }
 
-.modal-body form button:hover{
+.modal-body form input[type="button"]:hover{
     background-color: seagreen;
     border: 1px solid #FFF;
     color: #f4f4f5;
 }
 
 
-.modal-body p{
-    margin-left: 3rem;
-    margin-top: -1rem;
-    padding: 1rem;
+.modal-body .actions{
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-family: "Raleway",sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
-    margin-top: 0.4rem;
-
+    flex-direction: column;
+    gap: 0.3em;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    padding: 1rem;
 }
 
 .modal-body p strong{

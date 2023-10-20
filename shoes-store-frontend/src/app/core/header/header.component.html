@@ -22,9 +22,9 @@
             <li class="block">
                 <a class="login" (click)="login()">Log In</a>
             </li>
-            <li class="block">
+            <!-- <li class="block">
                 <a class="signup" (click)="signup()">Sign Up</a>
-            </li>
+            </li> -->
             <li class="block">
                 <div class="logout ring-1 ring-green-900 rounded-[1rem]" (click)="profileNav()" tabindex="-1">
                     <img src="../../../assets/no-profile.png" alt="profile" class="img-center">
@@ -66,8 +66,10 @@
 
 
 </nav>
-<app-login *ngIf=" openLoginModal" (closeLoginEvent)="closeLoginModal($event)"
+<app-login *ngIf=" openLoginModal" (closeLoginEvent)="closeLoginModal($event)" (openResetEvent)="showResetModal($event)"
     (openRegisterEvent)="showRegisterModal($event)"></app-login>
+<app-reset-password *ngIf="openResetPasswordModal" (resetEvent)="closeResetEvent($event)"
+    (loginEvent)="backToLoginEvent($event)"></app-reset-password>
 <app-signup *ngIf="openSignupModal" (registerEvent)="closeRegisterModal($event)"
     (loginEvent)="showLoginModal($event)"></app-signup>
 <app-cart *ngIf="openCartModal" (closeCartEvent)="closeCartModal($event)"></app-cart>

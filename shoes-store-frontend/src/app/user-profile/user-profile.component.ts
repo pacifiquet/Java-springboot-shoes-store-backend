@@ -12,11 +12,11 @@ export class UserProfileComponent {
 
   isCompletedAction: boolean = false;
   isCancelledAction: boolean = false;
-  isToRecieveAction: boolean = false;
+  isToReceiveAction: boolean = false;
 
   isMarkerComplete: boolean = false;
-  isMarkerCancaled: boolean = false;
-  isMarkerToRecieve: boolean = false;
+  isMarkerCanceled: boolean = false;
+  isMarkerToReceive: boolean = false;
   isCancelOrder: boolean = false;
 
   @Input() deleteMessage: string =
@@ -37,18 +37,18 @@ export class UserProfileComponent {
   handleCompletedOrders() {
     this.isCompletedAction = true;
     this.isCancelledAction = false;
-    this.isToRecieveAction = false;
+    this.isToReceiveAction = false;
   }
 
-  handleToRecieveOrders() {
-    this.isToRecieveAction = true;
+  handleToReceiveOrders() {
+    this.isToReceiveAction = true;
     this.isCompletedAction = false;
     this.isCancelledAction = false;
   }
 
   handleCancelledOrders() {
     this.isCancelledAction = true;
-    this.isToRecieveAction = false;
+    this.isToReceiveAction = false;
     this.isCompletedAction = false;
   }
 
@@ -62,6 +62,6 @@ export class UserProfileComponent {
     this.isAccountProfile = false;
     this.isCompletedAction = false;
     this.isCancelledAction = false;
-    this.isToRecieveAction = false;
+    this.isToReceiveAction = false;
   }
 }

@@ -1,9 +1,8 @@
 .footer{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    margin: 3rem 0 1rem 0;
+
 }
 
 .footer nav ul{
@@ -12,10 +11,10 @@
 }
 
 .footer nav ul li a{
-    color: #000;
     font-family: "Raleway",sans-serif;
     font-size: 1.35rem;
-    font-weight: 500;
+    font-weight: 300;
+    text-transform: uppercase;
 }
 
 
@@ -27,4 +26,8 @@
 .social{
     display: flex;
     gap: 1.25rem;
+}
+
+.social a img{
+    width: 30px;
 }

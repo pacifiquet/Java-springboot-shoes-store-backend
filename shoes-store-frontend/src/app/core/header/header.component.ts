@@ -12,6 +12,7 @@ export class HeaderComponent {
   isLoggedIn: boolean = false;
   isOpenNotifications: boolean = false;
   hideProfileNav: boolean = false;
+  openResetPasswordModal: boolean = false;
 
   openNotifications() {
     this.isOpenNotifications = true;
@@ -50,6 +51,20 @@ export class HeaderComponent {
   showLoginModal(event: boolean) {
     this.openLoginModal = event;
     this.openSignupModal = !event;
+  }
+
+  showResetModal(event: boolean) {
+    this.openResetPasswordModal = event;
+    this.openLoginModal = !event;
+  }
+
+  backToLoginEvent(event: boolean) {
+    this.openResetPasswordModal = event;
+    this.openLoginModal = !event;
+  }
+
+  closeResetEvent(event: boolean) {
+    this.openResetPasswordModal = event;
   }
 
   closeRegisterModal(event: boolean) {

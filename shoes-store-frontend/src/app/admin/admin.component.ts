@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ProductsService } from '../services/products.service';
+import { ProductInterface } from '../dto/product-interface';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
+  productList: Array<ProductInterface> = [];
+  constructor(private productService: ProductsService) {}
+
+  ngOnInit(): void {
+    this.productList = this.productService.getAllProducts().slice(2);
+  }
+
   isLogout: boolean = false;
   isDayActive: boolean = true;
   isWeekActive: boolean = false;

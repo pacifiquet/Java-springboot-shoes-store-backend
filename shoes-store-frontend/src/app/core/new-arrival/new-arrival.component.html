@@ -1,208 +1,69 @@
-<div class="new-arrival">
-    <div class="header">
-        <h3 class="shadow-md rounded-md">New Arrival</h3>
-    </div>
-    <div class="products">
-        <ul>
-            <!--Item 1-->
-            <li>
-                <div class="image">
-                    <img src="../../../assets/item-one-min.png" alt="item-image">
+<section>
+    <div class="new-arrival">
+        <div class="products">
+            <div class="new-arrival-header">
+                <h3>New Arrival</h3>
+                <div>
+                    <button>Men</button>
+                    <button>Women</button>
+                    <button>Kids</button>
                 </div>
-                <div class="price-ratings">
-                    <div class="price">
-                        <p>Price <span>:</span> <span>$200</span></p>
+            </div>
+            <ul>
+                <li *ngFor="let product of newArrival">
+                    <div class="product-image">
+                        <img [src]="product.productUrl" [alt]="product.productName">
                     </div>
                     <div class="ratings">
-                        <!--1-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="start -icon">
-                                <path id="Vector"
-                                    d="M4.325 19L5.95 11.975L0.5 7.25L7.7 6.625L10.5 0L13.3 6.625L20.5 7.25L15.05 11.975L16.675 19L10.5 15.275L4.325 19Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-                        <!--2-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="start -icon">
-                                <path id="Vector"
-                                    d="M4.325 19L5.95 11.975L0.5 7.25L7.7 6.625L10.5 0L13.3 6.625L20.5 7.25L15.05 11.975L16.675 19L10.5 15.275L4.325 19Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-                        <!--3-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="start -icon">
-                                <path id="Vector"
-                                    d="M4.325 19L5.95 11.975L0.5 7.25L7.7 6.625L10.5 0L13.3 6.625L20.5 7.25L15.05 11.975L16.675 19L10.5 15.275L4.325 19Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-                        <!--4-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="start -icon">
-                                <path id="Vector"
-                                    d="M4.325 19L5.95 11.975L0.5 7.25L7.7 6.625L10.5 0L13.3 6.625L20.5 7.25L15.05 11.975L16.675 19L10.5 15.275L4.325 19Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-
-                        <!--5-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="half-star">
-                                <path id="Vector"
-                                    d="M20.5 7.24L13.31 6.62L10.5 0L7.69 6.63L0.5 7.24L5.96 11.97L4.32 19L10.5 15.27L16.68 19L15.05 11.97L20.5 7.24ZM10.5 13.4V4.1L12.21 8.14L16.59 8.52L13.27 11.4L14.27 15.68L10.5 13.4Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-
+                        <div class="start-rating">
+                            <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+                            <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+                            <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+                            <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+                            <fa-icon style="color: #F79522;" [icon]="haflIcon"></fa-icon>
+                        </div>
+                        <p>{{getProductReviewAverage(product) || 0}} of 5 ({{product.reviews?.length || 0}} Reviews )
+                        </p>
                     </div>
-                </div>
-                <div class="item-desc">
-                    <h3>Consectetur Adipisicing Elit.</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus repellendus cupiditate facilis,
-                        aliquam deleniti quod vitae optio provident eaque quo.</p>
-                </div>
-                <div class="actions">
-                    <a [routerLink]="['/product-details/1']" class="view">view</a>
-                    <button class="add-cart">add to cart</button>
-                </div>
-            </li>
-            <!--Item 2-->
-            <li>
-                <div class="image">
-                    <img src="../../../assets/item-2-min.png" alt="item-image">
-                </div>
-                <div class="price-ratings">
-                    <div class="price">
-                        <p>Price <span>:</span> <span>$200</span></p>
+                    <h2>{{product.price | currency}}</h2>
+                    <h3>{{product.productName}}</h3>
+                    <div class="actions">
+                        <button [routerLink]="['/product-details',product.id]" routerLinkActive="router-link-active"
+                            class="view">view</button>
+                        <button class="add-cart">add to cart</button>
                     </div>
-                    <div class="ratings">
-                        <!--1-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="start -icon">
-                                <path id="Vector"
-                                    d="M4.325 19L5.95 11.975L0.5 7.25L7.7 6.625L10.5 0L13.3 6.625L20.5 7.25L15.05 11.975L16.675 19L10.5 15.275L4.325 19Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-                        <!--2-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="start -icon">
-                                <path id="Vector"
-                                    d="M4.325 19L5.95 11.975L0.5 7.25L7.7 6.625L10.5 0L13.3 6.625L20.5 7.25L15.05 11.975L16.675 19L10.5 15.275L4.325 19Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-                        <!--3-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="start -icon">
-                                <path id="Vector"
-                                    d="M4.325 19L5.95 11.975L0.5 7.25L7.7 6.625L10.5 0L13.3 6.625L20.5 7.25L15.05 11.975L16.675 19L10.5 15.275L4.325 19Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-                        <!--4-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="start -icon">
-                                <path id="Vector"
-                                    d="M4.325 19L5.95 11.975L0.5 7.25L7.7 6.625L10.5 0L13.3 6.625L20.5 7.25L15.05 11.975L16.675 19L10.5 15.275L4.325 19Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
+                </li>
 
-                        <!--5-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="half-star">
-                                <path id="Vector"
-                                    d="M20.5 7.24L13.31 6.62L10.5 0L7.69 6.63L0.5 7.24L5.96 11.97L4.32 19L10.5 15.27L16.68 19L15.05 11.97L20.5 7.24ZM10.5 13.4V4.1L12.21 8.14L16.59 8.52L13.27 11.4L14.27 15.68L10.5 13.4Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-
-                    </div>
+                <div class="pagination">
+                    <button class="prev">PREV</button>
+                    <h4>1</h4>
+                    <button class="next">NEXT</button>
                 </div>
-                <div class="item-desc">
-                    <h3>Consectetur Adipisicing Elit.</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus repellendus cupiditate facilis,
-                        aliquam deleniti quod vitae optio provident eaque quo.</p>
-                </div>
-                <div class="actions">
-                    <a [routerLink]="['/product-details/1']" class="view">view</a>
-                    <button class="add-cart">add to cart</button>
-                </div>
-            </li>
-            <!--Item 3-->
-            <li>
-                <div class="image">
-                    <img src="../../../assets/item-three-min.png" alt="item-image">
-                </div>
-                <div class="price-ratings">
-                    <div class="price">
-                        <p>Price <span>:</span> <span>$200</span></p>
-                    </div>
-                    <div class="ratings">
-                        <!--1-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="start -icon">
-                                <path id="Vector"
-                                    d="M4.325 19L5.95 11.975L0.5 7.25L7.7 6.625L10.5 0L13.3 6.625L20.5 7.25L15.05 11.975L16.675 19L10.5 15.275L4.325 19Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-                        <!--2-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="start -icon">
-                                <path id="Vector"
-                                    d="M4.325 19L5.95 11.975L0.5 7.25L7.7 6.625L10.5 0L13.3 6.625L20.5 7.25L15.05 11.975L16.675 19L10.5 15.275L4.325 19Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-                        <!--3-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="start -icon">
-                                <path id="Vector"
-                                    d="M4.325 19L5.95 11.975L0.5 7.25L7.7 6.625L10.5 0L13.3 6.625L20.5 7.25L15.05 11.975L16.675 19L10.5 15.275L4.325 19Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-                        <!--4-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="start -icon">
-                                <path id="Vector"
-                                    d="M4.325 19L5.95 11.975L0.5 7.25L7.7 6.625L10.5 0L13.3 6.625L20.5 7.25L15.05 11.975L16.675 19L10.5 15.275L4.325 19Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-
-                        <!--5-->
-                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="half-star">
-                                <path id="Vector"
-                                    d="M20.5 7.24L13.31 6.62L10.5 0L7.69 6.63L0.5 7.24L5.96 11.97L4.32 19L10.5 15.27L16.68 19L15.05 11.97L20.5 7.24ZM10.5 13.4V4.1L12.21 8.14L16.59 8.52L13.27 11.4L14.27 15.68L10.5 13.4Z"
-                                    fill="#F79522" />
-                            </g>
-                        </svg>
-
-                    </div>
-                </div>
-                <div class="item-desc">
-                    <h3>Consectetur Adipisicing Elit.</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus repellendus cupiditate facilis,
-                        aliquam deleniti quod vitae optio provident eaque quo.</p>
-                </div>
-                <div class="actions">
-                    <a [routerLink]="['/product-details/1']" class="view">view</a>
-                    <button class="add-cart">add to cart</button>
-                </div>
-            </li>
-        </ul>
-
-        <div class="pagination shadow-md rounded-xl">
-            <button class="shadow-md rounded">PREV</button>
-            <p>1</p>
-            <button class="shadow-md rounded">NEXT</button>
+            </ul>
         </div>
-
+        <div class="top-rated">
+            <h1>RECENTLY UPDATED</h1>
+            <table>
+                <tbody>
+                    <tr *ngFor="let product of recentlyUpdated; let order = index">
+                        <td class="relative">
+                            <img [src]="product.productUrl" [alt]="product.productName">
+                        </td>
+                        <td>{{product.productName}}</td>
+                        <td>
+                            <strong>{{product.rating}}</strong>
+                        </td>
+                        <td>{{product.price |currency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="flex space-x-4 p-4 items-center">
+                <button
+                    class="shadow-md rounded font-bold bg-[#fff] px-4 py-2 ring-1 ring-green-900 hover:bg-[seagreen] hover:text-[#fff] hover:ring-0">PREV</button>
+                <p class="text-[1.2rem]">1</p>
+                <button
+                    class="shadow-md rounded font-bold bg-[#fff] px-4 py-2 ring-1 ring-green-900 hover:bg-[seagreen] hover:text-[#fff] hover:ring-0">NEXT</button>
+            </div>
+        </div>
     </div>
-</div>
+</section>

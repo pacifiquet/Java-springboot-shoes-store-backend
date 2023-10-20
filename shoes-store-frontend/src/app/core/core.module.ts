@@ -12,6 +12,9 @@ import { SignupComponent } from './signup/signup.component';
 import { CartComponent } from './cart/cart.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ReviewStarsComponent } from '../review-stars/review-stars.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +29,10 @@ import { NotificationsComponent } from './notifications/notifications.component'
     CartComponent,
     ProductDetailsComponent,
     NotificationsComponent,
+    ResetPasswordComponent,
+    ReviewStarsComponent,
   ],
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, FontAwesomeModule, RouterModule],
   exports: [
     HeaderComponent,
     HeroComponent,
@@ -40,6 +45,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
     CartComponent,
     ProductDetailsComponent,
     NotificationsComponent,
+    ResetPasswordComponent,
   ],
 })
 export class CoreModule {}

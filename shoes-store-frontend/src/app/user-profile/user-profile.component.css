@@ -129,6 +129,8 @@ form label {
 
 input{
     padding:1rem 2rem;
+    box-shadow: 0 0 0.5rem rgba(0, 0,0, 0.6);
+    border-radius: 0.5rem;
 }
 
 input:focus{

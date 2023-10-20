@@ -15,9 +15,20 @@
             <form>
                 <input class="shadow-md rounded-md" type="text" placeholder="Email">
                 <input class="shadow-md rounded-md" type="password" placeholder="Password">
-                <button class="shadow-lg" type="button">submit</button>
+                <input class="shadow-lg" type="button" value="submit" />
             </form>
-            <p>Not Registered? <strong (click)="showRegistersModal()">Register</strong></p>
+            <div class="actions">
+                <p (click)="showRegistersModal()" class="flex items-center justify-center cursor-pointer"> Sign up for a
+                    new account
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M14 16.94v-4H5.08l-.03-2.01H14V6.94l5 5Z" />
+                    </svg>
+                </p>
+                <p (click)="showResetModal()" class="flex items-center justify-center cursor-pointer">Forgot your
+                    Password? <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M14 16.94v-4H5.08l-.03-2.01H14V6.94l5 5Z" />
+                    </svg></p>
+            </div>
         </div>
     </div>
 </div>
