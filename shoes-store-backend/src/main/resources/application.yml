@@ -1,0 +1,71 @@
+spring:
+  profiles:
+    active: dev
+logging:
+  level:
+    org:
+    springframework:
+    security:
+      DEBUG
+springdoc:
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+application:
+  front-end-url: http://localhost:4200
+  front-end-url-nginx: http://localhost
+  authentication-key:
+    internal-api-key: springbootbackendapplicationsecretinternalkey1234
+
+  jwt-security-key:
+    jwt:
+      secret-key: 2D4A614E645267556B58703272357538782F413F4428472B4B6250655368566D
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
+
+
+---
+
+spring:
+  datasource:
+    username: pacifique
+    password: pacifique
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/storedb
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  config:
+    activate:
+      on-profile: dev
+
+---
+spring:
+  datasource:
+    username: pacifique
+    password: pacifique
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/testStoredb
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  config:
+    activate:
+      on-profile: test
+
+jwt:
+  testing-config-auth-token:
+    secret-key: 2D4A614E645267556B58703272357538782F413F4428472B4B6250655368566D
+    internal-api-key: springbootbackendapplicationsecretinternalkey1234
+    token-prefix: Bearer
