@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -16,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Builder
-public class UserDetailsService implements UserDetails {
+public class CustomerUserDetailsService implements UserDetails {
     private final long id;
     private final String email;
     private final String firstName;
@@ -26,7 +25,7 @@ public class UserDetailsService implements UserDetails {
 
     public static UserDetails build(User user) {
         Set<GrantedAuthority> grantedAuthorities = Set.of(SecurityUtils.convertToAuthority(user.getRole()));
-        return new UserDetailsService(
+        return new CustomerUserDetailsService(
                 user.getId(),
                 user.getEmail(),
                 user.getFirstName(),
@@ -38,7 +37,7 @@ public class UserDetailsService implements UserDetails {
 
     public static UserDetails createSuperUser() {
         Set<GrantedAuthority> authorities = Set.of(SecurityUtils.convertToAuthority(Role.SYSTEM_ADMIN));
-        return UserDetailsService.builder()
+        return CustomerUserDetailsService.builder()
                 .id(-1L)
                 .firstName("user")
                 .lastName("system-admin")

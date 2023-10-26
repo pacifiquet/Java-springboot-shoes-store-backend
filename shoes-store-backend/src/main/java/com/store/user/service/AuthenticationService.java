@@ -8,7 +8,7 @@ import com.store.user.dto.MessageResponse;
 import com.store.user.models.Role;
 import com.store.user.models.User;
 import com.store.user.repository.IUserRepository;
-import com.store.user.security.UserDetailsService;
+import com.store.user.security.CustomerUserDetailsService;
 import com.store.user.security.jwt.IJwtService;
 import com.store.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,7 +50,7 @@ public class AuthenticationService implements IAuthenticationService {
         }
 
         User user = userRepository.findByEmail(request.email()).orElseThrow(() -> new UsernameNotFoundException("user not found"));
-        UserDetails userDetails =  UserDetailsService.build(user);
+        UserDetails userDetails =  CustomerUserDetailsService.build(user);
 
 
         String token = jwtService.generateToken(userDetails);

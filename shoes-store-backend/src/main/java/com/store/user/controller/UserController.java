@@ -4,7 +4,7 @@ import com.store.user.dto.MessageResponse;
 import com.store.user.dto.RegisterUserRequest;
 import com.store.user.dto.UpdateUserRequest;
 import com.store.user.dto.UserResponse;
-import com.store.user.security.UserDetailsService;
+import com.store.user.security.CustomerUserDetailsService;
 import com.store.user.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -53,8 +52,8 @@ public class UserController {
      */
     @GetMapping("/{id}")
     @Operation(summary = "get user by id")
-    ResponseEntity<UserResponse> getUserByID(@PathVariable long id, @AuthenticationPrincipal UserDetailsService userDetailsService) {
-        return ResponseEntity.ok(userService.getUserById(id,userDetailsService));
+    ResponseEntity<UserResponse> getUserByID(@PathVariable long id, @AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService) {
+        return ResponseEntity.ok(userService.getUserById(id, customerUserDetailsService));
     }
 
     /**
@@ -78,8 +77,8 @@ public class UserController {
      */
     @PutMapping("/{id}")
     @Operation(summary = "updating user account")
-    ResponseEntity<MessageResponse> updateUser(@PathVariable long id, @Validated @RequestBody UpdateUserRequest request, @AuthenticationPrincipal UserDetailsService userDetailsService) {
-        return ResponseEntity.ok(userService.updateUser(id, request,userDetailsService));
+    ResponseEntity<MessageResponse> updateUser(@PathVariable long id, @Validated @RequestBody UpdateUserRequest request, @AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService) {
+        return ResponseEntity.ok(userService.updateUser(id, request, customerUserDetailsService));
     }
 
     /**
@@ -90,8 +89,8 @@ public class UserController {
      */
     @DeleteMapping("/{id}")
     @Operation(summary = "deleting user account")
-    ResponseEntity<MessageResponse> deleteUser(@PathVariable long id,@AuthenticationPrincipal UserDetailsService userDetailsService) {
-        return ResponseEntity.ok(userService.deleteUser(id,userDetailsService));
+    ResponseEntity<MessageResponse> deleteUser(@PathVariable long id,@AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService) {
+        return ResponseEntity.ok(userService.deleteUser(id, customerUserDetailsService));
     }
 
 }

@@ -7,7 +7,7 @@ import com.store.user.dto.UserResponse;
 import com.store.user.models.Role;
 import com.store.user.models.User;
 import com.store.user.repository.IUserRepository;
-import com.store.user.security.UserDetailsService;
+import com.store.user.security.CustomerUserDetailsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -104,9 +104,9 @@ class UserServiceTest {
     @DisplayName("Testing get user by id with invalid id")
     void testGetUserByIdWithInvalidId() {
         // arrange
-        UserDetailsService userDetailsService = mock(UserDetailsService.class);
+        CustomerUserDetailsService customerUserDetailsService = mock(CustomerUserDetailsService.class);
         // assert
-        assertThrows(UserException.class,()-> userService.getUserById(2, userDetailsService));
+        assertThrows(UserException.class,()-> userService.getUserById(2, customerUserDetailsService));
     }
 
     @DisplayName("Test get user by id with valid id")
@@ -115,11 +115,11 @@ class UserServiceTest {
     void testGetUserByIdWithValid(long userId){
         // arrange
         var expected_user = userResponse;
-        UserDetailsService userDetailsService = mock(UserDetailsService.class);
+        CustomerUserDetailsService customerUserDetailsService = mock(CustomerUserDetailsService.class);
         when(IUserRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
-        when(userDetailsService.getId()).thenReturn(1L);
+        when(customerUserDetailsService.getId()).thenReturn(1L);
         // act
-        UserResponse response = userService.getUserById(userId, userDetailsService);
+        UserResponse response = userService.getUserById(userId, customerUserDetailsService);
         // assert
         assertEquals(expected_user.email(),response.email());
     }
@@ -129,12 +129,12 @@ class UserServiceTest {
     void updateUserWithLoggedInUser() {
         // arrange
         var expected_response = "successfully updated";
-        UserDetailsService userDetailsService = mock(UserDetailsService.class);
+        CustomerUserDetailsService customerUserDetailsService = mock(CustomerUserDetailsService.class);
         when(IUserRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         when(IUserRepository.save(any(User.class))).thenReturn(user);
-        when(userDetailsService.getId()).thenReturn(1L);
+        when(customerUserDetailsService.getId()).thenReturn(1L);
         // act
-        var response = userService.updateUser(1L, updateUserRequest, userDetailsService).message();
+        var response = userService.updateUser(1L, updateUserRequest, customerUserDetailsService).message();
         // assert
         assertEquals(expected_response,response);
     }
@@ -143,8 +143,8 @@ class UserServiceTest {
     @DisplayName("Testing updating invalid user")
     void updatingInvalidUser(){
         // arrange
-        UserDetailsService userDetailsService = mock(UserDetailsService.class);
-        assertThrows(UserException.class,()-> userService.updateUser(2,updateUserRequest, userDetailsService));
+        CustomerUserDetailsService customerUserDetailsService = mock(CustomerUserDetailsService.class);
+        assertThrows(UserException.class,()-> userService.updateUser(2,updateUserRequest, customerUserDetailsService));
     }
 
     @Test
@@ -152,12 +152,12 @@ class UserServiceTest {
     void testDeleteUserAsALoggedUser() {
         // arrange
         var expected_response = "successfully deleted";
-        UserDetailsService userDetailsService = mock(UserDetailsService.class);
+        CustomerUserDetailsService customerUserDetailsService = mock(CustomerUserDetailsService.class);
         when(IUserRepository.findById(anyLong())).thenReturn(Optional.of(user));
         doNothing().when(IUserRepository).delete(any(User.class));
-        when(userDetailsService.getId()).thenReturn(3L);
+        when(customerUserDetailsService.getId()).thenReturn(3L);
         // act
-        String response = userService.deleteUser(3L, userDetailsService).message();
+        String response = userService.deleteUser(3L, customerUserDetailsService).message();
         //assert
         assertEquals(expected_response,response);
 
@@ -169,7 +169,7 @@ class UserServiceTest {
     @DisplayName("Test deleting invalid user")
     void  deleteInvalidUser(){
         // arrange
-        UserDetailsService userDetailsService = mock(UserDetailsService.class);
-        assertThrows(UserException.class,()-> userService.deleteUser(2L, userDetailsService));
+        CustomerUserDetailsService customerUserDetailsService = mock(CustomerUserDetailsService.class);
+        assertThrows(UserException.class,()-> userService.deleteUser(2L, customerUserDetailsService));
     }
 }

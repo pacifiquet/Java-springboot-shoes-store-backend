@@ -6,7 +6,7 @@ import com.store.user.dto.MessageResponse;
 import com.store.user.dto.RegisterUserRequest;
 import com.store.user.dto.UpdateUserRequest;
 import com.store.user.dto.UserResponse;
-import com.store.user.security.UserDetailsService;
+import com.store.user.security.CustomerUserDetailsService;
 import com.store.user.service.IUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -107,7 +107,7 @@ class UserControllerTest {
     @DisplayName("Testing get user by Id")
     void testingGetUserById() throws Exception{
         var expected_response = userResponse;
-        when(userService.getUserById(anyLong(), any(UserDetailsService.class))).thenReturn(userResponse);
+        when(userService.getUserById(anyLong(), any(CustomerUserDetailsService.class))).thenReturn(userResponse);
         ResultActions response = this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON));
 
@@ -121,7 +121,7 @@ class UserControllerTest {
     @DisplayName("test updating user account")
     void  testUpdatingUser() throws Exception {
         var expected_response = messageResponse;
-        when(userService.updateUser(anyLong(),any(UpdateUserRequest.class), any(UserDetailsService.class))).thenReturn(messageResponse);
+        when(userService.updateUser(anyLong(),any(UpdateUserRequest.class), any(CustomerUserDetailsService.class))).thenReturn(messageResponse);
         ResultActions response = this.mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/users/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(updateUserRequestJacksonTester.write(updateUserRequest).getJson())
@@ -135,7 +135,7 @@ class UserControllerTest {
     @DisplayName("test deleting user account")
     void  testDeletingUser() throws Exception {
         var expected_response = messageResponse;
-        when(userService.deleteUser(anyLong(), any(UserDetailsService.class))).thenReturn(messageResponse);
+        when(userService.deleteUser(anyLong(), any(CustomerUserDetailsService.class))).thenReturn(messageResponse);
         ResultActions response = this.mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/users/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON));
         response.andExpect(status().isOk());

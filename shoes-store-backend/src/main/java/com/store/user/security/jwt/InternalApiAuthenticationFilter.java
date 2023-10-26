@@ -1,8 +1,7 @@
 package com.store.user.security.jwt;
 
 import com.store.config.StoreConfigProperties;
-import com.store.exceptions.UserException;
-import com.store.user.security.UserDetailsService;
+import com.store.user.security.CustomerUserDetailsService;
 import com.store.utils.SecurityUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -41,7 +40,7 @@ public class InternalApiAuthenticationFilter extends OncePerRequestFilter {
             if (requestKey == null || !Objects.equals(requestKey, appProperties.getAuthenticationKey().getInternalApiKey())) {
                 log.warn("Internal key point requested with wrong key uri: {}", request.getRequestURI());
             }
-            UserDetails superUser = UserDetailsService.createSuperUser();
+            UserDetails superUser = CustomerUserDetailsService.createSuperUser();
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(superUser, null, superUser.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
 

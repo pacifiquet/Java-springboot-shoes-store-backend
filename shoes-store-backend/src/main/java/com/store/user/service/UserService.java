@@ -8,7 +8,7 @@ import com.store.user.dto.UserResponse;
 import com.store.user.models.Role;
 import com.store.user.models.User;
 import com.store.user.repository.IUserRepository;
-import com.store.user.security.UserDetailsService;
+import com.store.user.security.CustomerUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +22,7 @@ import java.util.function.Function;
 @AllArgsConstructor
 @Service
 public class UserService implements IUserService {
+    private static final String USER_NOT_FOUND = "user not found";
     private final IUserRepository iuserrepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -65,16 +66,16 @@ public class UserService implements IUserService {
     /**
      * this method handles user retrieve by id
      * @param userId  this userId is passed through url
-     * @param userDetailsService logged user is held in this object
+     * @param customerUserDetailsService logged user is held in this object
      * @return userResponse object from dto package
      */
     @Override
-    public UserResponse getUserById(long userId, UserDetailsService userDetailsService) {
-        if (userId != userDetailsService.getId()){
+    public UserResponse getUserById(long userId, CustomerUserDetailsService customerUserDetailsService) {
+        if (userId != customerUserDetailsService.getId()){
             throw  new UserException("ACCESS DENIED");
         }
 
-        User user = iuserrepository.findById(userId).orElseThrow(() -> new UserException("user not found"));
+        User user = iuserrepository.findById(userId).orElseThrow(() -> new UserException(USER_NOT_FOUND));
         return userResponseHandler().apply(user);
     }
 
@@ -83,16 +84,16 @@ public class UserService implements IUserService {
      *
      * @param id                 this id fetching the specific user
      * @param request            this request data
-     * @param userDetailsService this object holds a logged user object
+     * @param customerUserDetailsService this object holds a logged user object
      * @return a message if update is successful
      */
     @Override
-    public MessageResponse updateUser(long id, UpdateUserRequest request, UserDetailsService userDetailsService) {
-        if (id != userDetailsService.getId()){
+    public MessageResponse updateUser(long id, UpdateUserRequest request, CustomerUserDetailsService customerUserDetailsService) {
+        if (id != customerUserDetailsService.getId()){
             throw new UserException("INVALID ACCESS");
         }
 
-        User user = iuserrepository.findById(id).orElseThrow(() -> new UserException("user not found"));
+        User user = iuserrepository.findById(id).orElseThrow(() -> new UserException(USER_NOT_FOUND));
         user.setFirstName(request.firstName());
         user.setLastName(request.lastName());
         iuserrepository.save(user);
@@ -102,16 +103,16 @@ public class UserService implements IUserService {
     /**
      * this method handles the deletion of user
      * @param id an id to identify a user
-     * @param userDetailsService this object holds a logged user object
+     * @param customerUserDetailsService this object holds a logged user object
      * @return a message if a user is found and deleted successful
      */
     @Override
-    public MessageResponse deleteUser(long id, UserDetailsService userDetailsService) {
-        if (id != userDetailsService.getId()){
+    public MessageResponse deleteUser(long id, CustomerUserDetailsService customerUserDetailsService) {
+        if (id != customerUserDetailsService.getId()){
             throw new UserException("INVALID ACCESS");
         }
 
-        User user = iuserrepository.findById(id).orElseThrow(() -> new UserException("user not found"));
+        User user = iuserrepository.findById(id).orElseThrow(() -> new UserException(USER_NOT_FOUND));
         iuserrepository.delete(user);
         return MessageResponse.builder().message("successfully deleted").build();
 
