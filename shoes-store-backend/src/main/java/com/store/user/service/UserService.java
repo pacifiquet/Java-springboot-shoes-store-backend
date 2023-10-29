@@ -1,5 +1,6 @@
 package com.store.user.service;
 
+import com.store.events.RegistrationCompleteEvent;
 import com.store.exceptions.UserException;
 import com.store.user.dto.MessageResponse;
 import com.store.user.dto.RegisterUserRequest;
@@ -9,7 +10,9 @@ import com.store.user.models.Role;
 import com.store.user.models.User;
 import com.store.user.repository.IUserRepository;
 import com.store.user.security.CustomerUserDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,21 +22,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static com.store.user.utils.Constants.USER_NOT_FOUND;
+
 @AllArgsConstructor
 @Service
 public class UserService implements IUserService {
-    private static final String USER_NOT_FOUND = "user not found";
     private final IUserRepository iuserrepository;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher publisher;
 
     /**
      * this method handles the creation and save user to the database
      *
-     * @param request this request is an object of RegisterUserRequest from dto package
+     * @param request        this request is an object of RegisterUserRequest from dto package
+     * @param servletRequest this http request that will help to get the application url
      * @return a Long value as in the ID of the user
      */
     @Override
-    public long registerUser(RegisterUserRequest request) {
+    public long registerUser(RegisterUserRequest request, HttpServletRequest servletRequest) {
         Optional<User> existUser = iuserrepository.findByEmail(request.email());
 
         if (existUser.isPresent()){
@@ -46,8 +52,10 @@ public class UserService implements IUserService {
                 .lastName(request.lastName())
                 .password(passwordEncoder.encode(request.password()))
                 .role(Role.USER)
+                .enabled(false)
                 .createdAt(LocalDateTime.now())
                 .build());
+        publisher.publishEvent(new RegistrationCompleteEvent(user,servletRequest));
         return user.getId();
     }
 

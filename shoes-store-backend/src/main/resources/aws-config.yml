@@ -1,0 +1,8 @@
+cloud:
+  aws:
+    access-key: AKIAT7WPJ6YGAJRXT2NH
+    secret-key: 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
+    region: ap-southeast-1
+    bucket-name: book-app-demo-storage
+    bucket-url-secret: bucket-file-url
+    sender-grid-secret-name: email-sender-api-key

@@ -8,7 +8,9 @@ import com.store.user.security.CustomerUserDetailsService;
 import com.store.user.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +33,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequestMapping("/api/v1/users")
 public class UserController {
     private final IUserService userService;
-
     /**
      * this endpoint handles a lists of users from a database
      *
@@ -64,8 +65,8 @@ public class UserController {
      */
     @PostMapping
     @Operation(summary = "user registration")
-    ResponseEntity<Long> registerUser(@Validated @RequestBody RegisterUserRequest request) {
-        return ResponseEntity.status(CREATED).body(userService.registerUser(request));
+    ResponseEntity<Long> registerUser(@Validated @RequestBody RegisterUserRequest request, final HttpServletRequest servletRequest) {
+        return ResponseEntity.status(CREATED).body(userService.registerUser(request,servletRequest));
     }
 
     /**

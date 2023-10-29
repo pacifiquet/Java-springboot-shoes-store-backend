@@ -10,7 +10,7 @@ import com.store.user.models.User;
 import com.store.user.repository.IUserRepository;
 import com.store.user.security.CustomerUserDetailsService;
 import com.store.user.security.jwt.IJwtService;
-import com.store.utils.SecurityUtils;
+import com.store.user.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

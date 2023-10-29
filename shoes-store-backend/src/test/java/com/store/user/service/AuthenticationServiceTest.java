@@ -24,9 +24,9 @@ import org.springframework.test.context.ActiveProfiles;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -60,12 +60,12 @@ class AuthenticationServiceTest {
                 .createdAt(LocalDateTime.now())
                 .role(Role.USER)
                 .build();
-        loginRequest = LoginRequest.builder().email("user@gmail.com").password("pass1234").build();
+        loginRequest = new LoginRequest("user@gmail.com","pass1234");
     }
 
     @Test
     @DisplayName("Test Login user success")
-    void testLoginSuccess() {
+    public void testLoginSuccess() {
         // arrange
         Authentication authentication = mock(Authentication.class);
         when(authentication.isAuthenticated()).thenReturn(true);

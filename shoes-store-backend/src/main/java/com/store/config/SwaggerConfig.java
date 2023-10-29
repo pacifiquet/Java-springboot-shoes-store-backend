@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
                 title = " E-COMMERCE APPLICATION DOCS",
                 version = "1.0",
                 license = @License(name = "Licence name", url = ""),
-                termsOfService = "Terms of service"
+                termsOfService = "Terms of awsService"
         ), servers = {},
         security = {@SecurityRequirement(name = "bearerAuth")})
 @SecurityScheme(

@@ -19,16 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/auth")
 @Tag(name = "Authentication Controller")
-public class AuthenticationController {
-    private final IAuthenticationService authenticationService;
-
-    public AuthenticationController(IAuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
+public record AuthenticationController(IAuthenticationService authenticationService) {
 
     @PostMapping
     @Operation(summary = "Login user endpoint")
     ResponseEntity<LoginResponse> authenticate(@Validated @RequestBody LoginRequest request) {
+        System.out.println(request.password() +" "+request.email());
         return ResponseEntity.ok(authenticationService.login(request));
     }
 

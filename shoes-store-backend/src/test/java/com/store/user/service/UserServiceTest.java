@@ -8,6 +8,7 @@ import com.store.user.models.Role;
 import com.store.user.models.User;
 import com.store.user.repository.IUserRepository;
 import com.store.user.security.CustomerUserDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -41,6 +44,8 @@ class UserServiceTest {
     private IUserRepository IUserRepository;
     @Mock
     PasswordEncoder passwordEncoder;
+    @Mock
+    ApplicationEventPublisher publisher;
     @InjectMocks
     private UserService userService;
     private RegisterUserRequest userRequest;
@@ -82,9 +87,11 @@ class UserServiceTest {
     void registerUser() {
         // arrange
         var expected_response = 1;
+        doNothing().when(publisher).publishEvent(any(ApplicationEvent.class));
+        HttpServletRequest servletRequest = mock(HttpServletRequest.class);
         when(IUserRepository.save(any(User.class))).thenReturn(user);
         // act
-        var response = userService.registerUser(userRequest);
+        var response = userService.registerUser(userRequest, servletRequest);
         // assert
         assertEquals(expected_response,response);
     }

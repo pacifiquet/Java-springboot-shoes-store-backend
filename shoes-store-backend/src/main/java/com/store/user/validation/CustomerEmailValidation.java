@@ -1,12 +1,13 @@
-package com.store.validation;
+package com.store.user.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.regex.Pattern;
 
+import static com.store.user.utils.Constants.EMAIL_REGEX;
+
 public class CustomerEmailValidation implements ConstraintValidator<ValidEmail,String> {
-    private static final String EMAIL_PATTERN = "^(?i)[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
     @Override
     public void initialize(ValidEmail constraintAnnotation) {
@@ -19,6 +20,6 @@ public class CustomerEmailValidation implements ConstraintValidator<ValidEmail,S
     }
 
     private boolean validEmail(String email) {
-        return Pattern.compile(EMAIL_PATTERN).matcher(email).matches();
+        return Pattern.compile(EMAIL_REGEX).matcher(email).matches();
     }
 }

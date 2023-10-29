@@ -4,7 +4,6 @@ package com.store.user.security;
 import com.store.user.models.Role;
 import com.store.user.security.jwt.InternalApiAuthenticationFilter;
 import com.store.user.security.jwt.JwtAuthenticationFilter;
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -15,30 +14,18 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
+import static com.store.user.utils.Constants.WHITE_LIST_PATH;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 @Component
 @EnableWebSecurity
-@AllArgsConstructor
-public class WebSecurityConfig {
-    private final AuthenticationProvider authenticationProvider;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final InternalApiAuthenticationFilter internalApiAuthenticationFilter;
-    private static final String[] WHITE_LIST_PATH = {
-            "/api/v1/auth/**",
-            "/v2/api-docs",
-            "/v3/api-docs",
-            "/v3/api-docs/**",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui/**",
-            "/webjars/**",
-            "/swagger-ui.html",
-            "/"
-    };
+public record WebSecurityConfig(
+        AuthenticationProvider authenticationProvider,
+        JwtAuthenticationFilter jwtAuthenticationFilter,
+        InternalApiAuthenticationFilter internalApiAuthenticationFilter
+) {
+
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {

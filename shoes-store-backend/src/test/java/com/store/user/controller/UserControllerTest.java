@@ -8,6 +8,7 @@ import com.store.user.dto.UpdateUserRequest;
 import com.store.user.dto.UserResponse;
 import com.store.user.security.CustomerUserDetailsService;
 import com.store.user.service.IUserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -82,7 +84,7 @@ class UserControllerTest {
     @DisplayName("Testing registering user endpoint")
     void testRegisterUser() throws Exception {
         // arrange
-        when(userService.registerUser(any(RegisterUserRequest.class))).thenReturn(1L);
+        when(userService.registerUser(any(RegisterUserRequest.class), any(HttpServletRequest.class))).thenReturn(1L);
         // act
         ResultActions resultActions = this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON).content(requestJacksonTester.write(registerUserRequest).getJson()));

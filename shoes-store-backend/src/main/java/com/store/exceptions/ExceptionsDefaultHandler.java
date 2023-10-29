@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +18,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @RestControllerAdvice
 public class ExceptionsDefaultHandler {
-    @ExceptionHandler({UserException.class, UsernameNotFoundException.class})
+    @ExceptionHandler({UserException.class, UsernameNotFoundException.class, DisabledException.class})
     ResponseEntity<ApiErrorMessage> handleExceptionMessage(HttpServletRequest request, Exception exception) {
         ApiErrorMessage apiErrorMessage = new ApiErrorMessage(
                 request.getRequestURI(),

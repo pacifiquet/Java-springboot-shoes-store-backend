@@ -2,7 +2,7 @@ package com.store.user.security;
 
 import com.store.user.models.Role;
 import com.store.user.models.User;
-import com.store.utils.SecurityUtils;
+import com.store.user.utils.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +21,7 @@ public class CustomerUserDetailsService implements UserDetails {
     private final String firstName;
     private final String lastName;
     private final String password;
+    private final boolean enabled;
     private Set<GrantedAuthority> authorities;
 
     public static UserDetails build(User user) {
@@ -31,6 +32,7 @@ public class CustomerUserDetailsService implements UserDetails {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPassword(),
+                user.isEnabled(),
                 grantedAuthorities
         );
     }
@@ -80,6 +82,6 @@ public class CustomerUserDetailsService implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 }

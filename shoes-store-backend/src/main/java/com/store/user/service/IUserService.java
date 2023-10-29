@@ -5,11 +5,12 @@ import com.store.user.dto.RegisterUserRequest;
 import com.store.user.dto.UpdateUserRequest;
 import com.store.user.dto.UserResponse;
 import com.store.user.security.CustomerUserDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
 public interface IUserService {
-    long registerUser(RegisterUserRequest request);
+    long registerUser(RegisterUserRequest request, HttpServletRequest servletRequest);
 
     UserResponse getUserById(long id, CustomerUserDetailsService customerUserDetailsService);
 

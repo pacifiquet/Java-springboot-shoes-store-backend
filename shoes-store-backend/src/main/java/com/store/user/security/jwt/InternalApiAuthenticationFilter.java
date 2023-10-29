@@ -2,7 +2,7 @@ package com.store.user.security.jwt;
 
 import com.store.config.StoreConfigProperties;
 import com.store.user.security.CustomerUserDetailsService;
-import com.store.utils.SecurityUtils;
+import com.store.user.utils.SecurityUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
