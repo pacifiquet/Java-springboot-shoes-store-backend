@@ -17,13 +17,13 @@ import java.util.Map;
 public record UserVerificationController(IVerificationTokenService verificationTokenService) {
     @GetMapping("/verifyRegistration")
     @Operation(summary = "verify registered user")
-    ResponseEntity<Map<String,String>> verifyUser(@RequestParam(value = "token")String token){
-       return ResponseEntity.ok( verificationTokenService.validateVerificationToken(token));
+    ResponseEntity<Map<String, String>> verifyUser(@RequestParam(value = "token") String token) {
+        return ResponseEntity.ok(verificationTokenService.validateVerificationToken(token));
     }
 
     @GetMapping("/requestNewToken")
     @Operation(summary = " request a new token for verification")
-    ResponseEntity<Map<String,String>> resendToken(@RequestParam(value = "oldToken") String oldToken){
+    ResponseEntity<Map<String, String>> resendToken(@RequestParam(value = "oldToken") String oldToken) {
         return ResponseEntity.ok(verificationTokenService.requestNewToken(oldToken));
     }
 }

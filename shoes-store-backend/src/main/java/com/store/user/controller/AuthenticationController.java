@@ -24,13 +24,13 @@ public record AuthenticationController(IAuthenticationService authenticationServ
     @PostMapping
     @Operation(summary = "Login user endpoint")
     ResponseEntity<LoginResponse> authenticate(@Validated @RequestBody LoginRequest request) {
-        System.out.println(request.password() +" "+request.email());
+        System.out.println(request.password() + " " + request.email());
         return ResponseEntity.ok(authenticationService.login(request));
     }
 
     @GetMapping("/internal")
     @Operation(summary = "update user role to admin role")
-    ResponseEntity<MessageResponse> makeAdmin(@Validated @RequestParam String email){
+    ResponseEntity<MessageResponse> makeAdmin(@Validated @RequestParam String email) {
         return ResponseEntity.ok(authenticationService.makeAdmin(email));
     }
 }

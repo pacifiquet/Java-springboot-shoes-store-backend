@@ -6,7 +6,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<!--    <link th:href="@{../styles/verification-email.css}" href="../styles/verification-email.css" rel="stylesheet" type="text/css" media="all">-->
     <style>
         html,
         *,
@@ -62,12 +61,18 @@
        <div class="email-header">
            <h1>Hello, <span th:text="${recipientName}"></span></h1>
        </div>
-       <div class="email-action">
-           <p>Click the following link to verify your account:</p>
-           <a th:href="@{${verificationLink}}">Verify Account</a>
+       <div class="email-action" th:switch="${purpose}">
+           <div th:case="register">
+               <p>Click the following link to verify your account:</p>
+               <a th:href="@{${link}}">Verify Account</a>
+           </div>
+           <div th:case="reset">
+               <p>Click the following link to rest your password:</p>
+               <a th:href="@{${link}}">Reset Password</a>
+           </div>
        </div>
        <p>or use the link below</p>
-       <span th:text="@{${verificationLink}}"></span>
+       <span th:text="@{${link}}"></span>
    </div>
 </div>
 </body>

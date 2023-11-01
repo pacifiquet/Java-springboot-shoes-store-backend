@@ -1,8 +1,6 @@
 package com.store.user.controller;
 
-import com.store.user.dto.MessageResponse;
 import com.store.user.dto.RegisterUserRequest;
-import com.store.user.dto.UpdateUserRequest;
 import com.store.user.dto.UserResponse;
 import com.store.user.security.CustomerUserDetailsService;
 import com.store.user.service.IUserService;
@@ -10,7 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -21,9 +19,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -33,6 +35,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequestMapping("/api/v1/users")
 public class UserController {
     private final IUserService userService;
+
     /**
      * this endpoint handles a lists of users from a database
      *
@@ -53,7 +56,7 @@ public class UserController {
      */
     @GetMapping("/{id}")
     @Operation(summary = "get user by id")
-    ResponseEntity<UserResponse> getUserByID(@PathVariable long id, @AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService) {
+    ResponseEntity<UserResponse> getUserByID(@PathVariable(value = "id") long id, @AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService) {
         return ResponseEntity.ok(userService.getUserById(id, customerUserDetailsService));
     }
 
@@ -65,21 +68,27 @@ public class UserController {
      */
     @PostMapping
     @Operation(summary = "user registration")
-    ResponseEntity<Long> registerUser(@Validated @RequestBody RegisterUserRequest request, final HttpServletRequest servletRequest) {
-        return ResponseEntity.status(CREATED).body(userService.registerUser(request,servletRequest));
+    ResponseEntity<Map<String, String>> registerUser(@Validated @RequestBody RegisterUserRequest request, final HttpServletRequest servletRequest) {
+        return ResponseEntity.status(CREATED).body(userService.registerUser(request, servletRequest));
     }
 
     /**
      * this method handles user update request
      *
      * @param id      fetch the account to update
-     * @param request a request body
+     * @param profile user profile
      * @return a message after successful update
      */
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "updating user account")
-    ResponseEntity<MessageResponse> updateUser(@PathVariable long id, @Validated @RequestBody UpdateUserRequest request, @AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService) {
-        return ResponseEntity.ok(userService.updateUser(id, request, customerUserDetailsService));
+    ResponseEntity<Map<String, String>> updateUser(
+            @PathVariable long id,
+            @RequestParam Map<String, String> otherUserInfo,
+            @AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService,
+            @RequestPart(value = "profile", required = false) final MultipartFile profile) {
+        return ResponseEntity.ok(userService.updateUser(id, customerUserDetailsService, profile, otherUserInfo));
+
     }
 
     /**
@@ -90,7 +99,7 @@ public class UserController {
      */
     @DeleteMapping("/{id}")
     @Operation(summary = "deleting user account")
-    ResponseEntity<MessageResponse> deleteUser(@PathVariable long id,@AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService) {
+    ResponseEntity<Map<String, String>> deleteUser(@PathVariable long id, @AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService) {
         return ResponseEntity.ok(userService.deleteUser(id, customerUserDetailsService));
     }
 

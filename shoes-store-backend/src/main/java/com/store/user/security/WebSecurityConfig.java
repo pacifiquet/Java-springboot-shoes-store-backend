@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
-import static com.store.user.utils.Constants.WHITE_LIST_PATH;
+import static com.store.utils.Constants.WHITE_LIST_PATH;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -33,11 +33,10 @@ public record WebSecurityConfig(
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers(WHITE_LIST_PATH).permitAll()
-                                .requestMatchers(POST,"/api/v1/users").permitAll()
-                                .requestMatchers(GET,"/api/v1/users").hasRole(Role.ADMIN.name())
-                                .requestMatchers("/api/v1/users/**").hasAnyRole(Role.USER.name(),Role.ADMIN.name())
-                                .anyRequest().authenticated()
-                )
+                                .requestMatchers(POST, "/api/v1/users").permitAll()
+                                .requestMatchers(GET, "/api/v1/users").hasRole(Role.ADMIN.name())
+                                .requestMatchers("/api/v1/users/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                                .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(internalApiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

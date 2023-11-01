@@ -58,6 +58,7 @@ class AuthenticationServiceTest {
                 .lastName("lastName")
                 .password(passwordEncoder.encode("pass1234"))
                 .createdAt(LocalDateTime.now())
+                .profile("profile url")
                 .role(Role.USER)
                 .build();
         loginRequest = new LoginRequest("user@gmail.com","pass1234");

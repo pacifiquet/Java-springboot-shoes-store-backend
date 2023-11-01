@@ -1,4 +1,4 @@
-package com.store.user.utils;
+package com.store.utils;
 
 import com.store.user.models.Role;
 import jakarta.servlet.http.HttpServletRequest;

@@ -5,9 +5,9 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.regex.Pattern;
 
-import static com.store.user.utils.Constants.EMAIL_REGEX;
+import static com.store.utils.Constants.EMAIL_REGEX;
 
-public class CustomerEmailValidation implements ConstraintValidator<ValidEmail,String> {
+public class CustomerEmailValidation implements ConstraintValidator<ValidEmail, String> {
 
     @Override
     public void initialize(ValidEmail constraintAnnotation) {

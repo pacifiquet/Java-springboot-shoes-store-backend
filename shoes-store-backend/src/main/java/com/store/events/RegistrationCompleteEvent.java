@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationEvent;
 public class RegistrationCompleteEvent extends ApplicationEvent {
     private final User user;
     private final HttpServletRequest servletRequest;
+
     public RegistrationCompleteEvent(User user, HttpServletRequest servletRequest) {
         super(user);
         this.user = user;

@@ -1,5 +1,7 @@
 package com.store.user.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.store.config.AwsConfigProperties;
 import com.store.exceptions.UserException;
 import com.store.user.dto.RegisterUserRequest;
 import com.store.user.dto.UpdateUserRequest;
@@ -26,12 +28,18 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import static com.store.utils.Constants.SUCCESS;
+import static com.store.utils.Constants.SUCCESSFULLY_DELETED;
+import static com.store.utils.Constants.SUCCESSFULLY_UPDATED;
+import static com.store.utils.Constants.VERIFY_ACCOUNT_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -43,9 +51,13 @@ class UserServiceTest {
     @Mock
     private IUserRepository IUserRepository;
     @Mock
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     @Mock
-    ApplicationEventPublisher publisher;
+    private AwsConfigProperties configProperties;
+    @Mock
+    private AmazonS3 s3Client;
+    @Mock
+    private ApplicationEventPublisher publisher;
     @InjectMocks
     private UserService userService;
     private RegisterUserRequest userRequest;
@@ -61,22 +73,24 @@ class UserServiceTest {
                  "pacifique",
                  "Twagirayesu",
                  "pass1233");
-        updateUserRequest = new UpdateUserRequest(
-                "user",
-                "lastname");
+
+        updateUserRequest = UpdateUserRequest.builder().lastName("lastName").firstName("firstName").build();;
         userResponse = new UserResponse(
                 1L,
                 "pacifique",
                 "Twagirayesu",
                 "user@gmail.com",
-                passwordEncoder.encode("pass123"),
-                Role.USER.name());
+                Role.USER.name(),
+                "pacifique_profile.png",
+                LocalDateTime.now().toString()
+        );
         user = User.builder()
                 .id(1L)
                 .email(userRequest.email())
                 .lastName(userRequest.lastName())
                 .firstName(userRequest.firstName())
                 .password(passwordEncoder.encode(userRequest.password()))
+                .profile("pacifique_profile.png")
                 .createdAt(LocalDateTime.now())
                 .role(Role.USER)
                 .build();
@@ -86,7 +100,7 @@ class UserServiceTest {
     @DisplayName("Testing registering a user")
     void registerUser() {
         // arrange
-        var expected_response = 1;
+        var expected_response = Map.of(SUCCESS,VERIFY_ACCOUNT_MESSAGE);
         doNothing().when(publisher).publishEvent(any(ApplicationEvent.class));
         HttpServletRequest servletRequest = mock(HttpServletRequest.class);
         when(IUserRepository.save(any(User.class))).thenReturn(user);
@@ -135,13 +149,13 @@ class UserServiceTest {
     @DisplayName("Testing updating user with logged user")
     void updateUserWithLoggedInUser() {
         // arrange
-        var expected_response = "successfully updated";
+        var expected_response = Map.of(SUCCESS,SUCCESSFULLY_UPDATED);
         CustomerUserDetailsService customerUserDetailsService = mock(CustomerUserDetailsService.class);
         when(IUserRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         when(IUserRepository.save(any(User.class))).thenReturn(user);
         when(customerUserDetailsService.getId()).thenReturn(1L);
         // act
-        var response = userService.updateUser(1L, updateUserRequest, customerUserDetailsService).message();
+        var response = userService.updateUser(1L, customerUserDetailsService, null, Map.of(updateUserRequest.firstName(),updateUserRequest.lastName()));
         // assert
         assertEquals(expected_response,response);
     }
@@ -151,26 +165,27 @@ class UserServiceTest {
     void updatingInvalidUser(){
         // arrange
         CustomerUserDetailsService customerUserDetailsService = mock(CustomerUserDetailsService.class);
-        assertThrows(UserException.class,()-> userService.updateUser(2,updateUserRequest, customerUserDetailsService));
+        assertThrows(UserException.class,()-> userService.updateUser(2, customerUserDetailsService, null,Map.of(updateUserRequest.firstName(),updateUserRequest.lastName())));
     }
 
     @Test
     @DisplayName("Test deleting user as logged in user")
     void testDeleteUserAsALoggedUser() {
         // arrange
-        var expected_response = "successfully deleted";
+        var expected_response = Map.of(SUCCESS,SUCCESSFULLY_DELETED);
         CustomerUserDetailsService customerUserDetailsService = mock(CustomerUserDetailsService.class);
+
+        when(configProperties.bucketName()).thenReturn("bucket");
         when(IUserRepository.findById(anyLong())).thenReturn(Optional.of(user));
         doNothing().when(IUserRepository).delete(any(User.class));
         when(customerUserDetailsService.getId()).thenReturn(3L);
+        doNothing().when(s3Client).deleteObject(anyString(),anyString());
         // act
-        String response = userService.deleteUser(3L, customerUserDetailsService).message();
+        var response = userService.deleteUser(3L, customerUserDetailsService);
         //assert
         assertEquals(expected_response,response);
 
     }
-
-
 
     @Test
     @DisplayName("Test deleting invalid user")

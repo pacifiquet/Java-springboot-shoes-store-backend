@@ -1,23 +1,23 @@
 package com.store.user.service;
 
-import com.store.user.dto.MessageResponse;
 import com.store.user.dto.RegisterUserRequest;
-import com.store.user.dto.UpdateUserRequest;
 import com.store.user.dto.UserResponse;
 import com.store.user.security.CustomerUserDetailsService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IUserService {
-    long registerUser(RegisterUserRequest request, HttpServletRequest servletRequest);
+    Map<String, String> registerUser(RegisterUserRequest request, HttpServletRequest servletRequest);
 
     UserResponse getUserById(long id, CustomerUserDetailsService customerUserDetailsService);
 
     List<UserResponse> getListUsers();
 
-    MessageResponse updateUser(long id, UpdateUserRequest request, CustomerUserDetailsService customerUserDetailsService);
+    Map<String, String> updateUser(long id, CustomerUserDetailsService customerUserDetailsService, MultipartFile profile, Map<String, String> otherUserInfo);
 
-    MessageResponse deleteUser(long id, CustomerUserDetailsService customerUserDetailsService);
+    Map<String, String> deleteUser(long id, CustomerUserDetailsService customerUserDetailsService);
 
 }

@@ -19,26 +19,26 @@ import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
-@Tag(name = "Password Controller")
+@Tag(name = "Password Reset and Forgot Controller")
 @RestController
 @RequestMapping("/api/v1/users/account/password")
 public record PasswordResetController(IPasswordResetTokenService passwordResetTokenService) {
 
     @GetMapping("/forgot")
     @Operation(summary = "Forgot Password Request")
-    ResponseEntity<Map<String,String>>forgotPassword(@RequestParam String email){
+    ResponseEntity<Map<String, String>> forgotPassword(@RequestParam String email) {
         return ResponseEntity.ok(passwordResetTokenService.resetPassword(email));
     }
 
     @PostMapping("/save")
     @Operation(summary = "Save Reset Password")
-    ResponseEntity<Map<String,String>> saveResetPassword(@RequestParam String token, @Validated @RequestBody PasswordRequest request){
+    ResponseEntity<Map<String, String>> saveResetPassword(@RequestParam String token, @Validated @RequestBody PasswordRequest request) {
         return ResponseEntity.status(CREATED).body(passwordResetTokenService.savePassword(token, request));
     }
 
     @PostMapping("/change")
     @Operation(summary = "Request Change Password")
-    ResponseEntity<Map<String,String>>changePassword(@Validated @RequestBody PasswordRequest request, @AuthenticationPrincipal CustomerUserDetailsService detailsService){
-        return ResponseEntity.status(CREATED).body(passwordResetTokenService.changePassword(request,detailsService));
+    ResponseEntity<Map<String, String>> changePassword(@Validated @RequestBody PasswordRequest request, @AuthenticationPrincipal CustomerUserDetailsService detailsService) {
+        return ResponseEntity.status(CREATED).body(passwordResetTokenService.changePassword(request, detailsService));
     }
 }

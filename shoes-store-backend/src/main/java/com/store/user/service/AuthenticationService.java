@@ -10,7 +10,7 @@ import com.store.user.models.User;
 import com.store.user.repository.IUserRepository;
 import com.store.user.security.CustomerUserDetailsService;
 import com.store.user.security.jwt.IJwtService;
-import com.store.user.utils.SecurityUtils;
+import com.store.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +37,7 @@ public class AuthenticationService implements IAuthenticationService {
 
     /**
      * this method handle user login functionality
+     *
      * @param request holds login credentials
      * @return login object response
      */
@@ -45,12 +46,12 @@ public class AuthenticationService implements IAuthenticationService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 
-        if (!authentication.isAuthenticated()){
+        if (!authentication.isAuthenticated()) {
             return null;
         }
 
         User user = userRepository.findByEmail(request.email()).orElseThrow(() -> new UsernameNotFoundException("user not found"));
-        UserDetails userDetails =  CustomerUserDetailsService.build(user);
+        UserDetails userDetails = CustomerUserDetailsService.build(user);
 
 
         String token = jwtService.generateToken(userDetails);
@@ -59,12 +60,13 @@ public class AuthenticationService implements IAuthenticationService {
         Map<String, String> tokens = new HashMap<>();
         tokens.put("token", token);
         tokens.put("refreshToken", refreshToken);
-        return new LoginResponse(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getRole().name(), tokens);
+        return new LoginResponse(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getRole().name(), user.getProfile(), tokens);
 
     }
 
     /**
      * this method handles the update of normal user to be admin
+     *
      * @param email user to be updated email
      * @return successful message
      */
@@ -73,7 +75,7 @@ public class AuthenticationService implements IAuthenticationService {
     public MessageResponse makeAdmin(String email) {
         String token = SecurityUtils.extractTokenFromHeader(request);
         String internalApiKey = storeConfigProperties.getAuthenticationKey().getInternalApiKey();
-        if (Objects.equals(token,internalApiKey)){
+        if (Objects.equals(token, internalApiKey)) {
             userRepository.makeAdmin(email, Role.ADMIN);
             return new MessageResponse("successful updated");
         }

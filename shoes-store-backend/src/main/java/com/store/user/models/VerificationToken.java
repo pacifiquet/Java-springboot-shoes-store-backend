@@ -13,7 +13,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -22,7 +21,7 @@ import java.util.Date;
 @Builder
 @Data
 public class VerificationToken {
-    private static final int EXPIRATION_TIME =10;
+    private static final int EXPIRATION_TIME = 10;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

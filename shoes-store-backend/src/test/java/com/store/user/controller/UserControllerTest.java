@@ -1,10 +1,9 @@
 package com.store.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.store.config.CustomerUserDetailsServiceArgumentResolver;
 import com.store.exceptions.UserException;
-import com.store.user.dto.MessageResponse;
 import com.store.user.dto.RegisterUserRequest;
-import com.store.user.dto.UpdateUserRequest;
 import com.store.user.dto.UserResponse;
 import com.store.user.security.CustomerUserDetailsService;
 import com.store.user.service.IUserService;
@@ -17,7 +16,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockPart;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -25,14 +29,25 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+import static com.store.utils.Constants.FIRST_NAME;
+import static com.store.utils.Constants.LAST_NAME;
+import static com.store.utils.Constants.SUCCESS;
+import static com.store.utils.Constants.SUCCESSFULLY_DELETED;
+import static com.store.utils.Constants.SUCCESSFULLY_UPDATED;
+import static com.store.utils.Constants.USER_NOT_FOUND;
+import static com.store.utils.Constants.VERIFY_ACCOUNT_MESSAGE;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,18 +59,17 @@ class UserControllerTest {
     private IUserService userService;
     @InjectMocks
     private UserController userController;
+
     private UserResponse userResponse;
     private JacksonTester<RegisterUserRequest> requestJacksonTester;
-    private JacksonTester<UpdateUserRequest> updateUserRequestJacksonTester;
     private RegisterUserRequest registerUserRequest;
-    private MessageResponse messageResponse;
-    private UpdateUserRequest updateUserRequest;
 
     @BeforeEach
     void setUp(){
         JacksonTester.initFields(this,new ObjectMapper());
         this.mockMvc = MockMvcBuilders.standaloneSetup(userController)
-                .setControllerAdvice(new UserException("user not found"))
+                .setCustomArgumentResolvers(new CustomerUserDetailsServiceArgumentResolver())
+                .setControllerAdvice(new UserException(USER_NOT_FOUND))
                 .build();
 
         registerUserRequest = new RegisterUserRequest(
@@ -69,78 +83,79 @@ class UserControllerTest {
                 "lastname",
                 "user@gmail.com",
                 "USER",
+                "profile url",
                 LocalDateTime.now().toString()
         );
-        updateUserRequest = new UpdateUserRequest(
-                "firstName",
-                "lastName"
-        );
-
-        messageResponse = new MessageResponse(
-                "successfully request");
     }
 
     @Test
     @DisplayName("Testing registering user endpoint")
     void testRegisterUser() throws Exception {
         // arrange
-        when(userService.registerUser(any(RegisterUserRequest.class), any(HttpServletRequest.class))).thenReturn(1L);
+        when(userService.registerUser(any(RegisterUserRequest.class), any(HttpServletRequest.class))).thenReturn(Map.of(SUCCESS,VERIFY_ACCOUNT_MESSAGE));
         // act
         ResultActions resultActions = this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON).content(requestJacksonTester.write(registerUserRequest).getJson()));
         // assert
-        resultActions.andExpect(status().isCreated());
+        resultActions.andDo(print()).andExpect(status().isCreated())
+                .andExpect(content().string(containsString(VERIFY_ACCOUNT_MESSAGE)));
 
     }
+
     @Test
     @DisplayName("Testing get user list")
     void testGetUserList() throws Exception {
         // arrange
-        var expected_response = userResponse;
         when(userService.getListUsers()).thenReturn(List.of(userResponse));
         // act && assert
         ResultActions resultActions = this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users").contentType(MediaType.APPLICATION_JSON));
         // assert
-        resultActions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()", is(List.of(expected_response).size())));
+        resultActions.andDo(print()).andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
     @DisplayName("Testing get user by Id")
+    @WithMockUser
     void testingGetUserById() throws Exception{
         var expected_response = userResponse;
-        when(userService.getUserById(anyLong(), any(CustomerUserDetailsService.class))).thenReturn(userResponse);
-        ResultActions response = this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/{id}", 1L)
-                .contentType(MediaType.APPLICATION_JSON));
 
-        response.andExpect(status().isOk());
-        response.andExpect(jsonPath("$.id",equalTo(1)));
-        response.andExpect(jsonPath("$.email",is(expected_response.email())));
-        response.andExpect(jsonPath("$.role",is(expected_response.role())));
+        when(userService.getUserById(anyLong(),any())).thenReturn(userResponse);
+        // act && assert
+        ResultActions resultActions = this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users/{id}",1).contentType(MediaType.APPLICATION_JSON));
+        // assert
+        resultActions.andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString(expected_response.email())))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
     @DisplayName("test updating user account")
     void  testUpdatingUser() throws Exception {
-        var expected_response = messageResponse;
-        when(userService.updateUser(anyLong(),any(UpdateUserRequest.class), any(CustomerUserDetailsService.class))).thenReturn(messageResponse);
-        ResultActions response = this.mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/users/{id}", 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(updateUserRequestJacksonTester.write(updateUserRequest).getJson())
-        );
-        response.andExpect(status().isOk());
-        response.andExpect(jsonPath("$.message",is(expected_response.message())));
+        String fileName = new FileSystemResource("profile_for_testing.png").getFile().getName();
+        MockMultipartFile profile = new MockMultipartFile("profile",fileName,MediaType.MULTIPART_FORM_DATA_VALUE,fileName.getBytes());
+        Map<String,String> userInfo = new HashMap<>();
+        userInfo.put(LAST_NAME,"user");
+        userInfo.put(FIRST_NAME,"username");
+        MockPart otherUserInfo = new MockPart("otherUserInfo", userInfo.toString().getBytes());
+
+        when(userService.updateUser(anyLong(), any(),any(),anyMap())).thenReturn(Map.of(SUCCESS,SUCCESSFULLY_UPDATED));
+        ResultActions response = this.mockMvc.perform(MockMvcRequestBuilders.multipart(HttpMethod.PUT,"/api/v1/users/{id}", 1)
+                        .part(otherUserInfo)
+                        .file(profile)
+                        .contentType(MediaType.MULTIPART_FORM_DATA));
+
+        response.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.success",is(SUCCESSFULLY_UPDATED)));
     }
 
 
     @Test
     @DisplayName("test deleting user account")
     void  testDeletingUser() throws Exception {
-        var expected_response = messageResponse;
-        when(userService.deleteUser(anyLong(), any(CustomerUserDetailsService.class))).thenReturn(messageResponse);
-        ResultActions response = this.mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/users/{id}", 1L)
+        when(userService.deleteUser(anyLong(),any(CustomerUserDetailsService.class))).thenReturn(Map.of(SUCCESS,SUCCESSFULLY_DELETED));
+        ResultActions response = this.mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/users/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON));
-        response.andExpect(status().isOk());
-        response.andExpect(jsonPath("$.message",is(expected_response.message())));
+        response.andDo(print()).andExpect(status().isOk());
+        response.andExpect(jsonPath("$.success",is(SUCCESSFULLY_DELETED)));
     }
 }

@@ -5,6 +5,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface IEmailService {
-    void sendEmailVerifyRegistrationUser(EmailContent emailContent);
-     void sendEmailForResetPassword(EmailContent emailContent);
+    void sendEmail(EmailContent emailContent);
 }

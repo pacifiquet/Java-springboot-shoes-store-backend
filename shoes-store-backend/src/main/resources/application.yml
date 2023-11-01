@@ -29,7 +29,7 @@ application:
         expiration: 604800000 # 7 days
 ---
 email-config:
-  email-sender : ppacifiuepaccy@gmail.com
+  email-sender : ""
   sender-grid: true
 spring:
   datasource:

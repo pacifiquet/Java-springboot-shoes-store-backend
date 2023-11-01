@@ -6,5 +6,6 @@ import com.store.user.dto.MessageResponse;
 
 public interface IAuthenticationService {
     LoginResponse login(LoginRequest request);
+
     MessageResponse makeAdmin(String email);
 }

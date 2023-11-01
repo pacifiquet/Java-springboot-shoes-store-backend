@@ -6,7 +6,9 @@ import com.store.user.security.CustomerUserDetailsService;
 import java.util.Map;
 
 public interface IPasswordResetTokenService {
-    Map<String,String> resetPassword(String email);
-    Map<String,String> savePassword(String token, PasswordRequest request);
-    Map<String,String> changePassword(PasswordRequest request, CustomerUserDetailsService detailsService);
+    Map<String, String> resetPassword(String email);
+
+    Map<String, String> savePassword(String token, PasswordRequest request);
+
+    Map<String, String> changePassword(PasswordRequest request, CustomerUserDetailsService detailsService);
 }
