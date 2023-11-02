@@ -1,0 +1,115 @@
+<div class="admin shadow shadow-gray-500 rounded-lg">
+    <button (click)="addProduct()"
+        class="absolute flex  bg-zinc-100 text-xl shadow-lg ring-1 p-4 ring-white-900 rounded-lg">Add
+        Product <img src="../../assets/ic_baseline-plus.svg" alt="add-product">
+    </button>
+
+    <app-add-product (addProductModalEvent)="hideAddProductModal($event)" *ngIf="isAddProductActive"></app-add-product>
+    <app-delete-modal (cancelEvent)="cancelDeleteProduct($event)" (deleteEvent)="approveDeleteProduct($event)"
+        *ngIf="isDeletingProduct"></app-delete-modal>
+    <div class="stats">
+        <div class="solds">
+            <h1>Total Sold:</h1>
+            <div class="solds-actions">
+                <button (click)="dayStats()" [ngClass]="{'active':isDayActive}" class="rounded-lg ring-1 ring-green-900"
+                    [ngClass]="{'active':isDayActive}">DAY</button>
+                <button (click)="weekStats()" class="rounded-lg ring-1 ring-green-900"
+                    [ngClass]="{'active':isWeekActive}">WEEK</button>
+                <button (click)="monthStats()" class="rounded-lg ring-1 ring-green-900"
+                    [ngClass]="{'active':isMonthActive}">MONTH</button>
+                <button (click)="yearStats()" class="rounded-lg ring-1 ring-green-900"
+                    [ngClass]="{'active':isYearActive}">YEAR</button>
+            </div>
+            <div class="value shadow hover:ring-zinc-900">
+                <span>450</span>
+            </div>
+        </div>
+        <div class="filtering">
+            <div class="ordering">
+                <button class="shadow">ASC</button>
+                <button class="shadow">DESC</button>
+            </div>
+            <ul>
+                <li [ngClass]="{active: isMenNavActive}"><button>Men</button></li>
+                <li><button>Women</button></li>
+                <li><button>Kids</button></li>
+            </ul>
+            <div>
+                <form>
+                    <input type="search" placeholder="search">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="products-table shadow rounded-lg">
+        <table class="table-auto">
+            <!--table head-->
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Stock</th>
+                    <th>Price</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <!--table body-->
+            <tbody>
+                <tr *ngFor="let product of productList" class="spaceUnder shadow-md rounded-lg y-2xl">
+                    <td>{{product.id}}</td>
+                    <td>
+                        <img [src]="product.productUrl" [alt]="product.productName" class="img-center">
+                    </td>
+                    <td class="product-name">{{product.productName}}</td>
+                    <td>{{product.category}}</td>
+                    <td>{{product.stock}}</td>
+                    <td>{{product.price | currency}}</td>
+                    <td>{{product.createAt |date:'medium'}}</td>
+                    <td class="delete-edit">
+                        <button (click)="viewProductAndEdit()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
+                                fill="none">
+                                <path
+                                    d="M7.5 7H6.5C5.96957 7 5.46086 7.21071 5.08579 7.58579C4.71071 7.96086 4.5 8.46957 4.5 9V18C4.5 18.5304 4.71071 19.0391 5.08579 19.4142C5.46086 19.7893 5.96957 20 6.5 20H15.5C16.0304 20 16.5391 19.7893 16.9142 19.4142C17.2893 19.0391 17.5 18.5304 17.5 18V17"
+                                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M16.5 4.99998L19.5 7.99998M20.885 6.58499C21.2788 6.19114 21.5001 5.65697 21.5001 5.09998C21.5001 4.543 21.2788 4.00883 20.885 3.61498C20.4912 3.22114 19.957 2.99988 19.4 2.99988C18.843 2.99988 18.3088 3.22114 17.915 3.61498L9.5 12V15H12.5L20.885 6.58499Z"
+                                    stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button (click)="deleteProduct()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
+                                fill="none">
+                                <path
+                                    d="M6.5 19C6.5 19.5304 6.71071 20.0391 7.08579 20.4142C7.46086 20.7893 7.96957 21 8.5 21H16.5C17.0304 21 17.5391 20.7893 17.9142 20.4142C18.2893 20.0391 18.5 19.5304 18.5 19V7H6.5V19ZM8.5 9H16.5V19H8.5V9ZM16 4L15 3H10L9 4H5.5V6H19.5V4H16Z"
+                                    fill="#F79522" />
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="product-actions">
+            <div class="export-import">
+                <form>
+                    <label for="fileInput">Import Products CSV</label>
+                    <input type="file" id="fileInput">
+                    <button class="ml-4" type="submit">Submit</button>
+                </form>
+
+                <button>Export Product CSV</button>
+            </div>
+            <div class="pagination shadow-lg rounded-lg shadow-gray-500">
+                <button>PREV</button>
+                <span>1</span>
+                <button>NEXT</button>
+            </div>
+        </div>
+    </div>
+</div>

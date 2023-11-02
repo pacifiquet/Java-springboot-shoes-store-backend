@@ -1,0 +1,159 @@
+.content {
+    width: 90rem;
+    min-height: 90vh;
+    margin: 1rem auto 0;
+    background-color: #f4f4f5;
+    border-radius: 1rem;
+}
+
+.content .modal-header{
+    position: relative;
+}
+
+.content .modal-header h1 {
+    text-align: center;
+    top: 3rem;
+    padding: 2rem;
+    font-size: 2rem;
+    color: #1F1A1A;
+    font-weight: 600;
+    font-family: "Raleway",sans-serif;
+}
+
+.content .modal-header button {
+    position: absolute;
+    right: 3rem;
+    top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background-color: #f4f4f5;
+
+}
+.content .modal-header button svg{
+    width: 2.5rem;
+    height: 1.6rem;
+}
+
+.fields{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    justify-content: center;
+    flex-direction: column;
+    /* height: 40rem; */
+}
+
+form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+label{
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+input.success,textarea.success {
+    border: 1px solid seagreen;
+}
+
+input.error,textarea.error{
+    border: 1px solid red;
+}
+
+
+input:focus{
+    outline: none;
+}
+option:focus{
+    outline: none;
+}
+
+form input[type='text'] {
+    padding: 1rem;
+    background-color: #fff;
+    margin: 0.5rem 0;
+}
+
+form div input[type='submit']{
+    border: 1px solid seagreen;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20rem;
+    margin: 0 auto;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+    border-radius: 0.3rem;
+}
+
+form div input[type='submit'].valid {
+    background-color: seagreen;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+form div input[type='submit'].invalid {
+    background-color: grey;
+    color: #fff;
+    font-weight: 600;
+    cursor: not-allowed;
+    pointer-events: all;
+}
+
+form label {
+    text-align: left;
+    margin: 2rem;
+}
+
+button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.6rem 3rem;
+    background-color: #fff;
+}
+
+
+button:hover{
+    background-color: seagreen;
+    color:#f4f4f5;
+}
+
+
+input{
+    width: 32rem;
+    padding: 0.6rem;
+}
+.stock-price{
+    display: flex;
+    gap: 1rem;
+    width: 20rem;
+}
+#price,#stock{
+    width: 15.5rem;
+}
+
+textarea{
+    width: 32rem;
+    height:  10rem;;
+    padding: 0.6rem;
+}
+
+#product-image{
+    width: 15rem;
+    height: 3rem; 
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    background-color: #fff;
+}
+
+textarea:focus{
+    outline: none;
+}

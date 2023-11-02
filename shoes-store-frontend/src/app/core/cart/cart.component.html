@@ -1,0 +1,73 @@
+<!--Cart Modal-->
+<div class="cart-modal">
+    <!--Main Modal-->
+    <div class="content shadow-md rounded-md">
+        <!--modal content-->
+        <div class="modal-header">
+            <h1>You have <strong>20</strong> products in your Cart</h1>
+            <button (click)="hidecartModal()" class="shadow-md rounded-md"> <svg width="49" height="48"
+                    viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.5 8L40.5 40M8.5 40L40.5 8" stroke="black" stroke-width="4" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg></button>
+        </div>
+
+        <div class="modal-body">
+            <ul>
+                <!--item 1-->
+                <li class="shadow-md rounded-lg">
+                    <img src="../../../assets/item-one-min.png" alt="item-1">
+                    <h3>Product Name</h3>
+                    <h5>$200</h5>
+                    <div class="actions">
+                        <button>
+                            <img src="../../../assets/ic_baseline-minus.svg" alt="removeLine">
+                            <img src="../../../assets/ic_baseline-plus.svg" alt="removeLine">
+                        </button>
+                    </div>
+                    <h5>20</h5>
+                    <button class="delete">
+                        <img src="../../../assets/clarity_remove-line.svg" alt="delete">
+                    </button>
+                </li>
+                <!--item 2-->
+                <li class="shadow-md rounded-lg">
+                    <img src="../../../assets/item-2-min.png" alt="item-1">
+                    <h3>Product Name</h3>
+                    <h5>$200</h5>
+                    <div class="actions">
+                        <button>
+                            <img src="../../../assets/ic_baseline-minus.svg" alt="removeLine">
+                            <img src="../../../assets/ic_baseline-plus.svg" alt="removeLine">
+                        </button>
+                    </div>
+                    <h5>20</h5>
+                    <button class="delete">
+                        <img src="../../../assets/clarity_remove-line.svg" alt="delete">
+                    </button>
+                </li>
+                <!--item 3-->
+                <li class="shadow-md rounded-lg">
+                    <img src="../../../assets/item-three-min.png" alt="item-1">
+                    <h3>Product Name</h3>
+                    <h5>$200</h5>
+                    <div class="actions">
+                        <button>
+                            <img src="../../../assets/ic_baseline-minus.svg" alt="removeLine">
+                            <img src="../../../assets/ic_baseline-plus.svg" alt="removeLine">
+                        </button>
+                    </div>
+                    <h5>20</h5>
+                    <button class="delete">
+                        <img src="../../../assets/clarity_remove-line.svg" alt="delete">
+                    </button>
+                </li>
+            </ul>
+            <div class="check-out">
+                <h1>Total Price : <span>$600</span> </h1>
+                <a (click)="handleCheckOut()" [routerLink]="['/checkout']"
+                    class="shadow-md shadow-gray-500 rounded-lg">Check Out</a>
+            </div>
+        </div>
+    </div>
+</div>

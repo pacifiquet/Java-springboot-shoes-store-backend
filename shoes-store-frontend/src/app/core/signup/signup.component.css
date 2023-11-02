@@ -1,0 +1,58 @@
+.content{
+    background-color: #fff;
+    width: 42rem;
+    max-height: 100%;
+    margin: 1rem auto 0;
+}
+
+.content .modal-header{
+    position: relative;
+    padding: 2rem;
+    margin: 1rem;
+}
+.content .modal-header h1{
+    text-align: center;
+    padding: 0.625rem;
+    text-align: center;
+    font-family: "Raleway",sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.content .modal-header button{
+    position:absolute;
+    right: 1rem;
+    top: 1rem;
+    background-color: #fff;
+    padding: 0.6rem;
+}
+
+.modal-body p{
+    margin-left: 3rem;
+    margin-top: -1rem;
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    font-family: "Raleway",sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 0.4rem;
+
+}
+
+.modal-body p strong{
+    color: #E3432B ;
+    font-family: "Raleway",sans-serif;  
+    font-size: 1.01rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.modal-body p strong:hover{
+    border-bottom: 0.0632rem solid seagreen;
+}
+
+svg{
+    width: 3rem;
+    height: 1.8rem;
+}

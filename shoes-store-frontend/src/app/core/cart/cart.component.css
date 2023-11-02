@@ -1,0 +1,138 @@
+.cart-modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 5000;
+
+}
+
+.content{
+    background-color: #fff;
+    padding: 3.5rem;
+    width: 55rem;
+    position: absolute;
+    right: 2rem;
+}
+
+.modal-header {
+    display: flex;
+}
+
+.modal-header h1 {
+    font-size: 1.3rem;
+}
+
+ .modal-header button{
+    position:absolute;
+    right: 1rem;
+    top: 2rem;
+    background-color: #fff;
+    padding: 0.6rem;
+} 
+
+.modal-body{
+    display: flex;
+    flex-direction: column;
+}
+.modal-body ul{
+    padding: 2rem;
+}
+
+.modal-body ul li{
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 1rem;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.modal-body ul li:hover,.modal-body ul li:nth-child(even):hover{
+    background-color: green;
+    color: #f4f4f5;
+}
+.modal-body ul li:nth-child(even){
+    background: #E5E2E0;
+}
+
+.modal-body ul li h5{
+    font-family: "Poppins",sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.modal-body ul li h3{
+    font-family: "Poppins",sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+}
+.modal-body ul li img{
+    width: 8.6875rem;
+    height: 5.4375rem;
+}
+.modal-body ul li .actions button{
+    display: flex;
+    align-items: center;
+}
+.modal-body ul li .actions button img {
+    width: 1.875rem;
+    height: 1.875rem;
+}
+.modal-body ul li .delete img{
+    width: 2.25rem;
+    height: 2.25rem;
+}
+
+svg{
+    width: 3rem;
+    height: 1.8rem;
+}
+
+strong {
+    color: #E3432B;
+}
+
+.modal-body .check-out{
+   align-self: flex-end;
+   display:flex;
+   gap: 5rem;
+   margin-right: 4rem;
+   align-items: center;
+   justify-content: center;
+}
+
+.modal-body .check-out{
+    padding: 0.5rem 1rem;
+}
+
+.modal-body .check-out a{
+    background-color: #fff;
+    border: 0.065rem solid #214E34;
+    padding: 0.5rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    font-family: "Poppins",sans-serif;
+}
+
+.modal-body .check-out a:hover{
+    background-color: #214E34;
+    color: #f4f4f5;
+}
+
+.modal-body .check-out h1 {
+    color: #000;
+    text-align: center;
+    font-family: "Poppins",sans-serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.modal-body .check-out h1 span {
+    font-weight: 700;
+}

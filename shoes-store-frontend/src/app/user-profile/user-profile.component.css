@@ -1,0 +1,154 @@
+table{
+    width: 90%;
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+    margin: 1rem auto;
+    cursor: pointer;
+}
+table tbody tr{
+    background-color: #f4f4f5;
+}
+table tbody tr td img{
+    width: 5rem;
+    height: 3rem;
+}
+
+td,th {
+    text-align: center;
+    vertical-align: middle;
+}
+td{
+    padding: 0.3rem;
+}
+
+table thead {
+    height: 4rem;
+    background-color: #1f1a1a;
+    color: #f4f4f5;
+}
+table tbody tr{
+    padding: 1rem 0;
+}
+table tbody td{
+    font-size: 1.1rem;
+}
+
+table tbody tr:hover , table tbody tr:nth-child(even):hover{
+    background-color: #214E34;
+    color: #f4f4f5;
+}
+
+table tbody tr:nth-child(even){
+    background: #F4FDFF;
+}
+
+.table-footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 1rem auto;
+}
+
+.acount-details{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+
+
+}
+.profile{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-profile-details{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.img-fiels{
+    display: flex;
+    gap: 5rem;
+    justify-content: center;
+    align-items: center;
+}
+.left > div button {
+    padding: 0.6rem 1rem;
+    background-color: #f4f4f5;  
+}
+
+.left > div button.update:hover,.left > div button.change:hover{
+    background-color: seagreen;
+    color: #f4f4f5;
+}
+
+.left > div button.delete:hover{
+    background-color: #E3432B;
+    color: #f4f4f5;
+}
+
+label {
+    padding: 0.6rem 1rem;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.right form{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: -50rem;
+}
+
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+form label {
+    background-color: #f4f4f5;
+    border-radius: 10px;
+    border: 1px solid seagreen;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+}
+
+input{
+    padding:1rem 2rem;
+    box-shadow: 0 0 0.5rem rgba(0, 0,0, 0.6);
+    border-radius: 0.5rem;
+}
+
+input:focus{
+    outline: none;
+}
+
+input[type='file']{
+    display: none;
+}
+
+.acount-details{
+    margin-top: -4rem;
+}
+
+.acount-details h1{
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 1rem;
+    margin-top: -1rem;
+}

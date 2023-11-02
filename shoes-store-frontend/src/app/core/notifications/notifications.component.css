@@ -1,0 +1,36 @@
+.modal-header h1{
+    position: absolute;
+    left: 2rem;
+    font-weight: 700;
+    font-family: "Poppins",sans-serif;
+}
+
+.modal-header button svg{
+    width: 2rem;
+    position: absolute;
+    right: 1rem;
+    top: 0;
+}
+
+.modal-body{
+    display: flex;
+    justify-content: center;
+}
+.modal-body ul {
+    margin: 2rem auto;
+}
+
+.modal-body ul li{
+    min-width: 25rem;
+    margin:1rem 0;
+    padding: 2rem;
+    background-color: #fff;
+    font-size: 1.1rem;
+    font-weight: 500;
+    font-family: "Poppins",sans-serif;
+    cursor: pointer;
+}
+.modal-body ul li:hover{
+    background-color: seagreen;
+    color: #f4f4f5;
+}

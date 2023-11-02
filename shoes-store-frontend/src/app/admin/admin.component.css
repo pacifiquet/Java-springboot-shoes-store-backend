@@ -1,0 +1,295 @@
+.admin{
+    width: 110rem;
+    min-height: 70vh;
+    margin: 2rem auto;
+    background-color: #fff;
+    padding: 2rem;
+    position: relative;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    background-color: #fff;
+    width: 80%;
+    margin: 1rem auto;
+    padding: 1rem;
+}
+nav h1{
+    padding: 0.3125rem;
+    font-family: "Poppins"sans-serif;
+    font-size: 3.125rem;
+    font-weight: 800;
+}
+
+
+/* stats */
+
+.stats{
+    width: 60rem;
+    margin: 1rem auto;
+
+}
+
+.stats h1 {
+    padding: 0.625rem;
+    color: #1F1A1A;
+    font-family: "Poppins",sans-serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    padding: 1rem;
+}
+
+.solds{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.solds > div{
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    align-items: center;
+}
+
+.solds .solds-actions button {
+    color: #1F1A1A;
+    font-family: "Raleway",sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    padding: 0.3rem 1rem;
+}
+
+.solds .solds-actions button:hover{
+    background-color: #2D744B;
+    color: #FFF;
+    font-weight: 500;
+}
+.solds .solds-actions button.active{
+    background-color: #214E34;
+    color: #FFF;
+    font-weight: 500;
+}
+
+.solds .value{
+    padding: 0.5rem 2rem;
+    border-radius: 0.625rem;
+    border: 1px solid #2D744B;
+    background: #FFF;
+    margin-left: 2rem;
+}
+
+
+.solds .value span {
+    font-family: "Poppins",sans-serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #1F1A1A;
+}
+
+/* filtering */
+.filtering{
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+.ordering {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+}
+.ordering button{
+    padding: 0.4rem 1.6rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    color: #214E34;
+    font-weight: 500;
+    border: 1px solid #E3432B;
+}
+
+.ordering button:hover {
+    background-color: #E3432B;
+    color: #fff;
+}
+
+.filtering ul {
+    display: flex;
+    gap: 2rem;
+}
+
+.filtering ul li {
+    padding: 0.4rem 1.4rem;
+    background-color: #fff;
+    border: 1px solid #2D744B;
+    border-radius: 0.4rem;
+    cursor: pointer;
+}
+
+.filtering ul li button {
+    font-size: 1.1rem;
+}
+
+.filtering ul li:hover {
+    background-color: #214E34;
+    color: #fff;
+}
+
+
+.filtering > div form input {
+    width: 27.125rem;
+    padding: 0.625rem;
+    border-radius: 0.625rem;
+    border: 1px solid #214E34;
+    background: #FFF;   
+    text-align: center;
+    outline: none;
+    font-size: 1.5rem;
+}
+
+
+.products-table{
+    min-width: 89rem;
+    min-height: 23rem;
+    padding: 1.25rem;
+    background-color:#FFF;
+    margin: 1rem auto;
+}
+
+table{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+}
+table tbody tr{
+    background-color: #F4F4F5;
+}
+
+
+td,th {
+    text-align: center;
+    vertical-align: middle;
+}
+/* theader */
+
+table thead {
+    height: 4.4375rem;
+    /* background: #2D744B; */
+    background-color: #1F1A1A;
+}
+
+table thead tr th {
+    color: #fff;
+    font-family: "Raleway",sans-serif;
+    font-size: 1.2rem;
+    width: 6rem;
+    font-weight: 550;
+    padding: 0.3rem 1rem;
+}
+
+/* tbody */
+
+table tbody tr:hover,table tbody tr:nth-child(even):hover{
+    background-color: #214E34;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 30rem;
+}
+
+table tbody tr:nth-child(even){
+    background: #F4FDFF;
+}
+
+
+table tbody tr td {
+    width: 12rem;
+    padding: 0.5rem;
+    font-family: "Poppins",sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+
+
+table tbody tr td img{
+    width: 3rem;
+    height: 3rem;
+}
+
+  /* product actions */
+
+.product-actions{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 1rem auto;
+}
+
+.product-actions .export-import{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16rem;
+}
+
+.product-actions .export-import form label, .product-actions .export-import button {
+    border-radius: 0.3125rem;
+    border: 1px solid #214E34;
+    background: #FFF;
+    cursor: pointer;
+    padding: 0.625rem 2.5rem;
+}
+
+.product-actions .export-import form button {
+    padding: 0.3rem 2rem;
+    background-color: #E3432B;
+    color: #FFF;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 0.3125rem;
+    outline: none;
+    border: none;
+}
+
+.product-actions .pagination{
+    display: flex;
+    padding: 0.625rem;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    margin-left: 10rem;
+}
+
+.product-actions .pagination  button{
+    background: #FFF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding: 0.3125rem;
+    font-family: "Raleway",sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.product-actions .pagination span{
+    color: #1F1A1A;
+    font-family: "Raleway",sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.delete-edit{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+input[type='file'] {
+    color: rgba(0, 0, 0, 0);
+    display: none;
+  }
