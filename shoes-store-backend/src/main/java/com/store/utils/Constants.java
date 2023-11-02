@@ -31,6 +31,7 @@ public class Constants {
     public static final String FAILED_TO_FETCH_SECRET_ERROR = "failed to get the keys from aws: {}";
     public static final String LAST_NAME = "lastName";
     public static final String FIRST_NAME = "firstName";
+    public static final String ADDRESS = "address";
     public static final String SUCCESSFULLY_UPDATED = "successfully updated";
     public static final String SUCCESSFULLY_DELETED = "successfully delete";
     public static final String ACCESS_DENIED = "ACCESS DENIED";

@@ -72,6 +72,7 @@ class UserServiceTest {
                  "user@gmail.com",
                  "pacifique",
                  "Twagirayesu",
+                 "address",
                  "pass1233");
 
         updateUserRequest = UpdateUserRequest.builder().lastName("lastName").firstName("firstName").build();;

@@ -76,6 +76,7 @@ class UserControllerTest {
                 "user@gmail.com",
                 "user",
                 "lastname",
+                "address",
                 "pass123");
         userResponse = new UserResponse(
                 1L,

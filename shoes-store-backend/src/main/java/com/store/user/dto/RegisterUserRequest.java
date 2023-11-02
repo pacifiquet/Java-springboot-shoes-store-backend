@@ -9,6 +9,7 @@ import lombok.Builder;
 public record RegisterUserRequest(@ValidEmail String email,
                                   @NotBlank String firstName,
                                   @NotBlank String lastName,
+                                  @NotBlank String address,
                                   @NotBlank String password) {
 
 }
