@@ -1,6 +1,6 @@
 .content {
     width: 90rem;
-    height: 80%;
+    min-height: 90vh;
     margin: 1rem auto 0;
     background-color: #f4f4f5;
     border-radius: 1rem;
@@ -55,6 +55,14 @@ label{
     font-weight: 600;
 }
 
+input.success,textarea.success {
+    border: 1px solid seagreen;
+}
+
+input.error,textarea.error{
+    border: 1px solid red;
+}
+
 
 input:focus{
     outline: none;
@@ -66,10 +74,38 @@ option:focus{
 form input[type='text'] {
     padding: 1rem;
     background-color: #fff;
+    margin: 0.5rem 0;
+}
+
+form div input[type='submit']{
+    border: 1px solid seagreen;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20rem;
+    margin: 0 auto;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+    border-radius: 0.3rem;
+}
+
+form div input[type='submit'].valid {
+    background-color: seagreen;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+form div input[type='submit'].invalid {
+    background-color: grey;
+    color: #fff;
+    font-weight: 600;
+    cursor: not-allowed;
+    pointer-events: all;
 }
 
 form label {
     text-align: left;
+    margin: 2rem;
 }
 
 button{
@@ -86,9 +122,6 @@ button:hover{
     color:#f4f4f5;
 }
 
-input[type='file']{
-    display: none;
-}
 
 input{
     width: 32rem;

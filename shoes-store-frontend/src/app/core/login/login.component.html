@@ -12,10 +12,31 @@
         </div>
 
         <div class="modal-body">
-            <form>
-                <input class="shadow-md rounded-md" type="text" placeholder="Email">
-                <input class="shadow-md rounded-md" type="password" placeholder="Password">
-                <input class="shadow-lg" type="button" value="submit" />
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div>
+                    <input
+                        [ngClass]="{error:fc.email.touched && fc.email.invalid,success:fc.email.valid,touched:!fc.email.touched}"
+                        class="shadow-md rounded-md" type="text" placeholder="Email" name="email"
+                        formControlName="email" />
+                    <div *ngIf="fc.email.invalid && fc.email.touched">
+                        <p class="p-2" *ngIf="fc.email.errors?.required">Email is required</p>
+                        <p class="p-2" *ngIf="fc.email.errors?.email">Invalid Email</p>
+                    </div>
+
+                </div>
+                <div>
+                    <input
+                        [ngClass]="{error:fc.password.touched && fc.password.invalid,success:fc.password.valid,touched:!fc.password.touched}"
+                        class="shadow-md rounded-md" type="password" placeholder="Password" name="password"
+                        formControlName="password" />
+                    <div *ngIf="fc.password.invalid && fc.password.touched">
+                        <p class="p-2" *ngIf="fc.password.errors?.required">Password is required</p>
+                    </div>
+                </div>
+                <div>
+                    <input [ngClass]="{disabled:loginForm.invalid, valid:loginForm.valid}" class="shadow-lg"
+                        [disabled]="loginForm.invalid" type="submit" value="submit" />
+                </div>
             </form>
             <div class="actions">
                 <p (click)="showRegistersModal()" class="flex items-center justify-center cursor-pointer"> Sign up for a

@@ -6,10 +6,10 @@
     gap: 0.625rem;
 }
 
-.hero-section .left p {
-    font-family: "Raleway",sans-serif;
+.hero-section .left h3 {
+    font-family: "Poppins",sans-serif;
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: 600;
     width: 30rem;
 
 }

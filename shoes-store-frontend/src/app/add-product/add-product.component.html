@@ -13,33 +13,42 @@
 
         <!-- modal body-->
         <div class="modal-body mt-[2rem]">
-            <form>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <div class="fields">
                     <div class="left-form">
-                        <input class="shadow-md shadow-gray-400 rounded-md" type="text" id="name"
-                            placeholder="Product Name">
-                        <label id="product-image" class="shadow-md shadow-gray-400 rounded-md ring-1 ring-green-900"
-                            for="file">Upload Product
+                        <input [ngClass]="{error:fc.productName.touched && fc.productName.invalid, 
+                                success:!fc.productName.touched || fc.productName.valid}" name="productName"
+                            formControlName="productName" class="shadow-md shadow-gray-400 rounded-md" type="text"
+                            id="name" placeholder="Product Name">
+                        <label for="file">Upload Product
                             Image
-                            <input type="file" id="file">
+                            <input #filePiker (change)="onImagePicked($event)" type="file">
                         </label>
-                        <input class="shadow-md shadow-gray-400 rounded-md" type="text" id="category"
-                            placeholder="category">
+                        <input [ngClass]="{error:fc.category.touched && fc.category.invalid, 
+                            success:!fc.category.touched || fc.category.valid}"
+                            class="shadow-md shadow-gray-400 rounded-md" type="text" id="category" name="category"
+                            formControlName="category" placeholder="category">
                     </div>
 
                     <div class="right-form">
-                        <textarea class="shadow-md shadow-gray-400 rounded-md" placeholder="Description"
-                            id="desc"></textarea>
-                        <div class="stock-price">
-                            <input class="shadow-md shadow-gray-400 rounded-md" type="text" id="price"
-                                placeholder="Price">
-                            <input class="shadow-md shadow-gray-400 rounded-md" type="text" id="stock"
-                                placeholder="Stock">
+                        <textarea [ngClass]="{error:fc.description.touched && fc.description.invalid, 
+                            success:!fc.description.touched || fc.description.valid}"
+                            class="shadow-md shadow-gray-400 rounded-md" placeholder="Description"
+                            formControlName="description" name="description"></textarea>
+                        <div class="stock-price mt-[2rem]">
+                            <input [ngClass]="{error:fc.price.touched && fc.price.invalid, 
+                                success:!fc.price.touched || fc.price.valid}" name="price" formControlName="price"
+                                class="shadow-md shadow-gray-400 rounded-md" type="text" id="price" placeholder="Price">
+                            <input [ngClass]="{error:fc.stock.touched && fc.stock.invalid, 
+                                success:!fc.stock.touched || fc.stock.valid}" name="stock" formControlName="stock"
+                                class="shadow-md shadow-gray-400 rounded-md" type="text" id="stock" placeholder="Stock">
                         </div>
                     </div>
 
                 </div>
-                <button class="shadow-md shadow-gray-400 rounded-md m-[3rem] ring-1 ring-green-900">Add Product</button>
+                <div>
+                    <input [ngClass]="{valid:form.valid,invalid:form.invalid}" type="submit" value="Add Product">
+                </div>
             </form>
         </div>
     </div>
