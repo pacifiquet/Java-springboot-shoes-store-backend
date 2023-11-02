@@ -29,6 +29,7 @@ import java.util.function.Function;
 
 import static com.store.utils.Constants.ACCESS_DENIED;
 import static com.store.utils.Constants.ACCOUNT_EXIST;
+import static com.store.utils.Constants.ADDRESS;
 import static com.store.utils.Constants.FIRST_NAME;
 import static com.store.utils.Constants.LAST_NAME;
 import static com.store.utils.Constants.SUCCESS;
@@ -61,7 +62,14 @@ public class UserService implements IUserService {
             throw new UserException(ACCOUNT_EXIST);
         }
 
-        User user = iuserrepository.save(User.builder().email(request.email()).firstName(request.firstName()).lastName(request.lastName()).password(passwordEncoder.encode(request.password())).role(Role.USER).enabled(false).createdAt(LocalDateTime.now()).build());
+        User user = iuserrepository.save(User.builder()
+                .email(request.email())
+                .firstName(request.firstName())
+                .lastName(request.lastName())
+                .address(request.address())
+                .password(passwordEncoder.encode(request.password()))
+                .role(Role.USER).enabled(false)
+                .createdAt(LocalDateTime.now()).build());
         publisher.publishEvent(new RegistrationCompleteEvent(user, servletRequest));
         return Map.of(SUCCESS, VERIFY_ACCOUNT_MESSAGE);
     }
@@ -123,6 +131,7 @@ public class UserService implements IUserService {
 
         user.setLastName(otherUserInfo.get(LAST_NAME));
         user.setFirstName(otherUserInfo.get(FIRST_NAME));
+        user.setAddress(otherUserInfo.get(ADDRESS));
 
         iuserrepository.save(user);
         return Map.of(SUCCESS, SUCCESSFULLY_UPDATED);

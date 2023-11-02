@@ -31,6 +31,7 @@ public class User {
     private String email;
     private String firstName;
     private String lastName;
+    private String address;
     private String password;
     private String profile;
     @Enumerated(EnumType.STRING)
