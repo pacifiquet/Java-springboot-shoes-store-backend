@@ -6,5 +6,6 @@ import lombok.Builder;
 @Builder
 public record UpdateUserRequest(
         @NotBlank String firstName,
+        @NotBlank String address,
         @NotBlank String lastName) {
 }
