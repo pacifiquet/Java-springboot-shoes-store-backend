@@ -2,6 +2,7 @@ package com.store.user.service;
 
 import com.store.exceptions.UserException;
 import com.store.user.dto.PasswordRequest;
+import com.store.user.dto.PasswordRestRequest;
 import com.store.user.models.PasswordResetToken;
 import com.store.user.models.User;
 import com.store.user.repository.IPasswordResetTokenRepository;
@@ -54,23 +55,21 @@ public record PasswordResetTokenService(
     }
 
     @Override
-    public Map<String, String> savePassword(String token, PasswordRequest request) {
+    public Map<String, String> savePassword(String token, PasswordRestRequest request) {
         PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token).orElseThrow(() -> new UserException(INVALID_TOKEN));
         User user = resetToken.getUser();
 
-        if (passwordEncoder.matches(request.newPassword(), user.getPassword())) {
+        if (passwordEncoder.matches(request.password(), user.getPassword())) {
             return Map.of(ERROR, SAME_AS_OLD_PASSWORD);
         }
 
         if (resetToken.getExpirationTime().getTime() - Calendar.getInstance().getTime().getTime() <= 0) {
+            passwordResetTokenRepository.delete(resetToken);
             return Map.of(ERROR, INVALID_TOKEN);
         }
 
-        if (!passwordEncoder.matches(request.oldPassword(), user.getPassword())) {
-            return Map.of(ERROR, INVALID_OLD_PASSWORD);
-        }
 
-        user.setPassword(passwordEncoder.encode(request.newPassword()));
+        user.setPassword(passwordEncoder.encode(request.password()));
         user.setEnabled(true);
         userRepository.save(user);
         passwordResetTokenRepository.delete(resetToken);

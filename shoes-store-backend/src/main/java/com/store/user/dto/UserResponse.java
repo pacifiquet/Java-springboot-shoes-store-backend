@@ -6,6 +6,7 @@ public record UserResponse(
         String lastName,
         String email,
         String role,
+        String address,
         String profile,
         String createdAt) {
 }

@@ -10,7 +10,9 @@
                         stroke-linejoin="round" />
                 </svg></button>
         </div>
-
+        <div class="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
         <div class="modal-body">
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <div>
@@ -35,7 +37,7 @@
                 </div>
                 <div>
                     <input [ngClass]="{disabled:loginForm.invalid, valid:loginForm.valid}" class="shadow-lg"
-                        [disabled]="loginForm.invalid" type="submit" value="submit" />
+                        [disabled]="loginForm.invalid" type="submit" value="Login" />
                 </div>
             </form>
             <div class="actions">

@@ -5,7 +5,7 @@
                 <img src="../../../assets/shopping-bag_4032857.png">
             </a>
         </div>
-        <ul>
+        <ul [ngClass]="{loggoutUser:!isUserLogged()}">
             <li>
                 <div class="search">
                     <form>
@@ -16,19 +16,24 @@
             <li>
                 <a class=" login" [routerLink]="['/home']" routerLinkActive="router-link-active">Home</a>
             </li>
-            <li class="block">
+            <li class="block" *ngIf="isAdmin()">
                 <a class="login" [routerLink]="['/dashboard']" routerLinkActive="router-link-active">Dashboard</a>
             </li>
-            <li class="block">
+            <li class="block" *ngIf="!isUserLogged()">
                 <a class="login" (click)="login()">Log In</a>
             </li>
             <!-- <li class="block">
                 <a class="signup" (click)="signup()">Sign Up</a>
             </li> -->
-            <li class="block">
+            <li class="block" *ngIf="isUserLogged()">
                 <div class="logout ring-1 ring-green-900 rounded-[1rem]" (click)="profileNav()" tabindex="-1">
-                    <img src="../../../assets/no-profile.png" alt="profile" class="img-center">
-                    <p>Pacifique Twagirayesu</p>
+
+                    <img *ngIf="userProfile.profile" [src]="userProfile.profile" alt="profile" class="img-center">
+                    <img *ngIf="!userProfile.profile"
+                        src="https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg"
+                        alt="profile" class="img-center">
+
+                    <p>{{userProfile.firstName}} {{userProfile.lastName}}</p>
                     <svg class="-mr-1 h-10 w-10 text-green-900" viewBox="0 0 20 20" fill="currentColor"
                         aria-hidden="true">
                         <path fill-rule="evenodd"

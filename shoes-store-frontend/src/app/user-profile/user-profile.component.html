@@ -5,6 +5,9 @@
     <button (click)="handleAccountOrders()" [ngClass]="{'router-link-active': isTransactions}"
         class="bg-[#f4f4g5] font-bold ring-1 ring-green-900 p-3 mx-3 rounded-lg shadow-md shadow-gray-400">Transactions</button>
 </div>
+<div *ngIf="isSuccessMessage" class="successMessage relative">
+    <h1 class="absolute">{{successMessage}}</h1>
+</div>
 
 <div *ngIf="isTransactions" class="bg-[#fff] shadow-lg rounded-md shadow-gray-400 w-[90%] mx-auto p-[2rem]">
     <h1 class="text-[3rem] font-[600] mt-[-2rem] ml-1">Orders</h1>
@@ -252,25 +255,61 @@
     <div class="profile bg-white shadow-md shadow-gray-400 rounded-md p-[2rem]">
         <div class="img-profile-details">
             <div class="left">
-                <div class="img-fiels">
-                    <img src="../../assets/no-profile.png" alt="profile" width="25%" height="60%">
+                <div *ngIf="!isUpdateAccount" class="img-fiels">
+                    <img *ngIf="userProfile.profile" [src]="userProfile.profile" alt="profile" width="25%" height="60%">
+                    <img *ngIf="!userProfile.profile"
+                        src="https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg"
+                        alt="profile" width="25%" height="60%">
                     <form>
-                        <input type="text" placeholder="name">
-                        <input type="text" placeholder="email">
-                        <input type="text" placeholder="address">
-                        <input type="password" placeholder="Password">
-                        <input type="text" placeholder="Confirm Password">
-                        <label class="shadow-md shadow-gray-400 rounded-md ring-1 ring-green-900 m-2" for="img-p">Change
-                            Profile
-                            Picture</label>
-                        <input type="file" id="img-p">
+                        <input disabled [value]="userProfile.firstName" type="text" placeholder="first name">
+                        <input disabled [value]="userProfile.lastName" type="text" placeholder="last name">
+                        <input disabled [value]="userProfile.email" type="text" placeholder="email">
+                        <input disabled [value]="userProfile.address" type="text" placeholder="address">
                     </form>
                 </div>
+                <div *ngIf="isUpdateAccount" class="img-fiels">
+                    <img *ngIf="userProfile.profile" [src]="userProfile.profile" alt="profile" width="25%" height="60%">
+                    <img *ngIf="!userProfile.profile"
+                        src="https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg"
+                        alt="profile" width="25%" height="60%">
+                    <form [formGroup]="updateUserForm" (ngSubmit)="onSaveUpdate()">
+                        <input
+                            [ngClass]="{error:fc.firstName.touched && fc.firstName.invalid,success:fc.firstName.valid,touched:!fc.firstName.touched}"
+                            formControlName="firstName" name="firstName" [ngClass]="{isNotUpdate:!isUpdateAccount}"
+                            type="text" placeholder="first name">
+                        <input
+                            [ngClass]="{error:fc.lastName.touched && fc.lastName.invalid,success:fc.lastName.valid,touched:!fc.lastName.touched}"
+                            formControlName="lastName" name="lastName" [ngClass]=" {isNotUpdate:!isUpdateAccount}"
+                            type="text" placeholder="last name">
+                        <input [disabled]="true" [value]="userProfile.email" type="text" placeholder="email">
+                        <input
+                            [ngClass]="{error:fc.address.touched && fc.address.invalid,success:fc.address.valid,touched:!fc.address.touched}"
+                            name="address" formControlName="address" [ngClass]="{isNotUpdate:!isUpdateAccount}"
+                            type="text" placeholder="address">
+                        <div class="update-actions relative">
+                            <p class="absolute bottom-[3.5rem]" [ngStyle]="{'color':isWrongFile ? 'red':'seagreen'}">
+                                {{fileMessage}}</p>
+                            <label *ngIf="isUpdateAccount"
+                                class="shadow-md shadow-gray-400 rounded-md ring-1 ring-green-900 m-2"
+                                for="img-p">Change
+                                Profile
+                                Picture</label>
+                            <input type="file" id="img-p" (change)="profileImageHandler($event)" accept="image/*">
+                            <input type="submit" [disabled]="updateUserForm.invalid"
+                                [ngClass]="{valid:updateUserForm.valid,invalid:updateUserForm.invalid||isWrongFile}"
+                                *ngIf="isUpdateAccount" value="Save" />
+                            <button (click)="cancelAccountUpdate()" type="button">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                <app-change-password (successMessageEvent)="changePasswordSuccess($event)"
+                    (passwordUpdateEvent)="hidePasswordUpdateHandler($event)"
+                    *ngIf="isUpdatePasword"></app-change-password>
                 <div class="p-3">
-                    <button
+                    <button (click)="updateAccount()"
                         class="update shadow-md shadow-gray-400 rounded-md ring-1 ring-green-900 m-2 hover:ring-[#f4f4f5]">Update
                         Account</button>
-                    <button
+                    <button (click)="changeUserPassword()"
                         class="change shadow-md shadow-gray-400 rounded-md ring-1 ring-green-900 m-2 hover:ring-[#f4f4f5]">ChangePassword
                         Account</button>
                     <button (click)="deleteAccount()"

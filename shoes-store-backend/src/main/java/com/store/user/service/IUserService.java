@@ -16,7 +16,7 @@ public interface IUserService {
 
     List<UserResponse> getListUsers();
 
-    Map<String, String> updateUser(long id, CustomerUserDetailsService customerUserDetailsService, MultipartFile profile, Map<String, String> otherUserInfo);
+    UserResponse updateUser(long id, CustomerUserDetailsService customerUserDetailsService, MultipartFile profile, Map<String, String> otherUserInfo);
 
     Map<String, String> deleteUser(long id, CustomerUserDetailsService customerUserDetailsService);
 

@@ -82,11 +82,12 @@ public class UserController {
     @PutMapping(value = "/{id}",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "updating user account")
-    ResponseEntity<Map<String, String>> updateUser(
+    ResponseEntity<UserResponse> updateUser(
             @PathVariable long id,
             @RequestParam Map<String, String> otherUserInfo,
             @AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService,
             @RequestPart(value = "profile", required = false) final MultipartFile profile) {
+        System.out.println(otherUserInfo);
         return ResponseEntity.ok(userService.updateUser(id, customerUserDetailsService, profile, otherUserInfo));
 
     }

@@ -1,0 +1,9 @@
+<div class="verfied-user">
+    <div>
+        <h1 [ngClass]="{'verfied':isVerified,'failed':!isVerified}">{{VerifyMessage}}</h1>
+    </div>
+    <div *ngIf="requestNewToken" class="flex justify-center flex-col m-5">
+        <p>This account failed to verify, {{VerifyMessage}}</p>
+        <button (click)="requestNewTokenHandler()">Request A New token</button>
+    </div>
+</div>

@@ -104,6 +104,12 @@ dependencies {
 
 }
 
+def profiles = "test"
+
+bootRun{
+	args = ["--spring.profiles.active=" + profiles]
+}
+
 tasks.named('sonarqube'){
 	dependsOn jacocoTestReport
 }

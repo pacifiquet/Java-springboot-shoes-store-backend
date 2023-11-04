@@ -5,10 +5,14 @@ nav{
 }
 nav ul {
     display: flex;
-    justify-content: space-evenly;
+    /* justify-content: space-evenly; */
     align-items: center;
-    gap: 2rem;
+    gap: 5rem;
     
+}
+
+nav ul.loggoutUser{
+    gap: 10rem;
 }
 
 nav ul li a {

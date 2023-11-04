@@ -10,7 +10,9 @@
                         stroke-linejoin="round" />
                 </svg></button>
         </div>
-
+        <div class="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
         <div class="modal-body">
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <div class="relative">
