@@ -2,10 +2,12 @@ package com.store.user.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.store.config.AwsConfigProperties;
 import com.store.events.RegistrationCompleteEvent;
 import com.store.exceptions.UserException;
 import com.store.user.dto.RegisterUserRequest;
+import com.store.user.dto.UpdateUserRequest;
 import com.store.user.dto.UserResponse;
 import com.store.user.models.Role;
 import com.store.user.models.User;
@@ -14,6 +16,7 @@ import com.store.user.security.CustomerUserDetailsService;
 import com.store.utils.FileHandlerUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,8 +33,10 @@ import java.util.function.Function;
 import static com.store.utils.Constants.ACCESS_DENIED;
 import static com.store.utils.Constants.ACCOUNT_EXIST;
 import static com.store.utils.Constants.ADDRESS;
+import static com.store.utils.Constants.FAILED_TO_UPDATE_USER;
 import static com.store.utils.Constants.FIRST_NAME;
 import static com.store.utils.Constants.LAST_NAME;
+import static com.store.utils.Constants.OTHER_USER_INFO;
 import static com.store.utils.Constants.SUCCESS;
 import static com.store.utils.Constants.SUCCESSFULLY_DELETED;
 import static com.store.utils.Constants.SUCCESSFULLY_UPDATED;
@@ -40,12 +45,14 @@ import static com.store.utils.Constants.VERIFY_ACCOUNT_MESSAGE;
 
 @AllArgsConstructor
 @Service
+@Slf4j
 public class UserService implements IUserService {
     private final IUserRepository iuserrepository;
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher publisher;
     private final AmazonS3 s3Client;
     private final AwsConfigProperties awsConfigProperties;
+    private final ObjectMapper objectMapper;
 
     /**
      * this method handles the creation and save user to the database
@@ -113,7 +120,7 @@ public class UserService implements IUserService {
      * @return a message if update is successful
      */
     @Override
-    public Map<String, String> updateUser(long id, CustomerUserDetailsService customerUserDetailsService, MultipartFile profileUpdate, Map<String, String> otherUserInfo) {
+    public UserResponse updateUser(long id, CustomerUserDetailsService customerUserDetailsService, MultipartFile profileUpdate, Map<String, String> otherUserInfo) {
         if (id != customerUserDetailsService.getId()) {
             throw new UserException(ACCESS_DENIED);
         }
@@ -129,12 +136,18 @@ public class UserService implements IUserService {
             profileObj.delete();
         }
 
-        user.setLastName(otherUserInfo.get(LAST_NAME));
-        user.setFirstName(otherUserInfo.get(FIRST_NAME));
-        user.setAddress(otherUserInfo.get(ADDRESS));
+        try {
+            UpdateUserRequest updateUserRequest = objectMapper.readValue(otherUserInfo.get(OTHER_USER_INFO), UpdateUserRequest.class);
+            user.setLastName(updateUserRequest.lastName());
+            user.setFirstName(updateUserRequest.firstName());
+            user.setAddress(updateUserRequest.address());
+        }catch (Exception exception){
+            log.error(FAILED_TO_UPDATE_USER,exception.getMessage());
+        }
 
-        iuserrepository.save(user);
-        return Map.of(SUCCESS, SUCCESSFULLY_UPDATED);
+
+        User saved = iuserrepository.save(user);
+        return userResponseHandler().apply(saved);
     }
 
     /**
@@ -151,8 +164,11 @@ public class UserService implements IUserService {
         }
 
         User user = iuserrepository.findById(id).orElseThrow(() -> new UserException(USER_NOT_FOUND));
-        int indexOf = user.getProfile().indexOf(user.getFirstName().toLowerCase());
-        s3Client.deleteObject(awsConfigProperties.bucketName(), user.getProfile().substring(indexOf));
+        if (user.getProfile() !=null){
+            int indexOf = user.getProfile().indexOf(user.getFirstName().toLowerCase());
+            s3Client.deleteObject(awsConfigProperties.bucketName(), user.getProfile().substring(indexOf));
+        }
+
         iuserrepository.delete(user);
         return Map.of(SUCCESS, SUCCESSFULLY_DELETED);
 
@@ -165,6 +181,6 @@ public class UserService implements IUserService {
      * @return userResponse object
      */
     private static Function<User, UserResponse> userResponseHandler() {
-        return user -> new UserResponse(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getRole().name(), user.getProfile(), user.getCreatedAt().toString());
+        return user -> new UserResponse(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getRole().name(), user.getAddress(), user.getProfile(), user.getCreatedAt().toString());
     }
 }

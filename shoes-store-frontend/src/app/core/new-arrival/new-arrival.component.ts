@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faStarHalfAlt } from '@fortawesome/free-regular-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { ProductInterface } from 'src/app/dto/product-interface';
-import { ProductsService } from 'src/app/services/products.service';
+import { ProductInterface } from 'src/app/dto/product/product-interface';
+import { ProductsService } from 'src/app/services/product/products.service';
 
 @Component({
   selector: 'app-new-arrival',

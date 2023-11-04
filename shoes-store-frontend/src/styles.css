@@ -144,3 +144,24 @@ input div p{
     border: 1px solid seagreen;
     color: #f4f4f5;
 }
+
+/* error message */
+.errorMessage p{
+    text-align: center;
+    color: red;
+    font-weight: 700;
+    margin: 1rem 0;
+}
+
+.successMessage h1{
+    text-align: center;
+    color: seagreen;
+    font-weight: 700;
+    font-size: 1.4rem;
+    bottom: 1rem;
+    left: 60%;
+    background-color: ghostwhite;
+    padding: 1rem 4rem;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    /* transform: translateX(50%); */
+}

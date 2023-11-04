@@ -1,6 +1,7 @@
 package com.store.user.controller;
 
 import com.store.user.dto.PasswordRequest;
+import com.store.user.dto.PasswordRestRequest;
 import com.store.user.security.CustomerUserDetailsService;
 import com.store.user.service.IPasswordResetTokenService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +33,7 @@ public record PasswordResetController(IPasswordResetTokenService passwordResetTo
 
     @PostMapping("/save")
     @Operation(summary = "Save Reset Password")
-    ResponseEntity<Map<String, String>> saveResetPassword(@RequestParam String token, @Validated @RequestBody PasswordRequest request) {
+    ResponseEntity<Map<String, String>> saveResetPassword(@RequestParam String token, @Validated @RequestBody PasswordRestRequest request) {
         return ResponseEntity.status(CREATED).body(passwordResetTokenService.savePassword(token, request));
     }
 

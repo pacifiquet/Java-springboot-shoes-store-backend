@@ -22,14 +22,19 @@ public class Constants {
     public static final String USER_EVENT_ROUTING_KEY = "user_event_routing_key";
     // verification util handle
     public static final String VERIFICATION_URL_PART = "/api/v1/users/account/verifyRegistration?token=";
+    public static final String VERIFICATION_URL_PART_FRONT_END = "account/verify?token=";
     public static final String PASSWORD_RESET_URL_PART = "/api/v1/users/account/password/save?token=";
+    public static final String PASSWORD_RESET_URL_PART_FRONT_END = "account/password/reset?token=";
     public static final String HOST_PREFIX = "http://localhost:";
+    public static final String HOST_PREFIX_FRONT_END = "http://localhost:4200/";
     public static final int EXPIRATION_TIME = 10;
     // services handle
     public static final String USER_NOT_FOUND = "user not found";
     public static final String CONVERTING_FILE_ERROR = "Error converting multipartFile to file";
     public static final String FAILED_TO_FETCH_SECRET_ERROR = "failed to get the keys from aws: {}";
     public static final String LAST_NAME = "lastName";
+    public static final String OTHER_USER_INFO  = "otherUserInfo";
+    public static final String FAILED_TO_UPDATE_USER  = "updating user failed: {}";
     public static final String FIRST_NAME = "firstName";
     public static final String ADDRESS = "address";
     public static final String SUCCESSFULLY_UPDATED = "successfully updated";
@@ -37,6 +42,7 @@ public class Constants {
     public static final String ACCESS_DENIED = "ACCESS DENIED";
     public static final String ACCOUNT_EXIST = "This account exists";
     public static final String SUCCESS = "success";
+    public static final String VERIFIED = "verified";
     public static final String ERROR = "error";
     public static final String TOKEN = "token";
     public static final String INVALID_TOKEN = "invalid token";

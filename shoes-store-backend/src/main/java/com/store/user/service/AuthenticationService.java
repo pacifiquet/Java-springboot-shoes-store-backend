@@ -60,7 +60,7 @@ public class AuthenticationService implements IAuthenticationService {
         Map<String, String> tokens = new HashMap<>();
         tokens.put("token", token);
         tokens.put("refreshToken", refreshToken);
-        return new LoginResponse(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getRole().name(), user.getProfile(), tokens);
+        return new LoginResponse(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getRole().name(), user.getProfile(), user.getAddress(),tokens);
 
     }
 

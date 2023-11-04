@@ -82,6 +82,7 @@ class UserServiceTest {
                 "Twagirayesu",
                 "user@gmail.com",
                 Role.USER.name(),
+                "address",
                 "pacifique_profile.png",
                 LocalDateTime.now().toString()
         );
@@ -150,7 +151,7 @@ class UserServiceTest {
     @DisplayName("Testing updating user with logged user")
     void updateUserWithLoggedInUser() {
         // arrange
-        var expected_response = Map.of(SUCCESS,SUCCESSFULLY_UPDATED);
+        var expected_response = userResponse;
         CustomerUserDetailsService customerUserDetailsService = mock(CustomerUserDetailsService.class);
         when(IUserRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         when(IUserRepository.save(any(User.class))).thenReturn(user);
@@ -158,7 +159,7 @@ class UserServiceTest {
         // act
         var response = userService.updateUser(1L, customerUserDetailsService, null, Map.of(updateUserRequest.firstName(),updateUserRequest.lastName()));
         // assert
-        assertEquals(expected_response,response);
+        assertEquals(expected_response.firstName(),response.firstName());
     }
 
     @Test

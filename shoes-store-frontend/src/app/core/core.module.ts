@@ -14,9 +14,7 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ReviewStarsComponent } from '../review-stars/review-stars.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular/ionic-module';
 
 @NgModule({
   declarations: [
@@ -32,7 +30,6 @@ import { IonicModule } from '@ionic/angular/ionic-module';
     ProductDetailsComponent,
     NotificationsComponent,
     ResetPasswordComponent,
-    ReviewStarsComponent,
   ],
   imports: [CommonModule, FontAwesomeModule, ReactiveFormsModule, RouterModule],
   exports: [

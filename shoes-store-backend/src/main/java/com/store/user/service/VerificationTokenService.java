@@ -22,6 +22,7 @@ import static com.store.utils.Constants.INVALID_TOKEN;
 import static com.store.utils.Constants.SUCCESS;
 import static com.store.utils.Constants.SUCCESS_VERIFIED_MESSAGE;
 import static com.store.utils.Constants.TOKEN;
+import static com.store.utils.Constants.VERIFIED;
 import static com.store.utils.Constants.VERIFY_ACCOUNT_MESSAGE;
 
 @Service
@@ -56,7 +57,7 @@ public record VerificationTokenService(
         User user = userToken.getUser();
         if (user.isEnabled()) {
             verificationTokenRepository.delete(userToken);
-            return Map.of(SUCCESS, ALREADY_VERIFIED_MESSAGE);
+            return Map.of(VERIFIED, ALREADY_VERIFIED_MESSAGE);
         }
 
         user.setEnabled(true);
@@ -69,7 +70,7 @@ public record VerificationTokenService(
     public Map<String, String> requestNewToken(String oldToken) {
         VerificationToken userToken = verificationTokenRepository.findByToken(oldToken);
         if (userToken == null) {
-            return Map.of(SUCCESS, INVALID_TOKEN);
+            return Map.of(ERROR, INVALID_TOKEN);
         }
         User user = userToken.getUser();
         String token = UUID.randomUUID().toString();

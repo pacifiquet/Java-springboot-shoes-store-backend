@@ -84,6 +84,7 @@ class UserControllerTest {
                 "lastname",
                 "user@gmail.com",
                 "USER",
+                "address",
                 "profile url",
                 LocalDateTime.now().toString()
         );
@@ -140,13 +141,13 @@ class UserControllerTest {
         userInfo.put(FIRST_NAME,"username");
         MockPart otherUserInfo = new MockPart("otherUserInfo", userInfo.toString().getBytes());
 
-        when(userService.updateUser(anyLong(), any(),any(),anyMap())).thenReturn(Map.of(SUCCESS,SUCCESSFULLY_UPDATED));
+        when(userService.updateUser(anyLong(), any(),any(),anyMap())).thenReturn(userResponse);
         ResultActions response = this.mockMvc.perform(MockMvcRequestBuilders.multipart(HttpMethod.PUT,"/api/v1/users/{id}", 1)
                         .part(otherUserInfo)
                         .file(profile)
                         .contentType(MediaType.MULTIPART_FORM_DATA));
 
-        response.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.success",is(SUCCESSFULLY_UPDATED)));
+        response.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.lastName",is(userResponse.lastName())));
     }
 
 
