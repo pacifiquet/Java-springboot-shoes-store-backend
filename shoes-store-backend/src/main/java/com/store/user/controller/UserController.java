@@ -87,7 +87,6 @@ public class UserController {
             @RequestParam Map<String, String> otherUserInfo,
             @AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService,
             @RequestPart(value = "profile", required = false) final MultipartFile profile) {
-        System.out.println(otherUserInfo);
         return ResponseEntity.ok(userService.updateUser(id, customerUserDetailsService, profile, otherUserInfo));
 
     }
@@ -102,6 +101,17 @@ public class UserController {
     @Operation(summary = "deleting user account")
     ResponseEntity<Map<String, String>> deleteUser(@PathVariable long id, @AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService) {
         return ResponseEntity.ok(userService.deleteUser(id, customerUserDetailsService));
+    }
+
+    /**
+     * this controller handles user profile request
+     * @param userDetailsService user logged object parameter
+     * @return userResponse object
+     */
+    @GetMapping("/profile")
+    @Operation(summary = "logged in user details")
+    ResponseEntity<UserResponse> loggedUser(@AuthenticationPrincipal CustomerUserDetailsService userDetailsService){
+        return ResponseEntity.ok(userService.userProfile(userDetailsService));
     }
 
 }
