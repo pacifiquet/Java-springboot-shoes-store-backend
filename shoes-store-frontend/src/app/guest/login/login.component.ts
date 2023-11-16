@@ -5,11 +5,20 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { LoginUserRequest } from 'src/app/dto/user/login-user';
-import { AuthenticationService } from '../../services/user/authentication.service';
-import { Router } from '@angular/router';
-import { LoaderService } from '../../services/loader.service';
+import {FormBuilder, Validators} from '@angular/forms';
+import {LoginUserRequest} from 'src/app/dto/user/login-user';
+import {AuthenticationService} from '../../services/user/authentication.service';
+import {Router} from '@angular/router';
+import {LoaderService} from '../../services/loader.service';
+import {combineLatest} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {
+  selectIsLoading,
+  selectIsSubmitting,
+  selectValidationError,
+} from 'src/app/store/reducers';
+import {LoginUserInterace} from 'src/app/types/Login.interface';
+import {authActions} from 'src/app/store/actions';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +32,11 @@ export class LoginComponent implements OnInit {
   loginForm: any;
   errorMessage: string = '';
   user: LoginUserRequest = new LoginUserRequest();
+  $data = combineLatest({
+    isSubmitting: this.store.select(selectIsSubmitting),
+    isLoading: this.store.select(selectIsLoading),
+    errors: this.store.select(selectValidationError),
+  });
 
   @Output() closeLoginEvent = new EventEmitter<boolean>();
   @Output() openRegisterEvent = new EventEmitter<boolean>();
@@ -32,7 +46,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthenticationService,
     private router: Router,
-    private loading: LoaderService
+    private loading: LoaderService,
+    private store: Store
   ) {
     this.loginForm = fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -64,19 +79,22 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    this.user.email = this.loginForm.get('email').value;
-    this.user.password = this.loginForm.get('password').value;
-    this.auth.login(this.user).subscribe(
-      (data) => {
-        if (data) {
-          this.router.navigate(['/user-profile']);
-          this.closeLoginEvent.emit(this.showLoginModal);
-        }
-      },
-      (error) => {
-        this.errorMessage = error.error?.message;
-        this.closeLoginEvent.emit(!this.showLoginModal);
-      }
-    );
+    const loginRequest: LoginUserInterace = this.loginForm.getRawValue();
+    this.store.dispatch(authActions.loginUser({request: loginRequest}));
+    
+    // this.user.email = this.loginForm.get('email').value
+    // this.user.password = this.loginForm.get('password').value
+    // this.auth.login(this.user).subscribe(
+    //   (data) => {
+    //     if (data) {
+    //       this.router.navigate(['/user-profile'])
+    //       this.closeLoginEvent.emit(this.showLoginModal)
+    //     }
+    //   },
+    //   (error) => {
+    //     this.errorMessage = error.error?.message
+    //     this.closeLoginEvent.emit(!this.showLoginModal)
+    //   }
+    // )
   }
 }

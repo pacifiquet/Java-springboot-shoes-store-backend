@@ -1,3 +1,5 @@
-<div *ngIf="this.loader.getLoading()" class="cssload-container">
-    <div class="cssload-speeding-wheel"></div>
-</div>
+<ng-container *ngIf="isLoading | async">
+    <div class="cssload-container">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+</ng-container>
