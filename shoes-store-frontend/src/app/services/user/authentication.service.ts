@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map } from 'rxjs';
-import { LoginUserResponse } from 'src/app/dto/user/login-user-response';
-import { LoginUserRequest } from 'src/app/dto/user/login-user';
-import { envirnoment } from 'src/app/env/env';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable, map} from 'rxjs';
+import {LoginUserResponse} from 'src/app/dto/user/login-user-response';
+import {LoginUserRequest} from 'src/app/dto/user/login-user';
+import {envirnoment} from 'src/app/env/env';
 
 const API_URL = `${envirnoment.BASE_URL}`;
 

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { LoaderService } from '../services/loader.service';
+import {Component} from '@angular/core';
+import {LoaderService} from '../services/loader.service';
+import {Store} from '@ngrx/store';
+import {selectIsLoading} from '../store/reducers';
 
 @Component({
   selector: 'app-spinner',
@@ -7,5 +9,6 @@ import { LoaderService } from '../services/loader.service';
   styleUrls: ['./spinner.component.css'],
 })
 export class SpinnerComponent {
-  constructor(public loader: LoaderService) {}
+  isLoading = this.store.select(selectIsLoading);
+  constructor(public loader: LoaderService, private store: Store) {}
 }
