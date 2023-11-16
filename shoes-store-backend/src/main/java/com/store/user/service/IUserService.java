@@ -20,4 +20,5 @@ public interface IUserService {
 
     Map<String, String> deleteUser(long id, CustomerUserDetailsService customerUserDetailsService);
 
+    UserResponse userProfile(CustomerUserDetailsService userDetailsService);
 }

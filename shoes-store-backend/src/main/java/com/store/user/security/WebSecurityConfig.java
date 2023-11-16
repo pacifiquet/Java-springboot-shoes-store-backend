@@ -14,6 +14,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
+import static com.store.user.models.Role.ADMIN;
+import static com.store.user.models.Role.USER;
 import static com.store.utils.Constants.WHITE_LIST_PATH;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -34,8 +36,8 @@ public record WebSecurityConfig(
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers(WHITE_LIST_PATH).permitAll()
                                 .requestMatchers(POST, "/api/v1/users").permitAll()
-                                .requestMatchers(GET, "/api/v1/users").hasRole(Role.ADMIN.name())
-                                .requestMatchers("/api/v1/users/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                                .requestMatchers(GET, "/api/v1/users").hasRole(ADMIN.name())
+                                .requestMatchers("/api/v1/users/**").hasAnyRole(USER.name(), ADMIN.name())
                                 .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

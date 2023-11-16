@@ -99,6 +99,17 @@ public class UserService implements IUserService {
     }
 
     /**
+     * this method handles user profile
+     * @param userDetailsService logged user object
+     * @return userResponse object
+     */
+    @Override
+    public UserResponse userProfile(CustomerUserDetailsService userDetailsService) {
+        User user = iuserrepository.findByEmail(userDetailsService.getEmail()).orElseThrow(() -> new UserException(USER_NOT_FOUND));
+        return userResponseHandler().apply(user);
+    }
+
+    /**
      * this method returns all lists of users available in the database,
      * and this method also returns this lists along with sorting functionality
      *
