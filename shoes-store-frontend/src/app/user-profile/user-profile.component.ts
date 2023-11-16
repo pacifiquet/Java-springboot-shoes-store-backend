@@ -1,19 +1,27 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { AuthenticationService } from '../services/user/authentication.service';
-import { LoginUserResponse } from '../dto/user/login-user-response';
-import { Subject, takeUntil } from 'rxjs';
-import { FormBuilder, Validators } from '@angular/forms';
-import { NoSpace } from '../validators/NoSpace.validator';
-import { UserService } from '../services/user/user.service';
-import { UserUpdateRequest } from '../dto/user/user-update';
-import { UserResponse } from '../dto/user/user-response';
-import { Router } from '@angular/router';
+import {AuthenticationService} from '../services/user/authentication.service';
+import {LoginUserResponse} from '../dto/user/login-user-response';
+import {Subject, takeUntil, combineLatest} from 'rxjs';
+import {FormBuilder, Validators} from '@angular/forms';
+import {NoSpace} from '../validators/NoSpace.validator';
+import {UserService} from '../services/user/user.service';
+import {UserUpdateRequest} from '../dto/user/user-update';
+import {UserResponse} from '../dto/user/user-response';
+import {Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {
+  selectIsProfileLoaded,
+  selectProfileError,
+  selectUserProfile,
+} from '../store/reducers';
+import {userProfileActions} from '../store/actions';
 
 @Component({
   selector: 'app-user-profile',
@@ -46,6 +54,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   userProfile: UserResponse = new UserResponse();
   unsubscribe$ = new Subject<void>();
 
+  userProfile$ = combineLatest({
+    isLoggedIn: this.store.select(selectIsProfileLoaded),
+    profile: this.store.select(selectUserProfile),
+    profileError: this.store.select(selectProfileError),
+  });
+
   @Input() deleteMessage: string =
     'did you request to delete your account? your acount is deleted parmanently';
 
@@ -53,36 +67,20 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private auth: AuthenticationService,
     private userService: UserService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private store: Store,
+    private cdr: ChangeDetectorRef
   ) {
     this.updateUserForm = this.fb.group({
       firstName: ['', [Validators.required, NoSpace.NoSpaceValidation]],
       lastName: ['', [Validators.required, NoSpace.NoSpaceValidation]],
       address: ['', Validators.required],
     });
+    this.store.dispatch(userProfileActions.userProfile());
+    this.cdr.markForCheck();
   }
 
-  ngOnInit(): void {
-    this.auth.currentUser
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((user) => {
-        this.loggedUser = user;
-      });
-
-    this.userService
-      .getUserById(Number(this.loggedUser.id))
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (res) => {
-          if (res) {
-            this.userProfile = res;
-          }
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
+  ngOnInit(): void {}
 
   get fc() {
     return this.updateUserForm.controls;
@@ -137,10 +135,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   updateAccount() {
     this.isUpdateAccount = true;
-    this.updateUserForm.setValue({
-      firstName: this.userProfile.firstName,
-      lastName: this.userProfile.lastName,
-      address: this.userProfile.address,
+    this.userProfile$.subscribe((data) => {
+      this.updateUserForm.setValue({
+        firstName: data.profile?.firstName,
+        lastName: data.profile?.lastName,
+        address: data.profile?.address,
+      });
     });
   }
 
