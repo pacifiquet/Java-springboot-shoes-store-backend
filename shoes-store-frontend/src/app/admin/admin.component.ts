@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ProductsService } from '../services/product/products.service';
 import { ProductInterface } from '../dto/product/product-interface';
 
@@ -6,6 +6,7 @@ import { ProductInterface } from '../dto/product/product-interface';
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminComponent implements OnInit {
   productList: Array<ProductInterface> = [];

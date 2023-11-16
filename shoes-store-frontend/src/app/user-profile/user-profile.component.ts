@@ -1,4 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { AuthenticationService } from '../services/user/authentication.service';
 import { LoginUserResponse } from '../dto/user/login-user-response';
 import { Subject, takeUntil } from 'rxjs';
@@ -13,6 +19,7 @@ import { Router } from '@angular/router';
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
   isAccountProfile: boolean = false;

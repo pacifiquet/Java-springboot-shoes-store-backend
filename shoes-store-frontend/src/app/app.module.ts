@@ -3,23 +3,21 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
 import { AdminComponent } from './admin/admin.component';
-import { AddProductComponent } from './add-product/add-product.component';
+import { AddProductComponent } from './admin/add-product/add-product.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { DeleteModalComponent } from './delete-modal/delete-modal.component';
-import { CheckoutPageComponent } from './checkout-page/checkout-page.component';
-import { NotfoundComponent } from './erros/notfound/notfound.component';
-import { UnauthorizedComponent } from './erros/unauthorized/unauthorized.component';
+import { DeleteModalComponent } from './admin/delete-modal/delete-modal.component';
+import { CheckoutPageComponent } from './guest/checkout-page/checkout-page.component';
+import { NotfoundComponent } from './guest/erros/notfound/notfound.component';
+import { UnauthorizedComponent } from './guest/erros/unauthorized/unauthorized.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { LoadingInterceptor } from './interceptor/loading.interceptor';
 import { Router } from '@angular/router';
-import { ChangePasswordComponent } from './change-password/change-password.component';
-import { AccountVerificationComponent } from './account-verification/account-verification.component';
-import { PasswordResetSaveComponent } from './password-reset-save/password-reset-save.component';
+import { GuestModule } from './guest/guest.module';
+import { ChangePasswordComponent } from './admin/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -33,8 +31,6 @@ import { PasswordResetSaveComponent } from './password-reset-save/password-reset
     UnauthorizedComponent,
     SpinnerComponent,
     ChangePasswordComponent,
-    AccountVerificationComponent,
-    PasswordResetSaveComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +38,7 @@ import { PasswordResetSaveComponent } from './password-reset-save/password-reset
     HttpClientModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    CoreModule,
+    GuestModule,
   ],
   providers: [
     {

@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './core/home/home.component';
 import { AdminComponent } from './admin/admin.component';
-import { ProductDetailsComponent } from './core/product-details/product-details.component';
+import { ProductDetailsComponent } from './guest/product-details/product-details.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { CheckoutPageComponent } from './checkout-page/checkout-page.component';
+import { CheckoutPageComponent } from './guest/checkout-page/checkout-page.component';
 import { Role } from './dto/user/role.enum';
-import { NotfoundComponent } from './erros/notfound/notfound.component';
-import { UnauthorizedComponent } from './erros/unauthorized/unauthorized.component';
+import { NotfoundComponent } from './guest/erros/notfound/notfound.component';
+import { UnauthorizedComponent } from './guest/erros/unauthorized/unauthorized.component';
 import { AuthGuard } from './guards/auth.guard';
-import { AccountVerificationComponent } from './account-verification/account-verification.component';
-import { PasswordResetSaveComponent } from './password-reset-save/password-reset-save.component';
+import { PasswordResetSaveComponent } from './guest/password-reset-save/password-reset-save.component';
+import { AccountVerificationComponent } from './guest/account-verification/account-verification.component';
 
 const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent,
+    loadChildren: () =>
+      import('./guest/guest.module').then((g) => g.GuestModule),
   },
   {
     path: 'product-details/:id',
