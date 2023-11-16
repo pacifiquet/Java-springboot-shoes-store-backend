@@ -14,7 +14,7 @@ import {combineLatest} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {
   selectIsLoading,
-  selectIsSubmitting,
+  selectIsLogging,
   selectValidationError,
 } from 'src/app/store/reducers';
 import {LoginUserInterace} from 'src/app/types/Login.interface';
@@ -32,8 +32,9 @@ export class LoginComponent implements OnInit {
   loginForm: any;
   errorMessage: string = '';
   user: LoginUserRequest = new LoginUserRequest();
+
   $data = combineLatest({
-    isSubmitting: this.store.select(selectIsSubmitting),
+    isLogging: this.store.select(selectIsLogging),
     isLoading: this.store.select(selectIsLoading),
     errors: this.store.select(selectValidationError),
   });
@@ -52,6 +53,10 @@ export class LoginComponent implements OnInit {
     this.loginForm = fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(3)]],
+    });
+
+    this.$data.subscribe((data) => {
+      console.log(data);
     });
   }
 
@@ -81,7 +86,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     const loginRequest: LoginUserInterace = this.loginForm.getRawValue();
     this.store.dispatch(authActions.loginUser({request: loginRequest}));
-    
+
     // this.user.email = this.loginForm.get('email').value
     // this.user.password = this.loginForm.get('password').value
     // this.auth.login(this.user).subscribe(

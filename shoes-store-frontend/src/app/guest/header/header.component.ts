@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../../services/user/authentication.service';
-import { LoginUserResponse } from 'src/app/dto/user/login-user-response';
-import { Role } from 'src/app/dto/user/role.enum';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UserResponse } from 'src/app/dto/user/user-response';
-import { UserService } from 'src/app/services/user/user.service';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {AuthenticationService} from '../../services/user/authentication.service';
+import {LoginUserResponse} from 'src/app/dto/user/login-user-response';
+import {Role} from 'src/app/dto/user/role.enum';
+import {Store} from '@ngrx/store';
+import {combineLatest} from 'rxjs';
+import {selectIsProfileLoaded, selectUserProfile} from 'src/app/store/reducers';
+import {Router} from '@angular/router';
+import {logoutActions} from 'src/app/store/actions';
 
 @Component({
   selector: 'app-header',
@@ -21,35 +23,19 @@ export class HeaderComponent implements OnInit {
   hideProfileNav: boolean = false;
   openResetPasswordModal: boolean = false;
   profileUser: boolean = false;
-  nologgedInUser = true;
   currentUser: LoginUserResponse = new LoginUserResponse();
-  userProfile: UserResponse = new UserResponse();
   href: string = '';
+  userProfile$ = combineLatest({
+    profile: this.store.select(selectUserProfile),
+    isLogged: this.store.select(selectIsProfileLoaded),
+  });
 
   constructor(
     private auth: AuthenticationService,
-    private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {
-    auth.currentUser.subscribe((user) => {
-      this.currentUser = user;
-    });
-
-    if (this.currentUser?.id !== undefined) {
-      this.userService
-        .getUserById(Number(this.currentUser.id))
-        .subscribe((user) => {
-          if (user) {
-            this.userProfile = user;
-          }
-        });
-    }
-  }
-  ngOnInit(): void {
-    this.href = this.router.url;
-    console.log(this.router.url);
-  }
+    private store: Store
+  ) {}
+  ngOnInit(): void {}
 
   isAdmin() {
     if (this.currentUser?.id !== undefined) {
@@ -78,10 +64,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logoutUser() {
-    this.hideProfileNav = !this.hideProfileNav;
-    this.profileUser = false;
-    this.auth.logout();
-    this.router.navigate(['/home']);
+    this.store.dispatch(logoutActions.logout());
   }
 
   login() {

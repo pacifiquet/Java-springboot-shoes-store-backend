@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { envirnoment } from 'src/app/env/env';
-import { UserRegiserRequest } from '../../dto/user/user-register-request';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { RequestBaseServiceService } from '../request-base-service.service';
-import { AuthenticationService } from './authentication.service';
-import { PasswordChangeRequest } from 'src/app/dto/user/password-change-request';
-import { PasswordResetRequest } from 'src/app/dto/user/password-reset-request';
+import {Injectable} from '@angular/core';
+import {envirnoment} from 'src/app/env/env';
+import {UserRegiserRequest} from '../../dto/user/user-register-request';
+import {HttpClient} from '@angular/common/http';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {RequestBaseServiceService} from '../request-base-service.service';
+import {AuthenticationService} from './authentication.service';
+import {PasswordChangeRequest} from 'src/app/dto/user/password-change-request';
+import {PasswordResetRequest} from 'src/app/dto/user/password-reset-request';
 
 const BASE_URL = `${envirnoment.BASE_URL}`;
 @Injectable({
@@ -21,6 +21,12 @@ export class UserService extends RequestBaseServiceService {
 
   registerUser(user: UserRegiserRequest): Observable<any> {
     return this.http.post(BASE_URL + '/users', user);
+  }
+
+  getUserProfile(): Observable<any> {
+    return this.http.get(BASE_URL + '/users/profile', {
+      headers: this.getHeaders(),
+    });
   }
 
   getUserById(userId: number): Observable<any> {
@@ -67,7 +73,7 @@ export class UserService extends RequestBaseServiceService {
     return this.http.post(
       BASE_URL + '/users/account/password/change',
       passwordRequest,
-      { headers: this.getHeaders() }
+      {headers: this.getHeaders()}
     );
   }
 
