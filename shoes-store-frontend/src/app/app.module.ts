@@ -3,10 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {AdminComponent} from './admin/admin.component';
-import {AddProductComponent} from './admin/add-product/add-product.component';
-import {UserProfileComponent} from './user-profile/user-profile.component';
-import {DeleteModalComponent} from './admin/delete-modal/delete-modal.component';
 import {CheckoutPageComponent} from './guest/checkout-page/checkout-page.component';
 import {NotfoundComponent} from './guest/erros/notfound/notfound.component';
 import {UnauthorizedComponent} from './guest/erros/unauthorized/unauthorized.component';
@@ -14,28 +10,34 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {SpinnerComponent} from './spinner/spinner.component';
-import {LoadingInterceptor} from './interceptor/loading.interceptor';
 import {Router} from '@angular/router';
 import {GuestModule} from './guest/guest.module';
-import {ChangePasswordComponent} from './admin/change-password/change-password.component';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {authReducer, profileReducer, userLogout} from './store/reducers';
-import * as loginEffect from './store/effect';
+import {
+  authReducer,
+  clearState,
+  deleteUserReducer,
+  registerReducer,
+  requestNewTokenReducer,
+  verifyUserReducer,
+} from './app.reducer';
+import * as loggedEffect from './guest/store/user/effect';
+import * as userUpdateEffect from './profile/store/effect';
+import {ProfileModule} from './profile/profile.module';
+import {AdminModule} from './admin/admin.module';
+import {LoadingInterceptor} from './interceptor/loading.interceptor';
+import {SharedModule} from './shared/shared.module';
+import {profileReducer, userUpdateReducer} from './app.reducer';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminComponent,
-    AddProductComponent,
-    UserProfileComponent,
-    DeleteModalComponent,
     CheckoutPageComponent,
     NotfoundComponent,
     UnauthorizedComponent,
     SpinnerComponent,
-    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,19 +46,30 @@ import * as loginEffect from './store/effect';
     ReactiveFormsModule,
     FontAwesomeModule,
     GuestModule,
+    AdminModule,
+    SharedModule,
+    ProfileModule,
     StoreModule.forRoot(
-      {auth: authReducer, profile: profileReducer, logout: userLogout},
-      {}
+      {
+        auth: authReducer,
+        profile: profileReducer,
+        updateUser: userUpdateReducer,
+        register: registerReducer,
+        userDelete: deleteUserReducer,
+        verifyUser: verifyUserReducer,
+        requestNewToken: requestNewTokenReducer,
+      },
+      {metaReducers: [clearState]}
     ),
-    EffectsModule.forRoot([loginEffect]),
+    EffectsModule.forRoot([loggedEffect, userUpdateEffect]),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
   ],
   providers: [
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: LoadingInterceptor,
-    //   multi: true,
-    // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

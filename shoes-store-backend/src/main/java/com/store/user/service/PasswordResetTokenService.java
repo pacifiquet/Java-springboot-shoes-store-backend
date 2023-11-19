@@ -60,12 +60,10 @@ public record PasswordResetTokenService(
         User user = resetToken.getUser();
 
         if (passwordEncoder.matches(request.password(), user.getPassword())) {
-            return Map.of(ERROR, SAME_AS_OLD_PASSWORD);
-        }
-
-        if (resetToken.getExpirationTime().getTime() - Calendar.getInstance().getTime().getTime() <= 0) {
+            throw new UserException(SAME_AS_OLD_PASSWORD);
+        } else if (resetToken.getExpirationTime().getTime() - Calendar.getInstance().getTime().getTime() <= 0) {
             passwordResetTokenRepository.delete(resetToken);
-            return Map.of(ERROR, INVALID_TOKEN);
+            throw  new UserException(INVALID_TOKEN);
         }
 
 
@@ -82,11 +80,9 @@ public record PasswordResetTokenService(
         User user = userRepository.findByEmail(detailsService.getEmail()).orElseThrow(() -> new UserException(USER_NOT_FOUND));
 
         if (passwordEncoder.matches(request.newPassword(), user.getPassword())) {
-            return Map.of(ERROR, SAME_AS_OLD_PASSWORD);
-        }
-
-        if (!passwordEncoder.matches(request.oldPassword(), user.getPassword())) {
-            return Map.of(ERROR, INVALID_OLD_PASSWORD);
+            throw new UserException(SAME_AS_OLD_PASSWORD);
+        }else if (!passwordEncoder.matches(request.oldPassword(), user.getPassword())) {
+            throw new UserException(INVALID_OLD_PASSWORD);
         }
 
         user.setPassword(passwordEncoder.encode(request.newPassword()));

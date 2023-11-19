@@ -6,7 +6,7 @@
                     <img src="../../../assets/shopping-bag_4032857.png">
                 </a>
             </div>
-            <ul [ngClass]="{loggoutUser:!user.isLogged}">
+            <ul [ngClass]="{loggoutUser:!isUserLogged()}">
                 <li>
                     <div class="search">
                         <form>
@@ -20,13 +20,13 @@
                 <li class="block" *ngIf="isAdmin()">
                     <a class="login" [routerLink]="['/dashboard']" routerLinkActive="router-link-active">Dashboard</a>
                 </li>
-                <li class="block" *ngIf="!user.isLogged">
+                <li class="block" *ngIf="!isUserLogged()">
                     <a class="login" (click)="login()">Log In</a>
                 </li>
                 <!-- <li class="block">
                     <a class="signup" (click)="signup()">Sign Up</a>
                 </li> -->
-                <li class="block" *ngIf="user.isLogged">
+                <li class="block" *ngIf="isUserLogged()">
                     <div class="logout ring-1 ring-green-900 rounded-[1rem]" (click)="profileNav()" tabindex="-1">
 
                         <img *ngIf="user.profile?.profile" [src]="user.profile?.profile" alt="profile"
@@ -74,7 +74,7 @@
 
 
     </nav>
-    <app-login *ngIf=" openLoginModal" (closeLoginEvent)="closeLoginModal($event)"
+    <app-login [showLogin]="openLoginModal" *ngIf="openLoginModal" (closeLoginEvent)="closeLoginModal($event)"
         (openResetEvent)="showResetModal($event)" (openRegisterEvent)="showRegisterModal($event)"></app-login>
     <app-reset-password *ngIf="openResetPasswordModal" (resetEvent)="closeResetEvent($event)"
         (loginEvent)="backToLoginEvent($event)"></app-reset-password>

@@ -1,6 +1,7 @@
 package com.store.user.service;
 
 import com.store.email.EmailContent;
+import com.store.exceptions.UserException;
 import com.store.user.models.User;
 import com.store.user.models.VerificationToken;
 import com.store.user.repository.IUserRepository;
@@ -15,14 +16,11 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.store.utils.Constants.ALREADY_VERIFIED_MESSAGE;
-import static com.store.utils.Constants.ERROR;
 import static com.store.utils.Constants.EXPIRED_TOKEN;
 import static com.store.utils.Constants.INVALID_TOKEN;
 import static com.store.utils.Constants.SUCCESS;
 import static com.store.utils.Constants.SUCCESS_VERIFIED_MESSAGE;
 import static com.store.utils.Constants.TOKEN;
-import static com.store.utils.Constants.VERIFIED;
 import static com.store.utils.Constants.VERIFY_ACCOUNT_MESSAGE;
 
 @Service
@@ -46,19 +44,17 @@ public record VerificationTokenService(
         VerificationToken userToken = verificationTokenRepository.findByToken(token);
 
         if (userToken == null) {
-            return Map.of(ERROR, INVALID_TOKEN);
+            throw  new UserException(INVALID_TOKEN);
+        }else if (!userToken.getToken().equals(token)){
+            throw new UserException(INVALID_TOKEN);
         }
 
         boolean isTokenExpired = userToken.getExpirationTime().getTime() - Calendar.getInstance().getTime().getTime() <= 0;
         if (isTokenExpired) {
-            return Map.of(ERROR, EXPIRED_TOKEN);
+            throw new UserException(EXPIRED_TOKEN);
         }
 
         User user = userToken.getUser();
-        if (user.isEnabled()) {
-            verificationTokenRepository.delete(userToken);
-            return Map.of(VERIFIED, ALREADY_VERIFIED_MESSAGE);
-        }
 
         user.setEnabled(true);
         userRepository.save(user);
@@ -70,18 +66,20 @@ public record VerificationTokenService(
     public Map<String, String> requestNewToken(String oldToken) {
         VerificationToken userToken = verificationTokenRepository.findByToken(oldToken);
         if (userToken == null) {
-            return Map.of(ERROR, INVALID_TOKEN);
+            throw  new UserException(INVALID_TOKEN);
+        }else if (!userToken.getToken().equals(oldToken)){
+            throw new UserException(INVALID_TOKEN);
         }
+
         User user = userToken.getUser();
         String token = UUID.randomUUID().toString();
         userToken.setToken(token);
         userToken.setExpirationTime(UserVerificationUtils.calculateTokenExpirationDate());
         verificationTokenRepository.save(userToken);
-        EmailContent.builder().build();
 
         RabbitMQUtils.sendUserRegisterVerifyEventContentToRabbitMQ(user, token, httpServletRequest, rabbitTemplate);
 
-        return Map.of(TOKEN, VERIFY_ACCOUNT_MESSAGE);
+        return Map.of(SUCCESS, VERIFY_ACCOUNT_MESSAGE);
     }
 
 }

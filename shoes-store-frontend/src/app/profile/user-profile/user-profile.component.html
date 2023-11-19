@@ -263,7 +263,8 @@
 
     <div *ngIf="isAccountProfile" class="acount-details">
         <h1>Acount Details</h1>
-        <app-delete-modal *ngIf="isDeleteAccount" (deleteEvent)="deleteAccountHandler($event)"
+        <app-delete-modal *ngIf="isDeleteAccount" [isDeleting]="data.isDeleting"
+            (deleteEvent)="deleteAccountHandler($event)"
             (cancelEvent)="cancelDeleteAccountHandler($event)"></app-delete-modal>
         <div class="profile bg-white shadow-md shadow-gray-400 rounded-md p-[2rem]">
             <div class="img-profile-details">
@@ -287,7 +288,7 @@
                         <img *ngIf="!data.profile?.profile"
                             src="https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg"
                             alt="profile" width="25%" height="60%">
-                        <form [formGroup]="updateUserForm" (ngSubmit)="onSaveUpdate()">
+                        <form [formGroup]="updateUserForm" (ngSubmit)="onSaveUpdate(data.profile?.id)">
                             <input
                                 [ngClass]="{error:fc.firstName.touched && fc.firstName.invalid,success:fc.firstName.valid,touched:!fc.firstName.touched}"
                                 formControlName="firstName" name="firstName" [ngClass]="{isNotUpdate:!isUpdateAccount}"
