@@ -1,5 +1,5 @@
 <ng-container *ngIf="$data |async as data">
-    <div class="custom-modal" *ngIf="data.isLogging">
+    <div class="custom-modal" *ngIf="showLogin">
         <!--Main Modal-->
         <div class="content shadow-md rounded-md">
             <!--modal content-->
@@ -12,7 +12,7 @@
                     </svg></button>
             </div>
             <div class="errorMessage">
-                <p>{{data.errors?.message}}</p>
+                <p>{{errorMessage}}</p>
             </div>
             <div class="modal-body">
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">

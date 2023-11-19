@@ -153,6 +153,14 @@ input div p{
     margin: 1rem 0;
 }
 
+.successMessage p{
+    text-align: center;
+    color: seagreen;
+    font-weight: 700;
+    margin: 1rem 0;
+}
+
+
 .successMessage h1{
     text-align: center;
     color: seagreen;

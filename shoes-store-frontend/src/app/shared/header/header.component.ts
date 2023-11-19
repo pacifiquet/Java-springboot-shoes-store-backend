@@ -1,12 +1,17 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {AuthenticationService} from '../../services/user/authentication.service';
 import {LoginUserResponse} from 'src/app/dto/user/login-user-response';
 import {Role} from 'src/app/dto/user/role.enum';
 import {Store} from '@ngrx/store';
-import {combineLatest} from 'rxjs';
-import {selectIsProfileLoaded, selectUserProfile} from 'src/app/store/reducers';
+import {Subject, combineLatest, takeUntil} from 'rxjs';
 import {Router} from '@angular/router';
-import {logoutActions} from 'src/app/store/actions';
+import {selectIsRegistering, selectUserProfile} from '../../app.reducer';
+import {Logout} from 'src/app/guest/store/user/actions';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +19,7 @@ import {logoutActions} from 'src/app/store/actions';
   styleUrls: ['./header.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   openLoginModal: boolean = false;
   openCartModal: boolean = false;
   openSignupModal: boolean = false;
@@ -24,10 +29,11 @@ export class HeaderComponent implements OnInit {
   openResetPasswordModal: boolean = false;
   profileUser: boolean = false;
   currentUser: LoginUserResponse = new LoginUserResponse();
-  href: string = '';
+  unsub$ = new Subject<void>();
+
   userProfile$ = combineLatest({
     profile: this.store.select(selectUserProfile),
-    isLogged: this.store.select(selectIsProfileLoaded),
+    isRegistering: this.store.select(selectIsRegistering),
   });
 
   constructor(
@@ -35,7 +41,11 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private store: Store
   ) {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.auth.currentUser.pipe(takeUntil(this.unsub$)).subscribe((data) => {
+      this.currentUser = data;
+    });
+  }
 
   isAdmin() {
     if (this.currentUser?.id !== undefined) {
@@ -64,7 +74,10 @@ export class HeaderComponent implements OnInit {
   }
 
   logoutUser() {
-    this.store.dispatch(logoutActions.logout());
+    this.store.dispatch(new Logout());
+    this.auth.logout();
+    this.router.navigateByUrl('/home');
+    this.hideProfileNav = !this.hideProfileNav;
   }
 
   login() {
@@ -113,5 +126,10 @@ export class HeaderComponent implements OnInit {
 
   closeCartModal(event: boolean) {
     this.openCartModal = event;
+  }
+
+  ngOnDestroy(): void {
+    this.unsub$.next();
+    this.unsub$.complete();
   }
 }

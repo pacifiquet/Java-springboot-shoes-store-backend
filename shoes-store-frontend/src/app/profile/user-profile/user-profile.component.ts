@@ -6,22 +6,31 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import {AuthenticationService} from '../services/user/authentication.service';
-import {LoginUserResponse} from '../dto/user/login-user-response';
-import {Subject, takeUntil, combineLatest} from 'rxjs';
 import {FormBuilder, Validators} from '@angular/forms';
-import {NoSpace} from '../validators/NoSpace.validator';
-import {UserService} from '../services/user/user.service';
-import {UserUpdateRequest} from '../dto/user/user-update';
-import {UserResponse} from '../dto/user/user-response';
+
 import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
+import {Observable, Subject, combineLatest, takeUntil} from 'rxjs';
+import {LoginUserResponse} from 'src/app/dto/user/login-user-response';
+import {UserResponse} from 'src/app/dto/user/user-response';
+import {UserUpdateRequest} from 'src/app/dto/user/user-update';
+import {AuthenticationService} from 'src/app/services/user/authentication.service';
+import {UserService} from 'src/app/services/user/user.service';
+import {NoSpace} from 'src/app/validators/NoSpace.validator';
+import {UserUpdateInterface} from '../types/userUpdate.interface';
+import {
+  deleteUserActions,
+  updateUserActions,
+  userProfileActions,
+} from '../store/actions';
 import {
   selectIsProfileLoaded,
+  selectIsUpdated,
   selectProfileError,
   selectUserProfile,
-} from '../store/reducers';
-import {userProfileActions} from '../store/actions';
+  selectIsDeleting,
+} from '../../app.reducer';
+import {LoaderService} from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -44,7 +53,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   isCancelOrder: boolean = false;
   isUpdateAccount: boolean = false;
   isUpdatePasword: boolean = false;
-  successMessage: string = 'success full changed';
+  successMessage: string = 'successfully Updated';
   isSuccessMessage: boolean = false;
   updateUserForm: any;
   userProfileImage: any;
@@ -58,6 +67,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     isLoggedIn: this.store.select(selectIsProfileLoaded),
     profile: this.store.select(selectUserProfile),
     profileError: this.store.select(selectProfileError),
+    isUpdated: this.store.select(selectIsUpdated),
+    isDeleting: this.store.select(selectIsDeleting),
   });
 
   @Input() deleteMessage: string =
@@ -65,11 +76,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private auth: AuthenticationService,
-    private userService: UserService,
     private router: Router,
     private fb: FormBuilder,
-    private store: Store,
-    private cdr: ChangeDetectorRef
+    private store: Store
   ) {
     this.updateUserForm = this.fb.group({
       firstName: ['', [Validators.required, NoSpace.NoSpaceValidation]],
@@ -77,7 +86,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       address: ['', Validators.required],
     });
     this.store.dispatch(userProfileActions.userProfile());
-    this.cdr.markForCheck();
   }
 
   ngOnInit(): void {}
@@ -100,48 +108,39 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSaveUpdate() {
-    const updateUser = new UserUpdateRequest(
+  onSaveUpdate(id: any) {
+    const userInfo = new UserUpdateRequest(
       this.updateUserForm.get('firstName')?.value,
       this.updateUserForm.get('lastName')?.value,
       this.updateUserForm.get('address')?.value
     );
-    this.userService
-      .updateUser(
-        this.userProfileImage,
-        JSON.stringify(updateUser),
-        Number(this.userProfile.id)
-      )
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (response) => {
-          if (response) {
-            this.userProfile = response;
-            this.successMessage = 'successfully updated';
-            this.isSuccessMessage = true;
-            setTimeout(() => {
-              this.isSuccessMessage = false;
-            }, 3000);
-          }
-        },
-        (error) => {
-          if (error) {
-            console.log(error?.error);
-          }
-        }
-      );
+
+    const updateRequest: UserUpdateInterface = {
+      userInfo: userInfo,
+      profile: this.userProfileImage,
+    };
+
+    this.store.dispatch(
+      updateUserActions.updateUser({
+        request: updateRequest,
+        id: id,
+      })
+    );
+
     this.isUpdateAccount = false;
   }
 
   updateAccount() {
     this.isUpdateAccount = true;
-    this.userProfile$.subscribe((data) => {
-      this.updateUserForm.setValue({
-        firstName: data.profile?.firstName,
-        lastName: data.profile?.lastName,
-        address: data.profile?.address,
+    this.userProfile$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(({profile}) => {
+        this.updateUserForm.setValue({
+          firstName: profile?.firstName,
+          lastName: profile?.lastName,
+          address: profile?.address,
+        });
       });
-    });
   }
 
   cancelAccountUpdate() {
@@ -171,23 +170,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.isDeleteAccount = true;
   }
 
-  deleteAccountHandler(event: boolean) {
-    this.isDeleteAccount = event;
-    this.userService
-      .deleteUser(Number(this.userProfile.id))
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (res) => {
-          if (res) {
-            this.auth.logout();
-            this.router.navigate(['/home']);
-            console.log(res);
-          }
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+  deleteAccountHandler(id: any) {
+    console.log(event);
+    this.store.dispatch(deleteUserActions.deleteUser({id}));
   }
 
   cancelDeleteAccountHandler(event: boolean) {

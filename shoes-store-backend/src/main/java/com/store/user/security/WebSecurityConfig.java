@@ -1,7 +1,6 @@
 package com.store.user.security;
 
 
-import com.store.user.models.Role;
 import com.store.user.security.jwt.InternalApiAuthenticationFilter;
 import com.store.user.security.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;

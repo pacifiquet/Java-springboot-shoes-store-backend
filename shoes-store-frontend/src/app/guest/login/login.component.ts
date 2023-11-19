@@ -2,6 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Input,
+  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
@@ -10,15 +12,16 @@ import {LoginUserRequest} from 'src/app/dto/user/login-user';
 import {AuthenticationService} from '../../services/user/authentication.service';
 import {Router} from '@angular/router';
 import {LoaderService} from '../../services/loader.service';
-import {combineLatest} from 'rxjs';
+import {Subject, combineLatest, takeUntil} from 'rxjs';
 import {Store} from '@ngrx/store';
+import {LoginUserInterace} from 'src/app/types/Login.interface';
+import {authActions} from '../store/user/actions';
 import {
+  selectCurrentUser,
   selectIsLoading,
   selectIsLogging,
   selectValidationError,
-} from 'src/app/store/reducers';
-import {LoginUserInterace} from 'src/app/types/Login.interface';
-import {authActions} from 'src/app/store/actions';
+} from '../../app.reducer';
 
 @Component({
   selector: 'app-login',
@@ -26,22 +29,25 @@ import {authActions} from 'src/app/store/actions';
   styleUrls: ['./login.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   showLoginModal: boolean = false;
   resetModal: boolean = false;
   loginForm: any;
   errorMessage: string = '';
   user: LoginUserRequest = new LoginUserRequest();
+  unsub$ = new Subject<void>();
 
   $data = combineLatest({
     isLogging: this.store.select(selectIsLogging),
     isLoading: this.store.select(selectIsLoading),
     errors: this.store.select(selectValidationError),
+    currentUser: this.store.select(selectCurrentUser),
   });
 
   @Output() closeLoginEvent = new EventEmitter<boolean>();
   @Output() openRegisterEvent = new EventEmitter<boolean>();
   @Output() openResetEvent = new EventEmitter<boolean>();
+  @Input() showLogin: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -54,10 +60,6 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(3)]],
     });
-
-    this.$data.subscribe((data) => {
-      console.log(data);
-    });
   }
 
   get fc() {
@@ -65,10 +67,16 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.auth.currentUserValue?.id) {
-      this.router.navigate(['/user-profile']);
-      return;
-    }
+    this.$data
+      .pipe(takeUntil(this.unsub$))
+      .subscribe(({errors, currentUser}) => {
+        if (errors) {
+          this.errorMessage = errors.message;
+        }
+        if (currentUser?.id) {
+          this.closeLoginEvent.emit(this.showLoginModal);
+        }
+      });
   }
 
   hideLoginModal() {
@@ -86,20 +94,9 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     const loginRequest: LoginUserInterace = this.loginForm.getRawValue();
     this.store.dispatch(authActions.loginUser({request: loginRequest}));
-
-    // this.user.email = this.loginForm.get('email').value
-    // this.user.password = this.loginForm.get('password').value
-    // this.auth.login(this.user).subscribe(
-    //   (data) => {
-    //     if (data) {
-    //       this.router.navigate(['/user-profile'])
-    //       this.closeLoginEvent.emit(this.showLoginModal)
-    //     }
-    //   },
-    //   (error) => {
-    //     this.errorMessage = error.error?.message
-    //     this.closeLoginEvent.emit(!this.showLoginModal)
-    //   }
-    // )
+  }
+  ngOnDestroy(): void {
+    this.unsub$.next();
+    this.unsub$.complete();
   }
 }

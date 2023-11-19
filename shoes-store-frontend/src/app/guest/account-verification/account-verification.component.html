@@ -1,9 +1,15 @@
-<div class="verfied-user">
-    <div>
-        <h1 [ngClass]="{'verfied':isVerified,'failed':!isVerified}">{{VerifyMessage}}</h1>
+<ng-container *ngIf="verifyInfo$ |async as info">
+    <div class="verfied-user">
+        <div>
+            <h1 *ngIf="verifyMessage" class="verfied">
+                {{verifyMessage}}</h1>
+            <h1 *ngIf="errorMessage" class="failed">{{errorMessage}}</h1>
+
+        </div>
+        <div *ngIf="errorMessage" class="flex justify-center flex-col m-5 p-[2rem]">
+            <p>This account failed to verify, {{info.failed?.message}}</p>
+            <button (click)="requestNewTokenHandler()">Request A New token</button>
+        </div>
+
     </div>
-    <div *ngIf="requestNewToken" class="flex justify-center flex-col m-5">
-        <p>This account failed to verify, {{VerifyMessage}}</p>
-        <button (click)="requestNewTokenHandler()">Request A New token</button>
-    </div>
-</div>
+</ng-container>
