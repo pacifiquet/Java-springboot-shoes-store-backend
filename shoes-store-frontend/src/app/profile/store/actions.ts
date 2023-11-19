@@ -3,6 +3,7 @@ import {UserUpdateInterface} from '../types/userUpdate.interface';
 import {UserResponseInterface} from 'src/app/types/userResponse.interface';
 import {BackendErrorInterface} from 'src/app/types/backend.error.interface';
 import {BackendSuccessResponseInterface} from 'src/app/types/BackendSuccessResponse.interface';
+import {RequestChangePasswordInterface} from '../types/requestChangePassword.interface';
 
 export const updateUserActions = createActionGroup({
   source: 'updateUser',
@@ -28,5 +29,18 @@ export const deleteUserActions = createActionGroup({
     DeleteUser: props<{id: number}>(),
     'DeleteUser success': props<{response: BackendSuccessResponseInterface}>(),
     'DeleteUser failure': props<{error: BackendErrorInterface}>(),
+  },
+});
+
+export const requestChangePasswordActions = createActionGroup({
+  source: 'requestSavePassword',
+  events: {
+    requestSavePassword: props<{request: RequestChangePasswordInterface}>(),
+    'requestSavePassword success': props<{
+      successResponse: BackendSuccessResponseInterface;
+    }>(),
+    'requestSavePassword failed': props<{
+      errorResponse: BackendErrorInterface;
+    }>(),
   },
 });

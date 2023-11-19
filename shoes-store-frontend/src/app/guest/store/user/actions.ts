@@ -47,6 +47,28 @@ export const requestNewTokenActions = createActionGroup({
   },
 });
 
+export const forgotPasswordActions = createActionGroup({
+  source: 'forgotPassword',
+  events: {
+    forgotPassword: props<{email: string}>(),
+    'forgotPassword success': props<{
+      successResponse: BackendSuccessResponseInterface;
+    }>(),
+    'forgotPassword failed': props<{errorResponse: BackendErrorInterface}>(),
+  },
+});
+
+export const savePasswordActions = createActionGroup({
+  source: 'savePassword',
+  events: {
+    savePassword: props<{password: string}>(),
+    'savePassword success': props<{
+      successResponse: BackendSuccessResponseInterface;
+    }>(),
+    'savePassword failed': props<{errorResponse: BackendErrorInterface}>(),
+  },
+});
+
 export class ActionTypes {
   static LOGOUT = '[App] logout';
 }
