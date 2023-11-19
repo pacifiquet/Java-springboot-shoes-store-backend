@@ -1,11 +1,13 @@
 import {createFeature, createReducer, on} from '@ngrx/store';
 import {
   deleteUserActions,
+  requestChangePasswordActions,
   updateUserActions,
   userProfileActions,
 } from './actions';
 import {
   deleteUserInitialState,
+  initialStateChangePassword,
   initialUserProfileState,
   updateInitialState,
 } from './initialState';
@@ -79,5 +81,32 @@ export const deleteUserFeature = createFeature({
       isDeleting: false,
       deleteUserError: action.error,
     }))
+  ),
+});
+
+export const changePasswordFeature = createFeature({
+  name: 'changePassword',
+  reducer: createReducer(
+    initialStateChangePassword,
+    on(requestChangePasswordActions.requestSavePassword, (state) => ({
+      ...state,
+      isChangingPassword: true,
+    })),
+    on(
+      requestChangePasswordActions.requestSavePasswordSuccess,
+      (state, action) => ({
+        ...state,
+        isChangingPassword: true,
+        changePasswordResponse: action.successResponse,
+      })
+    ),
+    on(
+      requestChangePasswordActions.requestSavePasswordFailed,
+      (state, action) => ({
+        ...state,
+        isChangingPassword: false,
+        changePasswordError: action.errorResponse,
+      })
+    )
   ),
 });
