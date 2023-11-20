@@ -19,8 +19,11 @@ import {
   authReducer,
   clearState,
   deleteUserReducer,
+  forgotPasswordReducer,
   registerReducer,
+  requestChangePasswordReducer,
   requestNewTokenReducer,
+  savePasswordReducer,
   verifyUserReducer,
 } from './app.reducer';
 import * as loggedEffect from './guest/store/user/effect';
@@ -30,6 +33,7 @@ import {AdminModule} from './admin/admin.module';
 import {LoadingInterceptor} from './interceptor/loading.interceptor';
 import {SharedModule} from './shared/shared.module';
 import {profileReducer, userUpdateReducer} from './app.reducer';
+import {changePasswordFeature} from './profile/store/reducers';
 
 @NgModule({
   declarations: [
@@ -58,6 +62,9 @@ import {profileReducer, userUpdateReducer} from './app.reducer';
         userDelete: deleteUserReducer,
         verifyUser: verifyUserReducer,
         requestNewToken: requestNewTokenReducer,
+        changePassword: requestChangePasswordReducer,
+        forgotPassword: forgotPasswordReducer,
+        savePassword: savePasswordReducer,
       },
       {metaReducers: [clearState]}
     ),

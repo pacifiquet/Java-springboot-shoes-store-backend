@@ -4,6 +4,7 @@ import {BackendErrorInterface} from '../../../types/backend.error.interface';
 import {LoginUserResponseInterface} from '../../../types/login.user.response.Interface';
 import {UserRegisterInterface} from 'src/app/types/userRegister.interface';
 import {BackendSuccessResponseInterface} from 'src/app/types/BackendSuccessResponse.interface';
+import {PasswordResetSaveInterface} from 'src/app/types/PasswordResetSaveInterface';
 
 export const registerActions = createActionGroup({
   source: 'register',
@@ -61,7 +62,9 @@ export const forgotPasswordActions = createActionGroup({
 export const savePasswordActions = createActionGroup({
   source: 'savePassword',
   events: {
-    savePassword: props<{password: string}>(),
+    savePassword: props<{
+      request: PasswordResetSaveInterface;
+    }>(),
     'savePassword success': props<{
       successResponse: BackendSuccessResponseInterface;
     }>(),

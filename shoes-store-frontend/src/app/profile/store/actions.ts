@@ -33,13 +33,13 @@ export const deleteUserActions = createActionGroup({
 });
 
 export const requestChangePasswordActions = createActionGroup({
-  source: 'requestSavePassword',
+  source: 'changePassword',
   events: {
-    requestSavePassword: props<{request: RequestChangePasswordInterface}>(),
-    'requestSavePassword success': props<{
+    requestChangePassword: props<{request: RequestChangePasswordInterface}>(),
+    'requestChangePassword success': props<{
       successResponse: BackendSuccessResponseInterface;
     }>(),
-    'requestSavePassword failed': props<{
+    'requestChangePassword failed': props<{
       errorResponse: BackendErrorInterface;
     }>(),
   },

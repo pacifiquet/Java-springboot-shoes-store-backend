@@ -3,8 +3,10 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {AuthenticationService} from '../../../services/user/authentication.service';
 import {
   authActions,
+  forgotPasswordActions,
   registerActions,
   requestNewTokenActions,
+  savePasswordActions,
   verifyUserActions,
 } from './actions';
 import {catchError, map, of, switchMap, tap} from 'rxjs';
@@ -100,6 +102,56 @@ export const requestNewTokenEffect = createEffect(
             );
           })
         );
+      })
+    );
+  },
+  {functional: true}
+);
+
+export const forgotPasswordEffect = createEffect(
+  (action$ = inject(Actions), userService = inject(UserService)) => {
+    return action$.pipe(
+      ofType(forgotPasswordActions.forgotPassword),
+      switchMap(({email}) => {
+        return userService.forgotPassword(email).pipe(
+          map((successResponse: BackendSuccessResponseInterface) =>
+            forgotPasswordActions.forgotPasswordSuccess({
+              successResponse,
+            })
+          ),
+          catchError((errors: HttpErrorResponse) =>
+            of(
+              forgotPasswordActions.forgotPasswordFailed({
+                errorResponse: errors.error,
+              })
+            )
+          )
+        );
+      })
+    );
+  },
+  {functional: true}
+);
+
+export const savePasswordEffect = createEffect(
+  (actions$ = inject(Actions), userService = inject(UserService)) => {
+    return actions$.pipe(
+      ofType(savePasswordActions.savePassword),
+      switchMap(({request}) => {
+        return userService
+          .saveResetPassword(request.token, request.requestBody)
+          .pipe(
+            map((successResponse: BackendSuccessResponseInterface) =>
+              savePasswordActions.savePasswordSuccess({successResponse})
+            ),
+            catchError((errorResponse: HttpErrorResponse) =>
+              of(
+                savePasswordActions.savePasswordFailed({
+                  errorResponse: errorResponse.error,
+                })
+              )
+            )
+          );
       })
     );
   },

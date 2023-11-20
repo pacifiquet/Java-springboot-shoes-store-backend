@@ -1,8 +1,12 @@
 import {BackendSuccessResponseInterface} from './BackendSuccessResponse.interface';
 import {BackendErrorInterface} from './backend.error.interface';
+import {PasswordResetRequest} from '../dto/user/password-reset-request';
 
-export interface PasswordSaveInterface {
+export interface PasswordSaveStateInterface {
   isSaved: boolean;
-  savePassword: BackendSuccessResponseInterface | null | undefined;
-  errorSavePassword: BackendErrorInterface | null | undefined;
+  successSavePasswordResponse:
+    | BackendSuccessResponseInterface
+    | null
+    | undefined;
+  errorSavePasswordResponse: BackendErrorInterface | null | undefined;
 }

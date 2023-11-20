@@ -88,20 +88,20 @@ export const changePasswordFeature = createFeature({
   name: 'changePassword',
   reducer: createReducer(
     initialStateChangePassword,
-    on(requestChangePasswordActions.requestSavePassword, (state) => ({
+    on(requestChangePasswordActions.requestChangePassword, (state) => ({
       ...state,
       isChangingPassword: true,
     })),
     on(
-      requestChangePasswordActions.requestSavePasswordSuccess,
+      requestChangePasswordActions.requestChangePasswordSuccess,
       (state, action) => ({
         ...state,
-        isChangingPassword: true,
+        isChangingPassword: false,
         changePasswordResponse: action.successResponse,
       })
     ),
     on(
-      requestChangePasswordActions.requestSavePasswordFailed,
+      requestChangePasswordActions.requestChangePasswordFailed,
       (state, action) => ({
         ...state,
         isChangingPassword: false,

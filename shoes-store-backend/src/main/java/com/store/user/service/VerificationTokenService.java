@@ -1,6 +1,5 @@
 package com.store.user.service;
 
-import com.store.email.EmailContent;
 import com.store.exceptions.UserException;
 import com.store.user.models.User;
 import com.store.user.models.VerificationToken;
@@ -20,7 +19,6 @@ import static com.store.utils.Constants.EXPIRED_TOKEN;
 import static com.store.utils.Constants.INVALID_TOKEN;
 import static com.store.utils.Constants.SUCCESS;
 import static com.store.utils.Constants.SUCCESS_VERIFIED_MESSAGE;
-import static com.store.utils.Constants.TOKEN;
 import static com.store.utils.Constants.VERIFY_ACCOUNT_MESSAGE;
 
 @Service

@@ -6,6 +6,7 @@ import com.store.user.security.CustomerUserDetailsService;
 import com.store.user.service.IPasswordResetTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +32,7 @@ public record PasswordResetController(IPasswordResetTokenService passwordResetTo
         return ResponseEntity.ok(passwordResetTokenService.resetPassword(email));
     }
 
-    @PostMapping("/save")
+    @PostMapping(value = "/save",consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Save Reset Password")
     ResponseEntity<Map<String, String>> saveResetPassword(@RequestParam String token, @Validated @RequestBody PasswordRestRequest request) {
         return ResponseEntity.status(CREATED).body(passwordResetTokenService.savePassword(token, request));
