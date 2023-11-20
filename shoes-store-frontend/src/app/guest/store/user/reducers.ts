@@ -1,12 +1,16 @@
 import {createFeature, createReducer, on} from '@ngrx/store';
 import {
   authActions,
+  forgotPasswordActions,
   registerActions,
   requestNewTokenActions,
+  savePasswordActions,
   verifyUserActions,
 } from './actions';
 import {
   authInitialState,
+  initalStateForgotPassword,
+  initialStateSavePassword,
   registerInitialState,
   verifuRequestNewTokenInitialState,
   verifyUserInitialState,
@@ -101,6 +105,48 @@ export const authFeature = createFeature({
       isLoading: false,
       isAuthRegistering: false,
       validationError: action.errors,
+    }))
+  ),
+});
+
+export const forgotPasswordFeature = createFeature({
+  name: 'forgotPassword',
+  reducer: createReducer(
+    initalStateForgotPassword,
+    on(forgotPasswordActions.forgotPassword, (state) => ({
+      ...state,
+      isResettingPassword: true,
+    })),
+    on(forgotPasswordActions.forgotPasswordSuccess, (state, action) => ({
+      ...state,
+      isResettingPassword: false,
+      forgotSuccessResponse: action.successResponse,
+    })),
+    on(forgotPasswordActions.forgotPasswordFailed, (state, action) => ({
+      ...state,
+      isResettingPassword: false,
+      forgotPasswordError: action.errorResponse,
+    }))
+  ),
+});
+
+export const savePasswordFeature = createFeature({
+  name: 'savePassword',
+  reducer: createReducer(
+    initialStateSavePassword,
+    on(savePasswordActions.savePassword, (state) => ({
+      ...state,
+      isSaved: false,
+    })),
+    on(savePasswordActions.savePasswordSuccess, (state, action) => ({
+      ...state,
+      isSaved: true,
+      successSavePasswordResponse: action.successResponse,
+    })),
+    on(savePasswordActions.savePasswordFailed, (state, action) => ({
+      ...state,
+      isSaved: false,
+      errorSavePasswordResponse: action.errorResponse,
     }))
   ),
 });

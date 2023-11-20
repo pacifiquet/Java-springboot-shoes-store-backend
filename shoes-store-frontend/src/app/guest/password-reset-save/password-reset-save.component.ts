@@ -1,14 +1,23 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
+  OnDestroy,
+  OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PasswordResetRequest } from 'src/app/dto/user/password-reset-request';
-import { UserService } from 'src/app/services/user/user.service';
-import { MatchConfirmPassword } from 'src/app/validators/MatchConfirmPassword.validator';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {PasswordResetRequest} from 'src/app/dto/user/password-reset-request';
+import {MatchConfirmPassword} from 'src/app/validators/MatchConfirmPassword.validator';
+import {savePasswordActions} from '../store/user/actions';
+import {Subject, combineLatest, takeUntil} from 'rxjs';
+import {
+  selectErrorSavePasswordResponse,
+  selectSuccessSavePasswordResponse,
+} from 'src/app/app.reducer';
 
 @Component({
   selector: 'app-password-reset-save',
@@ -16,14 +25,18 @@ import { MatchConfirmPassword } from 'src/app/validators/MatchConfirmPassword.va
   styleUrls: ['./password-reset-save.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PasswordResetSaveComponent {
+export class PasswordResetSaveComponent implements OnInit, OnDestroy {
   form: any;
   message: string = '';
   isSuccess: boolean = false;
   isError: boolean = false;
   requestNewToken: boolean = false;
-
   hideRequestNewTokenFrom: boolean = false;
+  unsub$ = new Subject<void>();
+  savePasswordInfo$ = combineLatest({
+    successSavedResponse: this.store.select(selectSuccessSavePasswordResponse),
+    errorResponse: this.store.select(selectErrorSavePasswordResponse),
+  });
 
   @Output() requestNewTokenFormEvent = new EventEmitter();
 
@@ -31,7 +44,8 @@ export class PasswordResetSaveComponent {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private store: Store,
+    private cdr: ChangeDetectorRef
   ) {
     this.form = this.fb.group(
       {
@@ -45,6 +59,27 @@ export class PasswordResetSaveComponent {
         ),
       }
     );
+  }
+
+  ngOnInit(): void {
+    this.savePasswordInfo$
+      .pipe(takeUntil(this.unsub$))
+      .subscribe(({successSavedResponse, errorResponse}) => {
+        if (successSavedResponse?.success) {
+          this.message = successSavedResponse.success;
+          this.isSuccess = true;
+          this.isError = false;
+          this.cdr.markForCheck();
+          setTimeout(() => {
+            this.router.navigateByUrl('/home');
+          }, 3000);
+        } else if (errorResponse?.message) {
+          this.message = errorResponse.message;
+          this.isSuccess = false;
+          this.isError = true;
+          this.cdr.markForCheck();
+        }
+      });
   }
 
   get fc() {
@@ -61,35 +96,22 @@ export class PasswordResetSaveComponent {
   }
 
   onSubmit() {
-    const token = this.route.snapshot.queryParamMap.get('token');
+    const tokenRequest = this.route.snapshot.queryParamMap.get('token');
     const passwordRequest = new PasswordResetRequest(
       this.form.get('password').value
     );
-    if (token) {
-      this.userService.saveResetPassword(token, passwordRequest).subscribe(
-        (response) => {
-          if (response.success) {
-            this.message = response.success;
-            setTimeout(() => {
-              this.isSuccess = true;
-              this.router.navigate(['/home']);
-            }, 3000);
-          }
 
-          if (response.error) {
-            this.message = response.error;
-            if (response.error.startsWith('invalid')) {
-              this.isError = true;
-            }
-          }
-        },
-        (error) => {
-          if (error) {
-            this.message = error?.error.message;
-            this.isError = true;
-          }
-        }
+    if (tokenRequest) {
+      this.store.dispatch(
+        savePasswordActions.savePassword({
+          request: {token: tokenRequest, requestBody: passwordRequest},
+        })
       );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsub$.next();
+    this.unsub$.complete();
   }
 }

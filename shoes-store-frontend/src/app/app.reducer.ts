@@ -1,11 +1,16 @@
 import {ActionTypes} from './guest/store/user/actions';
-import {requestNewTokenFeature} from './guest/store/user/reducers';
+import {
+  forgotPasswordFeature,
+  requestNewTokenFeature,
+  savePasswordFeature,
+} from './guest/store/user/reducers';
 import {
   authFeature,
   registerFeature,
   verifyUserFeature,
 } from './guest/store/user/reducers';
 import {
+  changePasswordFeature,
   deleteUserFeature,
   userProfileFeature,
   userUpdatedFeature,
@@ -68,6 +73,30 @@ export const {
   selectDeleteUserError,
   selectDeleteUserResponse,
 } = deleteUserFeature;
+
+export const {
+  name: requestChangePasswordKey,
+  reducer: requestChangePasswordReducer,
+  selectChangePasswordError,
+  selectChangePasswordResponse,
+  selectIsChangingPassword,
+} = changePasswordFeature;
+
+export const {
+  name: forgotPasswordKey,
+  reducer: forgotPasswordReducer,
+  selectForgotSuccessResponse,
+  selectIsResettingPassword,
+  selectForgotPasswordError,
+} = forgotPasswordFeature;
+
+export const {
+  name: savePasswordKey,
+  reducer: savePasswordReducer,
+  selectIsSaved,
+  selectErrorSavePasswordResponse,
+  selectSuccessSavePasswordResponse,
+} = savePasswordFeature;
 
 export function clearState(reducer: any) {
   return function (state: any, action: any) {

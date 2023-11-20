@@ -3,6 +3,7 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {UserService} from 'src/app/services/user/user.service';
 import {
   deleteUserActions,
+  requestChangePasswordActions,
   updateUserActions,
   userProfileActions,
 } from './actions';
@@ -81,9 +82,36 @@ export const deleteUserEffect = createEffect(
             router.navigateByUrl('/home');
             return deleteUserActions.deleteUserSuccess({response});
           }),
-          catchError(({error}) => {
-            return of(deleteUserActions.deleteUserFailure({error: error}));
+          catchError((errorResponse: HttpErrorResponse) => {
+            return of(
+              deleteUserActions.deleteUserFailure({error: errorResponse.error})
+            );
           })
+        );
+      })
+    );
+  },
+  {functional: true}
+);
+
+export const changePasswordEffect = createEffect(
+  (action$ = inject(Actions), userService = inject(UserService)) => {
+    return action$.pipe(
+      ofType(requestChangePasswordActions.requestChangePassword),
+      switchMap(({request}) => {
+        return userService.changePassword(request).pipe(
+          map((successResponse: BackendSuccessResponseInterface) =>
+            requestChangePasswordActions.requestChangePasswordSuccess({
+              successResponse,
+            })
+          ),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              requestChangePasswordActions.requestChangePasswordFailed({
+                errorResponse: errorResponse.error,
+              })
+            )
+          )
         );
       })
     );

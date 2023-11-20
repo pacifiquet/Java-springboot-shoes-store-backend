@@ -2,12 +2,22 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { PasswordChangeRequest } from 'src/app/dto/user/password-change-request';
-import { UserService } from 'src/app/services/user/user.service';
-import { MatchConfirmPassword } from 'src/app/validators/MatchConfirmPassword.validator';
+import {FormBuilder, Validators} from '@angular/forms';
+import {Store} from '@ngrx/store';
+import {Subject, combineLatest, takeUntil} from 'rxjs';
+import {
+  selectChangePasswordError,
+  selectChangePasswordResponse,
+  selectIsChangingPassword,
+} from 'src/app/app.reducer';
+import {MatchConfirmPassword} from 'src/app/validators/MatchConfirmPassword.validator';
+import {requestChangePasswordActions} from '../store/actions';
+import {Logout} from 'src/app/guest/store/user/actions';
+import {AuthenticationService} from 'src/app/services/user/authentication.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-change-password',
@@ -15,15 +25,27 @@ import { MatchConfirmPassword } from 'src/app/validators/MatchConfirmPassword.va
   styleUrls: ['./change-password.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChangePasswordComponent {
+export class ChangePasswordComponent implements OnInit {
   form: any;
   errorMessage: string = '';
   isUpdate: boolean = false;
+  unsub$ = new Subject<void>();
+
+  requestChangePassword$ = combineLatest({
+    isChangedPassword: this.store.select(selectIsChangingPassword),
+    changePasswordSuccess: this.store.select(selectChangePasswordResponse),
+    changePasswordErrror: this.store.select(selectChangePasswordError),
+  });
 
   @Output() passwordUpdateEvent = new EventEmitter();
   @Output() successMessageEvent = new EventEmitter();
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(
+    private fb: FormBuilder,
+    private store: Store,
+    private auth: AuthenticationService,
+    private router: Router
+  ) {
     this.form = fb.group(
       {
         oldPassword: ['', Validators.required],
@@ -43,36 +65,32 @@ export class ChangePasswordComponent {
     return this.form.controls;
   }
 
+  ngOnInit(): void {
+    this.requestChangePassword$
+      .pipe(takeUntil(this.unsub$))
+      .subscribe(({changePasswordSuccess, changePasswordErrror}) => {
+        if (changePasswordSuccess?.success) {
+          setTimeout(() => {
+            this.passwordUpdateEvent.emit(this.isUpdate);
+            this.store.dispatch(new Logout());
+            this.auth.logout();
+            this.router.navigateByUrl('/');
+          }, 2000);
+        } else if (changePasswordErrror?.message) {
+          this.passwordUpdateEvent.emit(!this.isUpdate);
+        }
+      });
+  }
+
   cancelUpdate() {
     this.passwordUpdateEvent.emit(this.isUpdate);
   }
 
   onSubmit() {
-    const passwordChangeRequest = new PasswordChangeRequest(
-      this.form.get('oldPassword').value,
-      this.form.get('newPassword').value
-    );
-
-    this.userService.changePassword(passwordChangeRequest).subscribe(
-      (response) => {
-        if (response.error) {
-          this.errorMessage = response.error;
-          console.log(response.error);
-          this.passwordUpdateEvent.emit(!this.isUpdate);
-        }
-
-        if (response.success) {
-          this.errorMessage = response.success;
-          console.log(response.success);
-          this.successMessageEvent.emit(response.success);
-          this.passwordUpdateEvent.emit(this.isUpdate);
-        }
-      },
-      (error) => {
-        if (error) {
-          this.errorMessage = 'Failed to chnage password';
-        }
-      }
+    const request = this.form.getRawValue();
+    console.log(request);
+    this.store.dispatch(
+      requestChangePasswordActions.requestChangePassword({request})
     );
   }
 }
