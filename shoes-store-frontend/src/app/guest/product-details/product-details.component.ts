@@ -5,11 +5,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { faStarHalfAlt } from '@fortawesome/free-regular-svg-icons';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { ProductInterface } from 'src/app/dto/product/product-interface';
-import { ProductsService } from 'src/app/services/product/products.service';
+import {ActivatedRoute} from '@angular/router';
+import {faStarHalfAlt} from '@fortawesome/free-regular-svg-icons';
+import {faStar} from '@fortawesome/free-solid-svg-icons';
+import {ProductInterface} from 'src/app/dto/product/product-interface';
+import {ProductsService} from 'src/app/services/product/products.service';
 
 @Component({
   selector: 'app-product-details',
@@ -55,9 +55,7 @@ export class ProductDetailsComponent implements OnInit {
       console.log(this.product);
     });
 
-    this.recommendedList = this.productService
-      .getAllProducts()
-      .filter((product) => product.id !== 4);
+    this.recommendedList = [];
 
     this.router.paramMap.subscribe((data) => {
       let id = Number(data.get('id'));

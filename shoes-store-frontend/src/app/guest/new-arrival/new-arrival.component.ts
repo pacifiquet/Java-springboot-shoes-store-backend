@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { faStarHalfAlt } from '@fortawesome/free-regular-svg-icons';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { ProductInterface } from 'src/app/dto/product/product-interface';
-import { ProductsService } from 'src/app/services/product/products.service';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {faStarHalfAlt} from '@fortawesome/free-regular-svg-icons';
+import {faStar} from '@fortawesome/free-solid-svg-icons';
+import {ProductInterface} from 'src/app/dto/product/product-interface';
+import {ProductsService} from 'src/app/services/product/products.service';
 
 @Component({
   selector: 'app-new-arrival',
@@ -23,9 +23,9 @@ export class NewArrivalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.newArrival = this.productService.getAllProducts().slice(2);
+    this.newArrival = [];
     // .filter((product) => product.id !== 4);
-    this.recentlyUpdated = this.productService.getAllProducts();
+    this.recentlyUpdated = [];
   }
 
   getProductReviewAverage(product: ProductInterface) {

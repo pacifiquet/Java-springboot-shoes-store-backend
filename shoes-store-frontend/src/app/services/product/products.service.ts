@@ -1,10 +1,17 @@
-import { Injectable } from '@angular/core';
-import { ProductInterface, Review } from '../../dto/product/product-interface';
+import {Injectable} from '@angular/core';
+import {ProductInterface, Review} from '../../dto/product/product-interface';
+import {envirnoment} from 'src/app/env/env';
+import {HttpClient} from '@angular/common/http';
+import {AuthenticationService} from '../user/authentication.service';
+import {RequestBaseServiceService} from '../request-base-service.service';
+import {Observable} from 'rxjs';
+
+const BASE_URL = `${envirnoment.BASE_URL}`;
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsService {
+export class ProductsService extends RequestBaseServiceService {
   reviewStarHandler: Array<number> = [];
   productList: Array<ProductInterface> = [
     {
@@ -236,10 +243,13 @@ export class ProductsService {
       ],
     },
   ];
-  constructor() {}
 
-  getAllProducts() {
-    return this.productList;
+  constructor(http: HttpClient, auth: AuthenticationService) {
+    super(auth, http);
+  }
+
+  getAllProducts(pageSize:number,pageNumber:number): Observable<any> {
+    return this.http.get(BASE_URL + `/products?pageSize=0&pageNumber=3`);
   }
 
   getTopTenProductsByRating() {

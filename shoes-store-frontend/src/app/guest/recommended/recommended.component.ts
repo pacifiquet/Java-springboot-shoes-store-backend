@@ -4,10 +4,10 @@ import {
   OnInit,
   ChangeDetectorRef,
 } from '@angular/core';
-import { faStarHalfAlt } from '@fortawesome/free-regular-svg-icons';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { ProductInterface } from 'src/app/dto/product/product-interface';
-import { ProductsService } from 'src/app/services/product/products.service';
+import {faStarHalfAlt} from '@fortawesome/free-regular-svg-icons';
+import {faStar} from '@fortawesome/free-solid-svg-icons';
+import {ProductInterface} from 'src/app/dto/product/product-interface';
+import {ProductsService} from 'src/app/services/product/products.service';
 
 @Component({
   selector: 'app-recommended',
@@ -30,9 +30,8 @@ export class RecommendedComponent implements OnInit {
     cdr.markForCheck();
   }
   ngOnInit(): void {
-    this.recommendedList = this.productServie.getAllProducts().slice(2);
-    // .filter((p) => p.id !== 4);
-    this.topTenProduct = this.productServie.getTopTenProductsByRating();
+    this.recommendedList = [];
+    this.topTenProduct = [];
   }
 
   getProductReviewAverage(product: ProductInterface) {

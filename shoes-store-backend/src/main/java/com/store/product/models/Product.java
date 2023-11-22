@@ -1,6 +1,7 @@
 package com.store.product.models;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +22,7 @@ import java.util.Set;
 @Data
 @Builder
 @Table(name = "products")
-@Entity
+@Entity(name = "Product")
 public class Product {
     @Id
     @SequenceGenerator(name = "product_id_sequence", sequenceName = "product_id_sequence", allocationSize = 1)
@@ -29,11 +30,13 @@ public class Product {
     private long id;
     private long userId;
     private String name;
-    private String image;
+    @Column(columnDefinition = "TEXT",length = 500)
+    private String url;
     private String category;
     private float price;
     private int rating;
     private int stock;
+    @Column(columnDefinition = "TEXT",length = 700)
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
