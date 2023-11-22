@@ -34,6 +34,7 @@ import {LoadingInterceptor} from './interceptor/loading.interceptor';
 import {SharedModule} from './shared/shared.module';
 import {profileReducer, userUpdateReducer} from './app.reducer';
 import {changePasswordFeature} from './profile/store/reducers';
+import {productListReducer} from './guest/store/product/productReducer';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import {changePasswordFeature} from './profile/store/reducers';
         changePassword: requestChangePasswordReducer,
         forgotPassword: forgotPasswordReducer,
         savePassword: savePasswordReducer,
+        productList: productListReducer,
       },
       {metaReducers: [clearState]}
     ),

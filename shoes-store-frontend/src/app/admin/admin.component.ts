@@ -1,6 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ProductsService } from '../services/product/products.service';
-import { ProductInterface } from '../dto/product/product-interface';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ProductsService} from '../services/product/products.service';
+import {ProductInterface} from '../dto/product/product-interface';
+import {Store} from '@ngrx/store';
+import {combineLatest} from 'rxjs';
+import {
+  getProductListState,
+  productListErrorMessage,
+} from '../guest/store/product/selector';
 
 @Component({
   selector: 'app-admin',
@@ -10,10 +16,14 @@ import { ProductInterface } from '../dto/product/product-interface';
 })
 export class AdminComponent implements OnInit {
   productList: Array<ProductInterface> = [];
-  constructor(private productService: ProductsService) {}
+  productList$ = combineLatest({
+    products: this.store.select(getProductListState),
+    errorMessage: this.store.select(productListErrorMessage),
+  });
+  constructor(private productService: ProductsService, private store: Store) {}
 
   ngOnInit(): void {
-    this.productList = this.productService.getAllProducts().slice(2);
+    this.productList = [];
   }
 
   isLogout: boolean = false;

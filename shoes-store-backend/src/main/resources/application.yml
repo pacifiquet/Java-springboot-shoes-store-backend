@@ -52,6 +52,8 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 15
   config:
     activate:
       on-profile: dev
@@ -74,6 +76,8 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 15
   config:
     activate:
       on-profile: test
