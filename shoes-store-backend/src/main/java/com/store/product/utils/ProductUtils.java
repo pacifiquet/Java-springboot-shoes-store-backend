@@ -59,7 +59,8 @@ public class ProductUtils {
                         productsData[6] = builder.toString();
                     }
                     if (productsData[4].endsWith("png") || productsData[4].endsWith("jpg")){
-                        String productUrl = (productsData[3] + productsData[4]).replace(" ", "");
+                        String productUrl = (productsData[3]+","+productsData[4]).replace(" ","");
+                        System.out.println(productUrl);
                         productsData[3] = productUrl;
                         productsData[4] = null;
                     }
@@ -67,10 +68,10 @@ public class ProductUtils {
                     StringBuilder stringBuilder = new StringBuilder();
                     for (String data:productsData){
                         if (data != null){
-                            stringBuilder.append(data).append(",");
+                            stringBuilder.append(data).append(";");
                         }
                     }
-                    productsData = stringBuilder.toString().split(",");
+                    productsData = stringBuilder.toString().split(";");
                     ProductRequest productRequest = new ProductRequest(
                             Integer.parseInt(productsData[0]),
                             productsData[1],

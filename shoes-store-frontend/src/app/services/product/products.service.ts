@@ -248,8 +248,10 @@ export class ProductsService extends RequestBaseServiceService {
     super(auth, http);
   }
 
-  getAllProducts(pageSize:number,pageNumber:number): Observable<any> {
-    return this.http.get(BASE_URL + `/products?pageSize=0&pageNumber=3`);
+  getAllProducts(pageSize: number, pageNumber: number): Observable<any> {
+    return this.http.get(
+      `${BASE_URL}/products?pageSize=${pageSize}&pageNumber=${pageNumber}`
+    );
   }
 
   getTopTenProductsByRating() {

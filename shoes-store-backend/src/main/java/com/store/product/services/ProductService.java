@@ -14,6 +14,7 @@ import com.store.product.repository.IProductRepository;
 import com.store.product.utils.ProductUtils;
 import com.store.user.models.Role;
 import com.store.user.security.CustomerUserDetailsService;
+import io.jsonwebtoken.lang.Objects;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,10 +29,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+import static com.store.product.utils.Constants.FAILED_TO_DELETE_PRODUCTS;
 import static com.store.product.utils.Constants.FAILED_TO_UPLOAD_PRODUCTS;
 import static com.store.product.utils.Constants.PRODUCT_DELETED_SUCCESSFULLY;
 import static com.store.product.utils.Constants.PRODUCT_NOT_FOUND;
 import static com.store.product.utils.Constants.SUCCESSFULLY_ADDED_PRODUCT;
+import static com.store.product.utils.Constants.SUCCESSFULLY_DELETED_PRODUCTS;
 import static com.store.product.utils.Constants.SUCCESSFULLY_PRODUCT_UPLOADED;
 import static com.store.product.utils.Constants.SUCCESSFULLY_UPDATED_PRODUCT;
 import static com.store.utils.Constants.ACCESS_DENIED;
@@ -157,5 +160,19 @@ public class ProductService implements IProductService{
     public List<ProductResponse> recentlyUpdated(int pageSize, int pageNumber) {
         Pageable pageable = PageRequest.of(pageSize,pageNumber, Sort.by("updatedAt").descending());
         return productRepository.findAll(pageable).map(product -> ProductUtils.getProductResponseHandler().apply(product)).toList();
+    }
+
+    @Override
+    public Map<String, String> deleteListOfProducts(List<Long> ids, CustomerUserDetailsService customerUserDetailsService) {
+        if (!customerUserDetailsService.getAuthorities().contains(new SimpleGrantedAuthority(ROLE_PREFIX +Role.ADMIN))){
+            throw new UserException(ACCESS_DENIED);
+        }
+
+        List<Product> productList = productRepository.findAllById(ids);
+        if (!productList.isEmpty()){
+            productRepository.deleteAll(productList);
+            return Map.of(SUCCESS,SUCCESSFULLY_DELETED_PRODUCTS);
+        }
+        return Map.of(ERROR,FAILED_TO_DELETE_PRODUCTS);
     }
 }

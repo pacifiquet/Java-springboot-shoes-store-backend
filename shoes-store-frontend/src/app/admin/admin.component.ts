@@ -1,12 +1,20 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {ProductsService} from '../services/product/products.service';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {ProductInterface} from '../dto/product/product-interface';
 import {Store} from '@ngrx/store';
-import {combineLatest} from 'rxjs';
+import {Subject, combineLatest, takeUntil} from 'rxjs';
+import {productListActions} from '../guest/store/product/actions';
 import {
-  getProductListState,
-  productListErrorMessage,
-} from '../guest/store/product/selector';
+  selectErrors,
+  selectProductList,
+} from '../guest/store/product/productReducer';
+import {selectUserProfile} from '../app.reducer';
+import {userProfileActions} from '../profile/store/actions';
 
 @Component({
   selector: 'app-admin',
@@ -14,16 +22,52 @@ import {
   styleUrls: ['./admin.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
+  unsub$ = new Subject<void>();
+  pageNumber: number = 3;
+  pageSize: number = 0;
+  currentPage: number = 1;
+  totalPage!: number;
   productList: Array<ProductInterface> = [];
-  productList$ = combineLatest({
-    products: this.store.select(getProductListState),
-    errorMessage: this.store.select(productListErrorMessage),
-  });
-  constructor(private productService: ProductsService, private store: Store) {}
 
+  productList$ = combineLatest({
+    products: this.store.select(selectProductList),
+    errorMessage: this.store.select(selectErrors),
+    profile: this.store.select(selectUserProfile),
+  });
+  constructor(private store: Store, private cdr: ChangeDetectorRef) {
+    this.store.dispatch(userProfileActions.userProfile());
+  }
   ngOnInit(): void {
-    this.productList = [];
+    this.productList$.pipe(takeUntil(this.unsub$)).subscribe(({products}) => {
+      if (products) {
+        this.productList = products.content;
+        this.currentPage += products.number;
+        this.totalPage = products.totalPages;
+      }
+      if (products?.first) {
+        this.pageSize += 1;
+      }
+    });
+    this.getProductsByPage();
+  }
+
+  getProductsByPage() {
+    this.store.dispatch(
+      productListActions.productList({
+        request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
+      })
+    );
+  }
+
+  prevProductsByPage() {
+    this.pageSize -= 1;
+    this.currentPage = this.currentPage - 1;
+    this.store.dispatch(
+      productListActions.productList({
+        request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
+      })
+    );
   }
 
   isLogout: boolean = false;
@@ -89,5 +133,10 @@ export class AdminComponent implements OnInit {
     this.isWeekActive = false;
     this.isMonthActive = false;
     this.isYearActive = true;
+  }
+
+  ngOnDestroy(): void {
+    this.unsub$.next();
+    this.unsub$.complete();
   }
 }

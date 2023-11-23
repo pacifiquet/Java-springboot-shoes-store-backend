@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -10,12 +9,11 @@ import {FormBuilder, Validators} from '@angular/forms';
 
 import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
-import {Observable, Subject, combineLatest, takeUntil} from 'rxjs';
+import {Subject, combineLatest, takeUntil} from 'rxjs';
 import {LoginUserResponse} from 'src/app/dto/user/login-user-response';
 import {UserResponse} from 'src/app/dto/user/user-response';
 import {UserUpdateRequest} from 'src/app/dto/user/user-update';
 import {AuthenticationService} from 'src/app/services/user/authentication.service';
-import {UserService} from 'src/app/services/user/user.service';
 import {NoSpace} from 'src/app/validators/NoSpace.validator';
 import {UserUpdateInterface} from '../types/userUpdate.interface';
 import {
@@ -30,7 +28,6 @@ import {
   selectUserProfile,
   selectIsDeleting,
 } from '../../app.reducer';
-import {LoaderService} from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-user-profile',

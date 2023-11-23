@@ -2,7 +2,6 @@ package com.store.product.services;
 
 import com.store.product.dto.ProductRequest;
 import com.store.product.dto.ProductResponse;
-import com.store.product.dto.ProductUpdateRequest;
 import com.store.user.security.CustomerUserDetailsService;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,4 +30,7 @@ public interface IProductService {
     Map<String, String> deleteProduct(long productId);
 
     List<ProductResponse> recentlyUpdated(int pageSize, int pageNumber);
+
+
+    Map<String, String> deleteListOfProducts(List<Long> ids, CustomerUserDetailsService customerUserDetailsService);
 }

@@ -91,4 +91,10 @@ public class ProductController {
     ResponseEntity<Map<String,String>> deleteProduct(@PathVariable long productId){
         return ResponseEntity.ok(productService.deleteProduct(productId));
     }
+
+    @DeleteMapping(value = "delete-products")
+    @Operation(summary = "deleting list of products")
+    ResponseEntity<Map<String,String>> deleteProducts(@RequestParam(value = "ids") List<Long> ids,@AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService){
+        return ResponseEntity.ok(productService.deleteListOfProducts(ids,customerUserDetailsService));
+    }
 }

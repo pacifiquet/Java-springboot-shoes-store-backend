@@ -28,12 +28,12 @@ import {
 } from './app.reducer';
 import * as loggedEffect from './guest/store/user/effect';
 import * as userUpdateEffect from './profile/store/effect';
+import * as productsEffect from './guest/store/product/effect';
 import {ProfileModule} from './profile/profile.module';
 import {AdminModule} from './admin/admin.module';
 import {LoadingInterceptor} from './interceptor/loading.interceptor';
 import {SharedModule} from './shared/shared.module';
 import {profileReducer, userUpdateReducer} from './app.reducer';
-import {changePasswordFeature} from './profile/store/reducers';
 import {productListReducer} from './guest/store/product/productReducer';
 
 @NgModule({
@@ -70,7 +70,7 @@ import {productListReducer} from './guest/store/product/productReducer';
       },
       {metaReducers: [clearState]}
     ),
-    EffectsModule.forRoot([loggedEffect, userUpdateEffect]),
+    EffectsModule.forRoot([loggedEffect, userUpdateEffect, productsEffect]),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
   ],
   providers: [
