@@ -12,6 +12,7 @@ import {Subject, combineLatest, takeUntil} from 'rxjs';
 import {Router} from '@angular/router';
 import {selectIsRegistering, selectUserProfile} from '../../app.reducer';
 import {Logout} from 'src/app/guest/store/user/actions';
+import {userProfileActions} from 'src/app/profile/store/actions';
 
 @Component({
   selector: 'app-header',
@@ -40,7 +41,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private auth: AuthenticationService,
     private router: Router,
     private store: Store
-  ) {}
+  ) {
+    this.store.dispatch(userProfileActions.userProfile());
+  }
   ngOnInit(): void {
     this.auth.currentUser.pipe(takeUntil(this.unsub$)).subscribe((data) => {
       this.currentUser = data;

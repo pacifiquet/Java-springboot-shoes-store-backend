@@ -9,4 +9,6 @@ public class Constants {
     public static final String FAILED_TO_UPLOAD_PRODUCTS = "Failed to upload products";
     public static final String PRODUCT_DELETED_SUCCESSFULLY = "Product deleted successfully";
     public static final String PRODUCT_NOT_FOUND = "Product not found";
+    public static final String FAILED_TO_DELETE_PRODUCTS = "Failed to delete products";
+    public static final String SUCCESSFULLY_DELETED_PRODUCTS = "Successfully deleted products";
 }
