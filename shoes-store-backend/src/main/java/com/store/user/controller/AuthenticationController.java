@@ -33,4 +33,10 @@ public record AuthenticationController(IAuthenticationService authenticationServ
         return ResponseEntity.ok(authenticationService.makeAdmin(email));
     }
 
+    @GetMapping(value = "refreshToken")
+    @Operation(summary = "Refresh user login token")
+    ResponseEntity<LoginResponse> refreshToken(@RequestParam(value = "token")String token){
+        return ResponseEntity.ok(authenticationService.refreshToken(token));
+    }
+
 }

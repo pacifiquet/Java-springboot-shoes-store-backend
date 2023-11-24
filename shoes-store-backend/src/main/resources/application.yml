@@ -9,7 +9,7 @@ spring:
       max-request-size: 30MB
 
   config:
-    import: optional:aws-config.yml
+    import: optional:aws-config.yml, optional:jdb-database-config.yaml
   thymeleaf:
     cache: false
 logging:

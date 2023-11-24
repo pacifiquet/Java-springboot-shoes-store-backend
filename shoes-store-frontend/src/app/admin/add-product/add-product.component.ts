@@ -1,10 +1,17 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Input,
+  OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import {FormBuilder, Validators} from '@angular/forms';
+import {Store} from '@ngrx/store';
+import {combineLatest} from 'rxjs';
+import {selectProduct} from '../store/admin.reducers';
+import {productDetailsActions} from '../store/actions';
 
 @Component({
   selector: 'app-add-product',
@@ -12,13 +19,19 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./add-product.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddProductComponent {
+export class AddProductComponent implements OnInit {
   isModalOpen: boolean = true;
   form: any;
 
+  product$ = combineLatest({
+    data: this.store.select(selectProduct),
+  });
+
+  @Input() id: any;
+
   @Output() addProductModalEvent = new EventEmitter<boolean>();
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, private store: Store) {
     this.form = fb.group({
       productName: ['', Validators.required],
       image: [null, Validators.required],
@@ -29,13 +42,15 @@ export class AddProductComponent {
     });
   }
 
+  ngOnInit(): void {}
+
   closeProductModal() {
     this.addProductModalEvent.emit(this.isModalOpen);
   }
 
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
-    this.form.patchValue({ image: file });
+    this.form.patchValue({image: file});
   }
 
   get fc() {

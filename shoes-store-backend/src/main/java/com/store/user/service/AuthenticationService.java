@@ -5,7 +5,6 @@ import com.store.exceptions.UserException;
 import com.store.user.dto.LoginRequest;
 import com.store.user.dto.LoginResponse;
 import com.store.user.dto.MessageResponse;
-import com.store.user.dto.UserResponse;
 import com.store.user.models.Role;
 import com.store.user.models.User;
 import com.store.user.repository.IUserRepository;
@@ -18,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -85,6 +83,20 @@ public class AuthenticationService implements IAuthenticationService {
         }
         throw new UserException("INVALID KEY");
 
+    }
+
+    @Override
+    public LoginResponse refreshToken(String token) {
+        String username = jwtService.extractUsername(token);
+        User user = userRepository.findByEmail(username).orElseThrow(() -> new UserException(USER_NOT_FOUND));
+        UserDetails userDetails = CustomerUserDetailsService.build(user);
+        String jwtToken = jwtService.generateToken(userDetails);
+        String refreshToken = jwtService.generateRefreshToken(userDetails);
+
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put("token", jwtToken);
+        tokens.put("refreshToken", refreshToken);
+        return new LoginResponse(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getRole().name(), user.getProfile(), user.getAddress(),tokens);
     }
 
 

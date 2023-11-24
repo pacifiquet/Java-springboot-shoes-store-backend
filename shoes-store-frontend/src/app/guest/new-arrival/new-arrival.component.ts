@@ -15,6 +15,8 @@ export class NewArrivalComponent implements OnInit {
   newArrival: Array<ProductInterface> = [];
   product: ProductInterface = {};
   recentlyUpdated: Array<ProductInterface> = [];
+  limit = 5;
+  offset = 0;
   star = faStar;
   haflIcon = faStarHalfAlt;
   constructor(
@@ -24,11 +26,10 @@ export class NewArrivalComponent implements OnInit {
 
   ngOnInit(): void {
     this.newArrival = [];
-    // .filter((product) => product.id !== 4);
     this.recentlyUpdated = [];
   }
 
   getProductReviewAverage(product: ProductInterface) {
-    return this.productService.getProductReviewAverage(product.reviews);
+    return [];
   }
 }

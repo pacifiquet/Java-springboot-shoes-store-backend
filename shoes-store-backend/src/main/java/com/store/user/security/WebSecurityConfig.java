@@ -1,6 +1,7 @@
 package com.store.user.security;
 
 
+import com.store.user.security.jwt.AuthEntryPointJwt;
 import com.store.user.security.jwt.InternalApiAuthenticationFilter;
 import com.store.user.security.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +25,8 @@ import static org.springframework.http.HttpMethod.POST;
 public record WebSecurityConfig(
         AuthenticationProvider authenticationProvider,
         JwtAuthenticationFilter jwtAuthenticationFilter,
-        InternalApiAuthenticationFilter internalApiAuthenticationFilter
+        InternalApiAuthenticationFilter internalApiAuthenticationFilter,
+        AuthEntryPointJwt authEntryPointJwt
 ) {
 
 
@@ -45,6 +47,5 @@ public record WebSecurityConfig(
 
         return httpSecurity.build();
     }
-
 
 }

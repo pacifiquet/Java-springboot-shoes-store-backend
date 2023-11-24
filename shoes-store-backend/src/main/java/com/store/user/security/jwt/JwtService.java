@@ -1,8 +1,14 @@
 package com.store.user.security.jwt;
 
 import com.store.config.StoreConfigProperties;
+import com.store.exceptions.UserException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +19,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 
+
 @Service
+@Slf4j
 public class JwtService implements IJwtService {
     private final StoreConfigProperties appProperties;
     private final SecretKey secretKey;
@@ -46,7 +54,21 @@ public class JwtService implements IJwtService {
 
     @Override
     public boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
+        try {
+            Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
+            return false;
+        } catch (MalformedJwtException e) {
+            log.error("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            log.error("JWT token is expired: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            log.error("JWT token is unsupported: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("JWT claims string is empty: {}", e.getMessage());
+        }catch (SignatureException exception){
+            log.error("Invalid JWT signature: {}", exception.getMessage());
+        }
+        return true;
     }
 
     @Override

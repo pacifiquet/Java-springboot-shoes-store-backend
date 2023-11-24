@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.store.config.AwsConfigProperties;
 import com.store.exceptions.ProductException;
 import com.store.exceptions.UserException;
+import com.store.product.dao.IProductDao;
+import com.store.product.dto.RecentUpdateProducts;
+import com.store.product.dto.ProductAndRecommendedResponse;
 import com.store.product.dto.ProductRequest;
 import com.store.product.dto.ProductResponse;
 import com.store.product.dto.ProductUpdateRequest;
@@ -14,7 +17,6 @@ import com.store.product.repository.IProductRepository;
 import com.store.product.utils.ProductUtils;
 import com.store.user.models.Role;
 import com.store.user.security.CustomerUserDetailsService;
-import io.jsonwebtoken.lang.Objects;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,6 +52,7 @@ public class ProductService implements IProductService{
     private final AmazonS3 amazonS3;
     private final AwsConfigProperties awsConfigProperties;
     private final ObjectMapper objectMapper;
+    private final IProductDao productDao;
     @Override
     @Transactional
     public Map<String, String> uploadProductsCSV(MultipartFile fileProducts, CustomerUserDetailsService userDetailsService) {
@@ -110,8 +113,8 @@ public class ProductService implements IProductService{
 
 
     @Override
-    public Page<ProductResponse> productList(int pageSize, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageSize,pageNumber, Sort.by("createdAt").ascending());
+    public Page<ProductResponse> productList(int pageNumber,int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by("createdAt").ascending());
         Page<Product> products = productRepository.findAll(pageable);
         return products.map(product -> ProductUtils.getProductResponseHandler().apply(product));
 
@@ -125,14 +128,14 @@ public class ProductService implements IProductService{
 
     @Override
     public Page<ProductResponse> productListByCategory(String category,int pageSize, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageSize,pageNumber, Sort.by("createdAt").descending());
+        Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by("createdAt").descending());
         System.out.println(category);
         return productRepository.getProductListByCategory(pageable, category);
     }
 
     @Override
     public List<ProductResponse> searchProduct(String searchKey,int pageSize, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageSize,pageNumber, Sort.by("createdAt").ascending());
+        Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by("createdAt").ascending());
         Page<Product> productsByNameContainingIgnoreCase = productRepository.getProductsByNameContainingIgnoreCase(searchKey, pageable);
         return productsByNameContainingIgnoreCase.stream().map(product -> ProductUtils.getProductResponseHandler().apply(product)).toList();
     }
@@ -141,9 +144,9 @@ public class ProductService implements IProductService{
     public List<ProductResponse> orderingProduct(String orderType, int pageSize, int pageNumber) {
         Pageable pageable;
         if (orderType.equalsIgnoreCase("desc")){
-            pageable = PageRequest.of(pageSize,pageNumber, Sort.by("createdAt").descending());
+            pageable = PageRequest.of(pageNumber,pageSize, Sort.by("createdAt").descending());
         }else {
-            pageable = PageRequest.of(pageSize,pageNumber, Sort.by("createdAt").ascending());
+            pageable = PageRequest.of(pageNumber,pageSize, Sort.by("createdAt").ascending());
         }
         return productRepository.findAll(pageable).map(product -> ProductUtils.getProductResponseHandler().apply(product)).toList();
     }
@@ -157,9 +160,8 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public List<ProductResponse> recentlyUpdated(int pageSize, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageSize,pageNumber, Sort.by("updatedAt").descending());
-        return productRepository.findAll(pageable).map(product -> ProductUtils.getProductResponseHandler().apply(product)).toList();
+    public List<RecentUpdateProducts> recentlyUpdated(int limit, int offset) {
+        return productDao.getRecentUpdateProducts(limit,offset).stream().map(product -> ProductUtils.getRecentProductResponseHandler().apply(product)).toList();
     }
 
     @Override
@@ -170,9 +172,19 @@ public class ProductService implements IProductService{
 
         List<Product> productList = productRepository.findAllById(ids);
         if (!productList.isEmpty()){
-            productRepository.deleteAll(productList);
+            productRepository.deleteAllInBatch(productList);
             return Map.of(SUCCESS,SUCCESSFULLY_DELETED_PRODUCTS);
         }
         return Map.of(ERROR,FAILED_TO_DELETE_PRODUCTS);
+    }
+
+    @Override
+    public ProductAndRecommendedResponse getProductAndRecommendedProducts(long productId, int pageSize, int pageNumber) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,Sort.by("createdAt"));
+        Page<ProductResponse> productListByCategory = productRepository.getProductListByCategory(pageable, product.getCategory());
+        ProductResponse response = ProductUtils.getProductResponseHandler().apply(product);
+        return new ProductAndRecommendedResponse(response,productListByCategory);
+
     }
 }

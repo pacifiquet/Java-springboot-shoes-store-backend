@@ -5,10 +5,9 @@
                 <h3>{{message}}</h3>
             </div>
             <div class="modal-body">
-                <button (click)="approveDeleteProduct(user.currentUser?.id)"
-                    class="delete shadow-md shadow-gray-400 shadow-md">Yes, I'm
+                <button (click)="approveDelete()" class="delete shadow-md shadow-gray-400 shadow-md">Yes, I'm
                     sure</button>
-                <button (click)=" cancelDeleteProduct()"
+                <button (click)=" cancelDelete()"
                     class="cancel shadow-md shadow-gray-400 shadow-md ring-1 ring-green-900">No, Cancel</button>
             </div>
 

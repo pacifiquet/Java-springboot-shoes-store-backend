@@ -8,5 +8,6 @@ public interface IAuthenticationService {
     LoginResponse login(LoginRequest request);
 
     MessageResponse makeAdmin(String email);
+    LoginResponse refreshToken(String token);
 
 }

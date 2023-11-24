@@ -39,6 +39,29 @@ export const loginEffect = createEffect(
   {functional: true}
 );
 
+export const loginRefreshTokenEffect = createEffect(
+  (actions$ = inject(Actions), authService = inject(AuthenticationService)) => {
+    return actions$.pipe(
+      ofType(authActions.refreshToken),
+      switchMap(({request}) => {
+        return authService.loginRequestToken(request).pipe(
+          map((currentUser: LoginUserResponseInterface) => {
+            return authActions.refreshTokenSuccess({currentUser});
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return of(
+              authActions.refreshTokenFailed({
+                errors: errorResponse.error,
+              })
+            );
+          })
+        );
+      })
+    );
+  },
+  {functional: true}
+);
+
 export const registerEffect = createEffect(
   (action$ = inject(Actions), userService = inject(UserService)) => {
     return action$.pipe(

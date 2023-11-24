@@ -105,6 +105,29 @@ export const authFeature = createFeature({
       isLoading: false,
       isAuthRegistering: false,
       validationError: action.errors,
+    })),
+    on(authActions.refreshToken, (state) => ({
+      ...state,
+      isLoading: true,
+      isLogging: true,
+      isAuthRegistering: false,
+      validationError: null,
+    })),
+
+    on(authActions.refreshTokenSuccess, (state, action) => ({
+      ...state,
+      isLogging: false,
+      isLoading: false,
+      isAuthRegistering: false,
+      currentUser: action.currentUser,
+    })),
+
+    on(authActions.refreshTokenFailed, (state, action) => ({
+      ...state,
+      isLogging: false,
+      isLoading: false,
+      isAuthRegistering: false,
+      validationError: action.errors,
     }))
   ),
 });

@@ -1,7 +1,49 @@
-<section id="product-details">
-    <div class="product-details">
-        <img [src]="product.productUrl" [alt]="product.productName">
-        <div class="product-desc">
+<ng-container *ngIf="(products$ |async) as product">
+    <section id="product-details">
+        <div class="product-details">
+            <img [src]="product.data?.productResponse?.productUrl" [alt]="product.data?.productResponse?.productName">
+            <div class="product-desc">
+                <div class="icons">
+                    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+                    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+                    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+                    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+                    <fa-icon style="color: #F79522;" [icon]="haflIcon"></fa-icon>
+                    <p> {{product.data?.productResponse?.rating}} Reviews
+                    </p>
+                </div>
+                <div class="desc">
+                    <h1> {{product.data?.productResponse?.productName}}</h1>
+                    <h4>{{product.data?.productResponse?.price| currency}}</h4>
+                    <p>{{product.data?.productResponse?.description}}</p>
+                    <button>add to cart</button>
+                </div>
+
+            </div>
+        </div>
+        <!-- recommended -->
+        <div class="products">
+            <div class="recommended-header">
+                <h3>Recommended</h3>
+            </div>
+            <ul>
+                <div *ngIf="recommendedList.length>0 then recommendProducts;else noRecommendedProducts"></div>
+            </ul>
+            <div class="pagination" *ngIf="recommendedList.length>0">
+                <button class="prev">PREV</button>
+                <h4>1</h4>
+                <button class="next">NEXT</button>
+            </div>
+        </div>
+    </section>
+</ng-container>
+
+<ng-template #recommendProducts>
+    <li *ngFor="let product of recommendedList">
+        <div class="product-image">
+            <img [src]="product.productUrl" [alt]="product.productName">
+        </div>
+        <div class="ratings">
             <div class="icons">
                 <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
                 <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
@@ -11,48 +53,15 @@
                 <p>{{getProductReviewAverage(product)}} of 5 ({{product.reviews?.length || 0}} Reviews )
                 </p>
             </div>
-            <div class="desc">
-                <h1>Product Name: {{product.productName}}</h1>
-                <h4>{{product.price | currency}}</h4>
-                <p>{{product.description}}</p>
-                <button>add to cart</button>
-            </div>
-
         </div>
-    </div>
-    <!-- recommended -->
-    <div class="products">
-        <div class="recommended-header">
-            <h3>Recommended</h3>
+        <h2>{{product.price | currency}}</h2>
+        <h3>{{product.productName}}</h3>
+        <div class="actions">
+            <button (click)="productDetails(product.id)" class="view">view</button>
+            <button class="add-cart">add to cart</button>
         </div>
-        <ul>
-            <li *ngFor="let product of recommendedList">
-                <div class="product-image">
-                    <img [src]="product.productUrl" [alt]="product.productName">
-                </div>
-                <div class="ratings">
-                    <div class="icons">
-                        <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                        <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                        <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                        <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                        <fa-icon style="color: #F79522;" [icon]="haflIcon"></fa-icon>
-                        <p>{{getProductReviewAverage(product)}} of 5 ({{product.reviews?.length || 0}} Reviews )
-                        </p>
-                    </div>
-                </div>
-                <h2>{{product.price | currency}}</h2>
-                <h3>{{product.productName}}</h3>
-                <div class="actions">
-                    <button [routerLink]="['/product-details',product.id]" class="view">view</button>
-                    <button class="add-cart">add to cart</button>
-                </div>
-            </li>
-        </ul>
-        <div class="pagination">
-            <button class="prev">PREV</button>
-            <h4>1</h4>
-            <button class="next">NEXT</button>
-        </div>
-    </div>
-</section>
+    </li>
+</ng-template>
+<ng-template #noRecommendedProducts>
+    <p class="text-2xl">There is no recommended products</p>
+</ng-template>

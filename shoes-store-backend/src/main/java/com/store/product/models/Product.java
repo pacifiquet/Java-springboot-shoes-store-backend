@@ -43,4 +43,6 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Review> reviews;
 
+
+    public Product(String name, String url, float price, int rating) {}
 }
