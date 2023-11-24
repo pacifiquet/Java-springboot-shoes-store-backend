@@ -17,5 +17,11 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     )
     Page<ProductResponse>getProductListByCategory(Pageable pageable, @Param(value = "category")String category);
 
+//    @Query(
+//            value = "SELECT NEW com.store.product.models.Product(product.id,product.userId, product.name,product.url,product.category,product.price,product.rating,product.stock,product.description,product.createdAt,product.updatedAt,product.reviews) FROM Product product"
+//    )
+@Query(nativeQuery = true, value = "select * from products p WHERE p.stock > 0 order by p.updated_at DESC LIMIT 10 OFFSET 0")
+Page<Product> getTOpTenRecentUpdatedProducts(Pageable pageable);
+
     Page<Product> getProductsByNameContainingIgnoreCase(String name,Pageable pageable);
 }

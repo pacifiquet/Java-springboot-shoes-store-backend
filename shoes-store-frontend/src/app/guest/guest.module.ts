@@ -13,6 +13,8 @@ import {PasswordResetSaveComponent} from './password-reset-save/password-reset-s
 import {AccountVerificationComponent} from './account-verification/account-verification.component';
 import {GuestRoutingModule} from './guest.routing.module';
 import {SharedModule} from '../shared/shared.module';
+import { TopSoldComponent } from './top-sold/top-sold.component';
+import { RecentlyUpdatedComponent } from './recently-updated/recently-updated.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import {SharedModule} from '../shared/shared.module';
     ProductDetailsComponent,
     PasswordResetSaveComponent,
     AccountVerificationComponent,
+    TopSoldComponent,
+    RecentlyUpdatedComponent,
   ],
   imports: [
     CommonModule,
@@ -42,6 +46,8 @@ import {SharedModule} from '../shared/shared.module';
     PasswordResetSaveComponent,
     AccountVerificationComponent,
     GuestRoutingModule,
+    TopSoldComponent,
+    RecentlyUpdatedComponent,
   ],
 })
 export class GuestModule {}

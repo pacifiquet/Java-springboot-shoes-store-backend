@@ -1,48 +1,63 @@
-<div class="admin shadow shadow-gray-500 rounded-lg">
-    <button (click)="addProduct()"
-        class="absolute flex  bg-zinc-100 text-xl shadow-lg ring-1 p-4 ring-white-900 rounded-lg">Add
-        Product <img src="../../assets/ic_baseline-plus.svg" alt="add-product">
-    </button>
+<ng-container *ngIf="(productList$ |async) as products">
+    <div class="admin shadow shadow-gray-500 rounded-lg">
+        <button (click)="addProduct()"
+            class="absolute flex  bg-zinc-100 text-xl shadow-lg ring-1 p-4 ring-white-900 rounded-lg">Add
+            Product <img src="../../assets/ic_baseline-plus.svg" alt="add-product">
+        </button>
 
-    <app-add-product (addProductModalEvent)="hideAddProductModal($event)" *ngIf="isAddProductActive"></app-add-product>
-    <app-delete-modal (cancelEvent)="cancelDeleteProduct($event)" (deleteEvent)="approveDeleteProduct($event)"
-        *ngIf="isDeletingProduct"></app-delete-modal>
-    <div class="stats">
-        <div class="solds">
-            <h1>Total Sold:</h1>
-            <div class="solds-actions">
-                <button (click)="dayStats()" [ngClass]="{'active':isDayActive}" class="rounded-lg ring-1 ring-green-900"
-                    [ngClass]="{'active':isDayActive}">DAY</button>
-                <button (click)="weekStats()" class="rounded-lg ring-1 ring-green-900"
-                    [ngClass]="{'active':isWeekActive}">WEEK</button>
-                <button (click)="monthStats()" class="rounded-lg ring-1 ring-green-900"
-                    [ngClass]="{'active':isMonthActive}">MONTH</button>
-                <button (click)="yearStats()" class="rounded-lg ring-1 ring-green-900"
-                    [ngClass]="{'active':isYearActive}">YEAR</button>
+        <app-add-product [id]="id" (addProductModalEvent)="hideAddProductModal($event)"
+            *ngIf="isAddProductActive"></app-add-product>
+        <app-delete-modal [ids]="ids" (cancelEvent)="cancelDelete($event)" (deleteEvent)="approveDelete($event)"
+            *ngIf="isDeleting"></app-delete-modal>
+
+        <div class="successMessage" *ngIf="successMessage">
+            <p>{{successMessage}}</p>
+        </div>
+
+        <div class="errorMessage" *ngIf="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
+
+        <div class="stats">
+            <div class="solds">
+                <h1>Total Sold:</h1>
+                <div class="solds-actions">
+                    <button (click)="dayStats()" [ngClass]="{'active':isDayActive}"
+                        class="rounded-lg ring-1 ring-green-900" [ngClass]="{'active':isDayActive}">DAY</button>
+                    <button (click)="weekStats()" class="rounded-lg ring-1 ring-green-900"
+                        [ngClass]="{'active':isWeekActive}">WEEK</button>
+                    <button (click)="monthStats()" class="rounded-lg ring-1 ring-green-900"
+                        [ngClass]="{'active':isMonthActive}">MONTH</button>
+                    <button (click)="yearStats()" class="rounded-lg ring-1 ring-green-900"
+                        [ngClass]="{'active':isYearActive}">YEAR</button>
+                </div>
+                <div class="value shadow hover:ring-zinc-900">
+                    <span>450</span>
+                </div>
+                <div class="ml-2">
+                    <p class="text-xl">All Products:<span class="text-xl font-500">
+                            {{products.products?.totalElements}}</span></p>
+                </div>
             </div>
-            <div class="value shadow hover:ring-zinc-900">
-                <span>450</span>
+            <div class="filtering">
+                <div class="ordering">
+                    <button class="shadow">ASC</button>
+                    <button class="shadow">DESC</button>
+                </div>
+                <ul>
+                    <li [ngClass]="{active: isMenNavActive}"><button>Men</button></li>
+                    <li><button>Women</button></li>
+                    <li><button>Kids</button></li>
+                </ul>
+                <div>
+                    <form>
+                        <input type="search" placeholder="search">
+                    </form>
+                </div>
             </div>
         </div>
-        <div class="filtering">
-            <div class="ordering">
-                <button class="shadow">ASC</button>
-                <button class="shadow">DESC</button>
-            </div>
-            <ul>
-                <li [ngClass]="{active: isMenNavActive}"><button>Men</button></li>
-                <li><button>Women</button></li>
-                <li><button>Kids</button></li>
-            </ul>
-            <div>
-                <form>
-                    <input type="search" placeholder="search">
-                </form>
-            </div>
-        </div>
-    </div>
 
-    <ng-container *ngIf="(productList$ |async ) as products">
+
         <div class="products-table shadow rounded-lg"
             *ngIf="productList.length>0 then productsContent; else noProducts">
         </div>
@@ -77,7 +92,7 @@
                         <td>{{product.price | currency}}</td>
                         <td>{{product.createAt |date:'medium'}}</td>
                         <td class="delete-edit">
-                            <button (click)="viewProductAndEdit()">
+                            <button (click)="viewProductAndEdit(product.id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
                                     fill="none">
                                     <path
@@ -97,33 +112,36 @@
                                         d="M6.5 19C6.5 19.5304 6.71071 20.0391 7.08579 20.4142C7.46086 20.7893 7.96957 21 8.5 21H16.5C17.0304 21 17.5391 20.7893 17.9142 20.4142C18.2893 20.0391 18.5 19.5304 18.5 19V7H6.5V19ZM8.5 9H16.5V19H8.5V9ZM16 4L15 3H10L9 4H5.5V6H19.5V4H16Z"
                                         fill="#F79522" />
                                 </svg>
+
                             </button>
+                            <input type="checkbox" (click)="selectProductsTodelete(product.id)">
                         </td>
                     </tr>
                 </tbody>
 
             </table>
+        </ng-template>
+        <div class="product-actions">
+            <div class="export-import">
+                <form>
+                    <label for="fileInput">Import Products CSV</label>
+                    <input type="file" id="fileInput" (change)="productsFileHandler($event)" accept="text/csv">
+                    <button class="ml-4" type="button" (click)="productListUploadHandler()">Submit</button>
+                </form>
 
-            <div class="product-actions">
-                <div class="export-import">
-                    <form>
-                        <label for="fileInput">Import Products CSV</label>
-                        <input type="file" id="fileInput">
-                        <button class="ml-4" type="submit">Submit</button>
-                    </form>
-
-                    <button>Export Product CSV</button>
-                </div>
-                <div class="pagination shadow-lg rounded-lg shadow-gray-500">
-                    <button (click)="prevProductsByPage()" [disabled]="products.products?.first">PREV</button>
-                    <span>{{currentPage}}</span>
-                    <button (click)="getProductsByPage()" [disabled]="products.products?.last">NEXT</button>
-                </div>
+                <button>Export Product CSV</button>
+                <button class="delete-products" *ngIf="ids.length>0" (click)="handleDeleteMultipleProducts()">Delete
+                    Products</button>
             </div>
-        </ng-template>
-        <ng-template #noProducts>
-            <p class="noProducts">There's not Products to show...</p>
-        </ng-template>
-    </ng-container>
+            <div class="pagination shadow-lg rounded-lg shadow-gray-500">
+                <button (click)="prevProductsByPage()" [disabled]="products.products?.first">PREV</button>
+                <span *ngIf="currentPage">{{currentPage}}</span>
+                <button (click)="nextProductsByPage()" [disabled]="products.products?.last">NEXT</button>
+            </div>
 
-</div>
+        </div>
+        <ng-template #noProducts>
+            <p class=" noProducts">There's not Products to show...</p>
+        </ng-template>
+    </div>
+</ng-container>

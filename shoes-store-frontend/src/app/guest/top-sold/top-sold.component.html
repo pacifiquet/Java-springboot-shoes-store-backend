@@ -1,0 +1,40 @@
+<ng-container *ngIf="(topSold$ | async)">
+    <div class="top-rated-nav">
+        <h1>TOP 10 SOLD</h1>
+        <div> <button>DAILY</button>
+            <button>WEEKLY</button>
+            <button>MONTHLY</button>
+        </div>
+    </div>
+
+    <div *ngIf="topTenProduct.length>0 then topSold; else noData"></div>
+
+    <div class="pagination flex gap-2">
+        <button class="prev">PREV</button>
+        <h4>1</h4>
+        <button class="next">NEXT</button>
+    </div>
+
+</ng-container>
+
+<ng-template #topSold>
+    <table>
+        <tbody>
+            <tr *ngFor="let product of topTenProduct; let order = index">
+                <td class="relative">
+                    <span
+                        class="absolute top-[1rem] left-[-0.7rem] w-[1.4rem] h-[1.4rem] bg-[#181818] rounded-full shadow-md shadow-gray-700 text-[#fff] text-[1rem] ring-2 ring-[#0264BA] font-bold flex items-center justify-center">{{order+1}}</span>
+                    <img [src]="product.productUrl" [alt]="product.productName">
+                </td>
+                <td>{{product.productName}}</td>
+                <td>
+                    <strong>{{product.rating}}</strong>
+                </td>
+                <td>{{product.price |currency}}</td>
+            </tr>
+        </tbody>
+    </table>
+</ng-template>
+<ng-template #noData>
+    <p class="text-center m-[2rem]">the is no data for top sold products</p>
+</ng-template>

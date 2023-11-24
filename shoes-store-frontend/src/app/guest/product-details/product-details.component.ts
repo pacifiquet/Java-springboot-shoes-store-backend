@@ -5,11 +5,25 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {faStarHalfAlt} from '@fortawesome/free-regular-svg-icons';
 import {faStar} from '@fortawesome/free-solid-svg-icons';
+import {Store} from '@ngrx/store';
 import {ProductInterface} from 'src/app/dto/product/product-interface';
-import {ProductsService} from 'src/app/services/product/products.service';
+import {Subject, combineLatest, takeUntil} from 'rxjs';
+import {
+  productAndRecommendationActions,
+  productListActions,
+} from '../store/product/actions';
+import {
+  selectProduct,
+  selectProductError,
+} from 'src/app/admin/store/admin.reducers';
+import {productDetailsActions} from 'src/app/admin/store/actions';
+import {
+  selectProducAndRecommendation,
+  selectProductList,
+} from '../store/product/productReducer';
 
 @Component({
   selector: 'app-product-details',
@@ -21,54 +35,72 @@ export class ProductDetailsComponent implements OnInit {
   product: ProductInterface = {};
   recommendedList: Array<ProductInterface> = [];
   reviewStarHandler: Array<number> = [];
+  unsub$ = new Subject<void>();
   reviewAverage: number = 0;
+  pageSize = 4;
+  pageNumber = 0;
   star = faStar;
   haflIcon = faStarHalfAlt;
 
+  products$ = combineLatest({
+    data: this.store.select(selectProducAndRecommendation),
+    error: this.store.select(selectProductError),
+  });
+
   constructor(
-    private router: ActivatedRoute,
-    private productService: ProductsService
+    private route: ActivatedRoute,
+    private store: Store,
+    private router: Router
   ) {}
 
   closeProductDetails: boolean = false;
   addingReview: boolean = false;
   openProductModal: boolean = false;
 
-  @Output() productDetailsEvent = new EventEmitter<boolean>();
-  @Output() productEvent = new EventEmitter<boolean>();
-  hideProductModal() {
-    this.productDetailsEvent.emit(this.closeProductDetails);
-  }
-
-  openModalProduct() {
-    this.productEvent.emit(this.closeProductDetails);
-  }
-
   addReview() {
     this.addingReview = !this.addingReview;
   }
 
+  productDetails(id: any) {
+    if (id) {
+      if (id) {
+        this.store.dispatch(
+          productAndRecommendationActions.productAndRecommendation({
+            request: {
+              id: Number(id),
+              pageSize: this.pageSize,
+              pageNumber: this.pageNumber,
+            },
+          })
+        );
+      }
+      window.scrollTo(0, 0);
+    }
+  }
+
   ngOnInit(): void {
-    this.router.paramMap.subscribe((params) => {
-      let id = Number(params.get('id'));
-      this.product = this.productService.getProductById(id);
-      console.log(this.product);
-    });
-
-    this.recommendedList = [];
-
-    this.router.paramMap.subscribe((data) => {
-      let id = Number(data.get('id'));
-      this.reviewStarHandler = this.productService.getReviewIconNumber(
-        this.productService.getProductById(id).reviews
+    let id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.store.dispatch(
+        productAndRecommendationActions.productAndRecommendation({
+          request: {
+            id: Number(id),
+            pageSize: this.pageSize,
+            pageNumber: this.pageNumber,
+          },
+        })
       );
+    }
+
+    this.products$.pipe(takeUntil(this.unsub$)).subscribe(({data}) => {
+      if (data) {
+        this.recommendedList = data.recommendedProducts.content;
+        console.log(this.recommendedList);
+      }
     });
   }
 
   getProductReviewAverage(product: ProductInterface): number {
-    this.reviewAverage = this.productService.getProductReviewAverage(
-      product.reviews
-    );
     return this.reviewAverage;
   }
 }

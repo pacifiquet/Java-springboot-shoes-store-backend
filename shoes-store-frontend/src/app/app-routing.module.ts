@@ -33,13 +33,11 @@ const routes: Routes = [
     data: {roles: [Role.ADMIN]},
     canActivate: [AuthGuard],
   },
-  {
-    path: 'product-details/:id',
-    component: ProductDetailsComponent,
-  },
+
   {path: 'checkout', component: CheckoutPageComponent},
   {path: 'account/verify', component: AccountVerificationComponent},
   {path: 'account/password/reset', component: PasswordResetSaveComponent},
+  {path: 'product-details/:id', component: ProductDetailsComponent},
   {path: '', pathMatch: 'full', redirectTo: 'home'},
   {path: '404', component: NotfoundComponent},
   {path: '401', component: UnauthorizedComponent},

@@ -1,4 +1,9 @@
-import {productListFeature} from './reducers';
+import {
+  productDetailsAndRecomFeature,
+  productListFeature,
+  recentUpdateFeature,
+  topSoldproductListFeature,
+} from './reducers';
 
 export const {
   name: productFeatureKey,
@@ -7,3 +12,25 @@ export const {
   selectErrors,
   selectProductList,
 } = productListFeature;
+
+export const {
+  name: topSoldKey,
+  reducer: topSoldReducer,
+  selectTopSold,
+} = topSoldproductListFeature;
+
+export const {
+  name: productRecomKey,
+  reducer: productAndRecomReducer,
+  selectProducAndRecommendation,
+  selectProductAndRecomError,
+  selectIsLoaded,
+} = productDetailsAndRecomFeature;
+
+export const {
+  name: recentUpdateKey,
+  reducer: recentUpdateRecuder,
+  selectIsRecentLoaded,
+  selectRecentProducts,
+  selectRecentError,
+} = recentUpdateFeature;

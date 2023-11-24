@@ -45,6 +45,18 @@ export class AuthenticationService {
     );
   }
 
+  loginRequestToken(request: {token: string}): Observable<any> {
+    return this.http.get(`${API_URL}/refreshToken?token=${request.token}`).pipe(
+      map((response) => {
+        if (response) {
+          localStorage.setItem('currentUser', JSON.stringify(response));
+          this.currentUserSubject.next(response);
+        }
+        return response;
+      })
+    );
+  }
+
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(new LoginUserResponse());

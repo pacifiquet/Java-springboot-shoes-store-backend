@@ -3,6 +3,7 @@ package com.store.product.utils;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.store.config.AwsConfigProperties;
+import com.store.product.dto.RecentUpdateProducts;
 import com.store.product.dto.ProductRequest;
 import com.store.product.dto.ProductResponse;
 import com.store.product.models.Product;
@@ -117,6 +118,10 @@ public class ProductUtils {
                 product.getPrice(),
                 product.getDescription(),
                 product.getCreatedAt().toString()));
+    }
+
+    public static Function<Product, RecentUpdateProducts> getRecentProductResponseHandler(){
+        return (product -> new RecentUpdateProducts(product.getId(), product.getRating(), product.getName(),product.getUrl(),product.getPrice()));
     }
 
     public static String getProductUrl(MultipartFile productFile, Product product, AmazonS3 amazonS3, AwsConfigProperties awsConfigProperties){

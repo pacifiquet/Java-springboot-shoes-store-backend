@@ -10,9 +10,14 @@ import {Role} from 'src/app/dto/user/role.enum';
 import {Store} from '@ngrx/store';
 import {Subject, combineLatest, takeUntil} from 'rxjs';
 import {Router} from '@angular/router';
-import {selectIsRegistering, selectUserProfile} from '../../app.reducer';
-import {Logout} from 'src/app/guest/store/user/actions';
+import {
+  selectIsRegistering,
+  selectProfileError,
+  selectUserProfile,
+} from '../../app.reducer';
+import {Logout, authActions} from 'src/app/guest/store/user/actions';
 import {userProfileActions} from 'src/app/profile/store/actions';
+import {LoginUserResponseInterface} from '../../types/login.user.response.Interface';
 
 @Component({
   selector: 'app-header',
@@ -35,6 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userProfile$ = combineLatest({
     profile: this.store.select(selectUserProfile),
     isRegistering: this.store.select(selectIsRegistering),
+    error: this.store.select(selectProfileError),
   });
 
   constructor(
@@ -42,11 +48,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store
   ) {
-    this.store.dispatch(userProfileActions.userProfile());
+    if (this.currentUser) {
+      this.store.dispatch(userProfileActions.userProfile());
+    }
   }
   ngOnInit(): void {
     this.auth.currentUser.pipe(takeUntil(this.unsub$)).subscribe((data) => {
       this.currentUser = data;
+    });
+    this.userProfile$.pipe(takeUntil(this.unsub$)).subscribe(({error}) => {
+      if (error?.error === 'Unauthorized') {
+        const userAsString = localStorage.getItem('currentUser');
+        let userObject: LoginUserResponseInterface = {};
+        if (userAsString) {
+          userObject = JSON.parse(userAsString);
+        }
+        if (userObject.tokens?.refreshToken) {
+          this.logoutUser();
+          this.store.dispatch(
+            authActions.refreshToken({
+              request: {token: userObject.tokens?.refreshToken},
+            })
+          );
+        }
+      }
     });
   }
 

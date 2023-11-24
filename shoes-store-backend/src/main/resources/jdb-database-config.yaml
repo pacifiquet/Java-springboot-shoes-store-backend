@@ -1,0 +1,8 @@
+app:
+  main:
+    datasource:
+      driver-class-name:  org.postgresql.Driver
+      username: pacifique
+      password: pacifique
+      jdbc-url: jdbc:postgresql://localhost:5432/storedb
+      pool-size: 30

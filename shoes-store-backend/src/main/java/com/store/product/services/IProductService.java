@@ -1,5 +1,7 @@
 package com.store.product.services;
 
+import com.store.product.dto.RecentUpdateProducts;
+import com.store.product.dto.ProductAndRecommendedResponse;
 import com.store.product.dto.ProductRequest;
 import com.store.product.dto.ProductResponse;
 import com.store.user.security.CustomerUserDetailsService;
@@ -29,8 +31,11 @@ public interface IProductService {
 
     Map<String, String> deleteProduct(long productId);
 
-    List<ProductResponse> recentlyUpdated(int pageSize, int pageNumber);
+    List<RecentUpdateProducts> recentlyUpdated(int limit, int offset);
 
 
     Map<String, String> deleteListOfProducts(List<Long> ids, CustomerUserDetailsService customerUserDetailsService);
+
+
+    ProductAndRecommendedResponse getProductAndRecommendedProducts(long productId, int pageSize, int pageNumber);
 }

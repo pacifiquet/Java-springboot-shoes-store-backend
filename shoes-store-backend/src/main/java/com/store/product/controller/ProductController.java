@@ -1,5 +1,7 @@
 package com.store.product.controller;
 
+import com.store.product.dto.RecentUpdateProducts;
+import com.store.product.dto.ProductAndRecommendedResponse;
 import com.store.product.dto.ProductRequest;
 import com.store.product.dto.ProductResponse;
 import com.store.product.services.IProductService;
@@ -37,31 +39,31 @@ public class ProductController {
     @GetMapping
     @Operation(summary = "product List")
     ResponseEntity<Page<ProductResponse>>productList(@RequestParam int pageSize,int pageNumber){
-        return ResponseEntity.ok(productService.productList(pageSize,pageNumber));
+        return ResponseEntity.ok(productService.productList(pageNumber,pageSize));
     }
 
     @GetMapping(value = "recently-updated")
     @Operation(summary = "recently updated products")
-    ResponseEntity<List<ProductResponse>> recentlyUpdated(@RequestParam int pageSize,int pageNumber){
-        return ResponseEntity.ok(productService.recentlyUpdated(pageSize,pageNumber));
+    ResponseEntity<List<RecentUpdateProducts>> recentlyUpdated(@RequestParam("limit") int limit, @RequestParam("offset") int offset){
+        return ResponseEntity.ok(productService.recentlyUpdated(limit,offset));
     }
 
     @GetMapping(value = "/product-by-category/{category}")
     @Operation(summary = "get product list by category")
     ResponseEntity<Page<ProductResponse>> getProductByCategory(@PathVariable String category, @RequestParam int pageSize, @RequestParam int pageNumber){
-        return ResponseEntity.ok(productService.productListByCategory(category,pageSize,pageNumber));
+        return ResponseEntity.ok(productService.productListByCategory(category,pageNumber,pageSize));
     }
 
     @GetMapping(value = "/search-by-name")
     @Operation(summary = "search product by name")
     ResponseEntity<List<ProductResponse>> searchProductByName(@RequestParam String searchKey,@RequestParam int pageSize, @RequestParam int pageNumber){
-        return ResponseEntity.ok(productService.searchProduct(searchKey,pageSize,pageNumber));
+        return ResponseEntity.ok(productService.searchProduct(searchKey,pageNumber,pageSize));
     }
 
     @GetMapping(value = "/ordering-product/{orderType}")
     @Operation(summary = "Ordering product by asc or desc")
     ResponseEntity<List<ProductResponse>> productsOrderingByAscOrDesc(@PathVariable String orderType,@RequestParam int pageSize, @RequestParam int pageNumber){
-        return ResponseEntity.ok(productService.orderingProduct(orderType,pageSize,pageNumber));
+        return ResponseEntity.ok(productService.orderingProduct(orderType,pageNumber,pageSize));
     }
     @GetMapping(value = "{productId}")
     @Operation(summary = "get Product by ID")
@@ -96,5 +98,11 @@ public class ProductController {
     @Operation(summary = "deleting list of products")
     ResponseEntity<Map<String,String>> deleteProducts(@RequestParam(value = "ids") List<Long> ids,@AuthenticationPrincipal CustomerUserDetailsService customerUserDetailsService){
         return ResponseEntity.ok(productService.deleteListOfProducts(ids,customerUserDetailsService));
+    }
+
+    @GetMapping(value = "/{productId}/recommendation")
+    @Operation(summary = "get a product and recommended products")
+    ResponseEntity<ProductAndRecommendedResponse> getProductAndRecommendedProduct(@PathVariable long productId,@RequestParam int pageSize, @RequestParam int pageNumber){
+        return ResponseEntity.ok(productService.getProductAndRecommendedProducts(productId,pageSize,pageNumber));
     }
 }

@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
+import {deleteListProductActions} from 'src/app/admin/store/actions';
 import {selectCurrentUser, selectUserProfile} from 'src/app/app.reducer';
 
 @Component({
@@ -21,17 +22,26 @@ export class DeleteModalComponent {
 
   @Output() deleteEvent = new EventEmitter<boolean>();
   @Output() cancelEvent = new EventEmitter<boolean>();
-  @Input() isDeleting = true;
+  @Input() isDeleting: boolean = true;
+  @Input() ids: number[] = [];
 
   user$ = combineLatest({
     currentUser: this.store.select(selectUserProfile),
   });
 
   constructor(private store: Store) {}
-  approveDeleteProduct(userId: any) {
-    this.deleteEvent.emit(userId);
+
+  approveDelete() {
+    this.deleteEvent.emit(this.isCanceling);
+    if (this.ids) {
+      this.store.dispatch(
+        deleteListProductActions.productListDelete({request: this.ids})
+      );
+    }
   }
-  cancelDeleteProduct() {
+
+  cancelDelete() {
     this.cancelEvent.emit(!this.isCanceling);
+    console.log(this.isCanceling);
   }
 }

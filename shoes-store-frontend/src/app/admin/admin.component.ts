@@ -15,6 +15,13 @@ import {
 } from '../guest/store/product/productReducer';
 import {selectUserProfile} from '../app.reducer';
 import {userProfileActions} from '../profile/store/actions';
+import {
+  selectResponse,
+  selectUploadError,
+  selectUploadResponse,
+} from './store/admin.reducers';
+import {Router} from '@angular/router';
+import {productListUploadActions} from './store/actions';
 
 @Component({
   selector: 'app-admin',
@@ -24,35 +31,84 @@ import {userProfileActions} from '../profile/store/actions';
 })
 export class AdminComponent implements OnInit, OnDestroy {
   unsub$ = new Subject<void>();
-  pageNumber: number = 3;
-  pageSize: number = 0;
-  currentPage: number = 1;
+  pageNumber: number = 0;
+  pageSize: number = 3;
+  currentPage: number = 0;
   totalPage!: number;
   productList: Array<ProductInterface> = [];
+  ids: Array<number> = [];
+  id: number = 0;
+  fileMessage: string = '';
+  productId: number = 0;
+  successMessage = '';
+  errorMessage = '';
+  productListFile: File | undefined | null;
 
   productList$ = combineLatest({
     products: this.store.select(selectProductList),
     errorMessage: this.store.select(selectErrors),
     profile: this.store.select(selectUserProfile),
+    deleteResponse: this.store.select(selectResponse),
+    uploadSuccess: this.store.select(selectUploadResponse),
+    uploadError: this.store.select(selectUploadError),
   });
-  constructor(private store: Store, private cdr: ChangeDetectorRef) {
+
+  constructor(
+    private store: Store,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
     this.store.dispatch(userProfileActions.userProfile());
-  }
-  ngOnInit(): void {
-    this.productList$.pipe(takeUntil(this.unsub$)).subscribe(({products}) => {
-      if (products) {
-        this.productList = products.content;
-        this.currentPage += products.number;
-        this.totalPage = products.totalPages;
-      }
-      if (products?.first) {
-        this.pageSize += 1;
-      }
-    });
-    this.getProductsByPage();
+    this.store.dispatch(
+      productListActions.productList({
+        request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
+      })
+    );
   }
 
-  getProductsByPage() {
+  ngOnInit(): void {
+    this.id = 3;
+    this.productList$
+      .pipe(takeUntil(this.unsub$))
+      .subscribe(({products, deleteResponse, uploadSuccess, uploadError}) => {
+        if (products) {
+          this.productList = products.content;
+          this.currentPage = products.number + +1;
+          this.totalPage = products.totalPages;
+        }
+
+        if (deleteResponse?.success) {
+          this.successMessage = deleteResponse.success;
+          this.cdr.markForCheck();
+          setTimeout(() => {
+            window.location.reload();
+            this.cdr.markForCheck();
+          }, 2000);
+        }
+
+        if (uploadSuccess?.success) {
+          this.successMessage = uploadSuccess.success;
+          setTimeout(() => {
+            this.successMessage = '';
+            this.errorMessage = '';
+            window.location.reload();
+            this.cdr.markForCheck();
+          }, 2000);
+        }
+
+        if (uploadError?.message) {
+          this.successMessage = uploadError.message;
+          setTimeout(() => {
+            this.successMessage = '';
+            this.errorMessage = '';
+            this.cdr.markForCheck();
+          }, 2000);
+        }
+      });
+  }
+
+  nextProductsByPage() {
+    this.pageNumber += 1;
     this.store.dispatch(
       productListActions.productList({
         request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
@@ -61,13 +117,34 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   prevProductsByPage() {
-    this.pageSize -= 1;
-    this.currentPage = this.currentPage - 1;
+    this.pageNumber -= 1;
     this.store.dispatch(
       productListActions.productList({
         request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
       })
     );
+  }
+
+  selectProductsTodelete(id: any) {
+    this.ids.push(id);
+  }
+
+  handleDeleteMultipleProducts() {
+    this.isDeleting = true;
+  }
+
+  productsFileHandler(event: Event) {
+    this.productListFile = (event.target as HTMLInputElement).files?.[0];
+  }
+
+  productListUploadHandler() {
+    if (this.productListFile?.type === 'text/csv') {
+      this.store.dispatch(
+        productListUploadActions.productListUpload({
+          request: this.productListFile,
+        })
+      );
+    }
   }
 
   isLogout: boolean = false;
@@ -77,22 +154,22 @@ export class AdminComponent implements OnInit, OnDestroy {
   isYearActive: boolean = false;
   isDashboardActive: boolean = true;
   isAddProductActive: boolean = false;
-  isDeletingProduct: boolean = false;
+  isDeleting: boolean = false;
 
   isMenNavActive: boolean = true;
   isWomenNavActive: boolean = true;
   isKidsNavActive: boolean = false;
 
   deleteProduct() {
-    this.isDeletingProduct = true;
+    this.isDeleting = true;
   }
 
-  approveDeleteProduct(event: boolean) {
-    this.isDeletingProduct = event;
+  approveDelete(event: boolean) {
+    this.isDeleting = !event;
   }
 
-  cancelDeleteProduct(event: boolean) {
-    this.isDeletingProduct = event;
+  cancelDelete(event: boolean) {
+    this.isDeleting = event;
   }
 
   addProduct() {
@@ -100,7 +177,9 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.isAddProductActive = true;
   }
 
-  viewProductAndEdit() {
+  viewProductAndEdit(id: any) {
+    this.id = Number(id);
+    this.cdr.markForCheck();
     this.isAddProductActive = true;
   }
 

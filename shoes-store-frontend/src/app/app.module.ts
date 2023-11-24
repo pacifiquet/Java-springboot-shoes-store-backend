@@ -29,12 +29,24 @@ import {
 import * as loggedEffect from './guest/store/user/effect';
 import * as userUpdateEffect from './profile/store/effect';
 import * as productsEffect from './guest/store/product/effect';
+import * as adminEffect from './admin/store/effects';
 import {ProfileModule} from './profile/profile.module';
 import {AdminModule} from './admin/admin.module';
 import {LoadingInterceptor} from './interceptor/loading.interceptor';
 import {SharedModule} from './shared/shared.module';
 import {profileReducer, userUpdateReducer} from './app.reducer';
-import {productListReducer} from './guest/store/product/productReducer';
+import {
+  productAndRecomReducer,
+  productListReducer,
+  recentUpdateRecuder,
+  topSoldReducer,
+} from './guest/store/product/productReducer';
+import {
+  deleteListProductRecuder,
+  productDetailsReducer,
+  uploadProductListReducer,
+} from './admin/store/admin.reducers';
+import {recentUpdateFeature} from './guest/store/product/reducers';
 
 @NgModule({
   declarations: [
@@ -67,10 +79,21 @@ import {productListReducer} from './guest/store/product/productReducer';
         forgotPassword: forgotPasswordReducer,
         savePassword: savePasswordReducer,
         productList: productListReducer,
+        deleteProducts: deleteListProductRecuder,
+        uploadProducts: uploadProductListReducer,
+        topSoldproductList: topSoldReducer,
+        productDetails: productDetailsReducer,
+        productAndRecom: productAndRecomReducer,
+        recentUpdate: recentUpdateRecuder,
       },
       {metaReducers: [clearState]}
     ),
-    EffectsModule.forRoot([loggedEffect, userUpdateEffect, productsEffect]),
+    EffectsModule.forRoot([
+      loggedEffect,
+      userUpdateEffect,
+      productsEffect,
+      adminEffect,
+    ]),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
   ],
   providers: [
