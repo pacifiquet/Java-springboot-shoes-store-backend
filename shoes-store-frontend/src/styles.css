@@ -51,7 +51,7 @@ button{
     cursor: pointer;
 }
 
-.router-link-active{
+.active{
     background-color: seagreen;
     color: #f4f4f5;
 }

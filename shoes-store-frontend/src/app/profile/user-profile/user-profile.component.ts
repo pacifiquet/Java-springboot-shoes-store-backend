@@ -168,7 +168,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   deleteAccountHandler(id: any) {
-    console.log(event);
     this.store.dispatch(deleteUserActions.deleteUser({id}));
   }
 

@@ -106,6 +106,12 @@ form div input[type='submit'].invalid {
 form label {
     text-align: left;
     margin: 2rem;
+    font-size: 0.8rem;
+}
+
+form label input[type="file"]{
+    font-size: 1rem;
+    /* width: 50%; */
 }
 
 button{
@@ -156,4 +162,17 @@ textarea{
 
 textarea:focus{
     outline: none;
+}
+
+.images{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-size: 1rem;
+}
+.images img{
+    position: absolute;
+    width: 4rem;
+    right: 0;
 }

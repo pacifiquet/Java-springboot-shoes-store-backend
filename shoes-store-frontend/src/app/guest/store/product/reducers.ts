@@ -1,6 +1,10 @@
 import {createFeature, createReducer, on} from '@ngrx/store';
-import {recentUpdateProductsActions} from './actions';
 import {
+  newArrivalProductListActions,
+  recentUpdateProductsActions,
+} from './actions';
+import {
+  newArrivalproductListInitialState,
   productAndRecommendationInitialState,
   productListInitialState,
   recentUpdateProductsInitialState,
@@ -106,6 +110,33 @@ export const recentUpdateFeature = createFeature({
         ...state,
         isRecentLoaded: false,
         recentError: action.errorResponse,
+      })
+    )
+  ),
+});
+
+export const newArrivalProductListFeature = createFeature({
+  name: 'newArrivalProductList',
+  reducer: createReducer(
+    newArrivalproductListInitialState,
+    on(newArrivalProductListActions.newArrivalProductList, (state) => ({
+      ...state,
+      isNewArrivalLoaded: false,
+    })),
+    on(
+      newArrivalProductListActions.newArrivalProductListSuccess,
+      (state, action) => ({
+        ...state,
+        isNewArrivalLoaded: true,
+        newArrivalList: action.response,
+      })
+    ),
+    on(
+      newArrivalProductListActions.newArrivalProductListFail,
+      (state, action) => ({
+        ...state,
+        isNewArrivalLoaded: false,
+        newArrivalErrors: action.errorResponse,
       })
     )
   ),

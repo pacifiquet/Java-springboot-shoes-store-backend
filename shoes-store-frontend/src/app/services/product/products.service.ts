@@ -66,4 +66,13 @@ export class ProductsService extends RequestBaseServiceService {
       `${BASE_URL}/products/recently-updated?limit=${request.limit}&offset=${request.offset}`
     );
   }
+
+  getNewArrivalProducts(request: {
+    pageSize: number;
+    pageNumber: number;
+  }): Observable<any> {
+    return this.http.get(
+      `${BASE_URL}/products/new-arrival?pageNumber=${request.pageNumber}&pageSize=${request.pageSize}`
+    );
+  }
 }

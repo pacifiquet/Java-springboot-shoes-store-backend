@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subject, combineLatest, takeUntil} from 'rxjs';
 import {ProductInterface} from 'src/app/dto/product/product-interface';
 import {ProductsService} from 'src/app/services/product/products.service';
@@ -8,7 +8,6 @@ import {
   selectIsRecentLoaded,
   selectRecentProducts,
 } from '../store/product/productReducer';
-import {recentUpdateProductsActions} from '../store/product/actions';
 
 @Component({
   selector: 'app-recently-updated',
@@ -22,16 +21,10 @@ export class RecentlyUpdatedComponent implements OnInit, OnDestroy {
     isLoaded: this.store.select(selectIsRecentLoaded),
   });
   unsub$ = new Subject<void>();
-  limit = 5;
-  offset = 0;
-  data$ = new Subject<any>();
-  constructor(private store: Store) {
-    const request = {
-      limit: this.limit,
-      offset: this.offset,
-    };
-    recentUpdateProductsActions.recentUpdateProducts({request: request});
-  }
+
+  @Input() recentProducts: ProductInterface[] = [];
+  @Input() message: string = '';
+  constructor(private store: Store) {}
 
   ngOnInit(): void {}
 

@@ -38,4 +38,5 @@ public interface IProductService {
 
 
     ProductAndRecommendedResponse getProductAndRecommendedProducts(long productId, int pageSize, int pageNumber);
+    Page<ProductResponse>newArrivalProducts(int pageSize,int pageNumber);
 }

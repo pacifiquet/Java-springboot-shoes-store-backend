@@ -37,11 +37,14 @@ export class AdminComponent implements OnInit, OnDestroy {
   totalPage!: number;
   productList: Array<ProductInterface> = [];
   ids: Array<number> = [];
-  id: number = 0;
+  id!: number;
   fileMessage: string = '';
   productId: number = 0;
   successMessage = '';
   errorMessage = '';
+  isChecked: boolean = false;
+
+  isSelectDeleting: boolean = false;
   productListFile: File | undefined | null;
 
   productList$ = combineLatest({
@@ -67,7 +70,6 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.id = 3;
     this.productList$
       .pipe(takeUntil(this.unsub$))
       .subscribe(({products, deleteResponse, uploadSuccess, uploadError}) => {
@@ -105,6 +107,10 @@ export class AdminComponent implements OnInit, OnDestroy {
           }, 2000);
         }
       });
+
+    if (this.ids.length === 0) {
+      this.isSelectDeleting = false;
+    }
   }
 
   nextProductsByPage() {
@@ -127,6 +133,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   selectProductsTodelete(id: any) {
     this.ids.push(id);
+    this.isSelectDeleting = !this.isSelectDeleting;
   }
 
   handleDeleteMultipleProducts() {
@@ -179,8 +186,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   viewProductAndEdit(id: any) {
     this.id = Number(id);
-    this.cdr.markForCheck();
     this.isAddProductActive = true;
+    this.cdr.markForCheck();
   }
 
   hideAddProductModal(event: boolean) {

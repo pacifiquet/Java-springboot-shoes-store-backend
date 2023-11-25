@@ -105,4 +105,10 @@ public class ProductController {
     ResponseEntity<ProductAndRecommendedResponse> getProductAndRecommendedProduct(@PathVariable long productId,@RequestParam int pageSize, @RequestParam int pageNumber){
         return ResponseEntity.ok(productService.getProductAndRecommendedProducts(productId,pageSize,pageNumber));
     }
+
+    @GetMapping(value = "/new-arrival")
+    @Operation(summary = "new arrival products")
+    ResponseEntity<Page<ProductResponse>> getNewArrivalProducts(@RequestParam("pageNumber")int pageNumber,@RequestParam("pageSize")int pageSize){
+        return ResponseEntity.ok(productService.newArrivalProducts(pageSize,pageNumber));
+    }
 }

@@ -1,48 +1,51 @@
-<section>
-    <div class="new-arrival">
-        <div class="products">
-            <div class="new-arrival-header">
-                <h3>New Arrival</h3>
-                <div>
-                    <button>Men</button>
-                    <button>Women</button>
-                    <button>Kids</button>
-                </div>
-            </div>
-            <ul>
-                <li *ngFor="let product of newArrival">
-                    <div class="product-image">
-                        <img [src]="product.productUrl" [alt]="product.productName">
+<ng-container *ngIf="(productsList$ | async) as products">
+    <section>
+        <div class="new-arrival">
+            <div class="products">
+                <div class="new-arrival-header">
+                    <h3>New Arrival</h3>
+                    <div>
+                        <button>Men</button>
+                        <button>Women</button>
+                        <button>Kids</button>
                     </div>
-                    <div class="ratings">
-                        <div class="start-rating">
-                            <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                            <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                            <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                            <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                            <fa-icon style="color: #F79522;" [icon]="haflIcon"></fa-icon>
+                </div>
+                <ul>
+                    <li *ngFor="let product of newArrival">
+                        <div class="product-image">
+                            <img [src]="product.productUrl" [alt]="product.productName">
                         </div>
-                        <p>{{getProductReviewAverage(product) || 0}} of 5 ({{product.reviews?.length || 0}} Reviews )
-                        </p>
-                    </div>
-                    <h2>{{product.price | currency}}</h2>
-                    <h3>{{product.productName}}</h3>
-                    <div class="actions">
-                        <button [routerLink]="['/product-details',product.id]" routerLinkActive="router-link-active"
-                            class="view">view</button>
-                        <button class="add-cart">add to cart</button>
-                    </div>
-                </li>
+                        <div class="ratings">
+                            <div class="start-rating">
+                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+                                <fa-icon style="color: #F79522;" [icon]="haflIcon"></fa-icon>
+                            </div>
+                            <p>{{getProductReviewAverage(product) || 0}} of 5 ({{product.reviews?.length || 0}} Reviews
+                                )
+                            </p>
+                        </div>
+                        <h2>{{product.price | currency}}</h2>
+                        <h3>{{product.productName}}</h3>
+                        <div class="actions">
+                            <button [routerLink]="['/product-details',product.id]" routerLinkActive="router-link-active"
+                                class="view">view</button>
+                            <button class="add-cart">add to cart</button>
+                        </div>
+                    </li>
 
-                <div class="pagination" *ngIf="recentlyUpdated.length>0">
-                    <button class="prev">PREV</button>
-                    <h4>1</h4>
-                    <button class="next">NEXT</button>
-                </div>
-            </ul>
+                    <div class="pagination" *ngIf="products.newArrivals">
+                        <button class="prev">PREV</button>
+                        <h4>1</h4>
+                        <button class="next">NEXT</button>
+                    </div>
+                </ul>
+            </div>
+            <div class="top-rated" *ngIf="products.recentUpdates">
+                <app-recently-updated message="paci" [recentProducts]="recentlyUpdated"></app-recently-updated>
+            </div>
         </div>
-        <div class="top-rated">
-            <app-recently-updated></app-recently-updated>
-        </div>
-    </div>
-</section>
+    </section>
+</ng-container>

@@ -187,4 +187,10 @@ public class ProductService implements IProductService{
         return new ProductAndRecommendedResponse(response,productListByCategory);
 
     }
+
+    @Override
+    public Page<ProductResponse> newArrivalProducts(int pageSize, int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,Sort.by("createdAt").descending());
+        return productRepository.findAll(pageable).map(product -> ProductUtils.getProductResponseHandler().apply(product));
+    }
 }
