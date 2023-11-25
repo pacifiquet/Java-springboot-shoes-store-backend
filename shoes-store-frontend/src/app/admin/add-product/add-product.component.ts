@@ -1,15 +1,17 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
-import {combineLatest} from 'rxjs';
+import {Subject, combineLatest, takeUntil} from 'rxjs';
 import {selectProduct} from '../store/admin.reducers';
 import {productDetailsActions} from '../store/actions';
 
@@ -19,22 +21,27 @@ import {productDetailsActions} from '../store/actions';
   styleUrls: ['./add-product.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddProductComponent implements OnInit {
+export class AddProductComponent implements OnInit, OnDestroy {
   isModalOpen: boolean = true;
   form: any;
+  unsub$ = new Subject<void>();
 
   product$ = combineLatest({
     data: this.store.select(selectProduct),
   });
 
-  @Input() id: any;
+  @Input() id!: number;
 
   @Output() addProductModalEvent = new EventEmitter<boolean>();
 
-  constructor(fb: FormBuilder, private store: Store) {
+  constructor(
+    fb: FormBuilder,
+    private store: Store,
+    private cdr: ChangeDetectorRef
+  ) {
     this.form = fb.group({
       productName: ['', Validators.required],
-      image: [null, Validators.required],
+      image: ['', Validators.required],
       category: ['', Validators.required],
       description: ['', Validators.required],
       price: ['', Validators.required],
@@ -42,7 +49,29 @@ export class AddProductComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.id);
+    if (this.id) {
+      this.store.dispatch(
+        productDetailsActions.productDetails({request: {id: this.id}})
+      );
+    }
+
+    this.product$.pipe(takeUntil(this.unsub$)).subscribe(({data}) => {
+      if (data) {
+        this.form.setValue({
+          productName: data?.productName,
+          category: data?.category,
+          image: data.productUrl,
+          description: data?.description,
+          price: data.price,
+          stock: data.stock,
+        });
+        console.log(this.form.getRawValue());
+        this.cdr.markForCheck();
+      }
+    });
+  }
 
   closeProductModal() {
     this.addProductModalEvent.emit(this.isModalOpen);
@@ -59,5 +88,10 @@ export class AddProductComponent implements OnInit {
 
   onSubmit() {
     console.log(this.form.value);
+  }
+
+  ngOnDestroy(): void {
+    this.unsub$.next();
+    this.unsub$.complete();
   }
 }

@@ -60,6 +60,12 @@ export interface ProductsStateStateInterface {
   errors: BackendErrorInterface | null | undefined;
 }
 
+export interface NewArrivalProductsStateStateInterface {
+  isNewArrivalLoaded: boolean;
+  newArrivalList: ContentResponse | null | undefined;
+  newArrivalErrors: BackendErrorInterface | null | undefined;
+}
+
 export interface TopSoldProductInterface {
   isProductsLoaded: boolean;
   topSold: ContentResponse | null | undefined;

@@ -59,3 +59,18 @@ export const recentUpdateProductsActions = createActionGroup({
     }>(),
   },
 });
+
+export const newArrivalProductListActions = createActionGroup({
+  source: 'newArrivalProductList',
+  events: {
+    NewArrivalProductList: props<{
+      request: {pageSize: number; pageNumber: number};
+    }>(),
+    'NewArrivalProductList success': props<{
+      response: ContentResponse;
+    }>(),
+    'NewArrivalProductList fail': props<{
+      errorResponse: BackendErrorInterface;
+    }>(),
+  },
+});

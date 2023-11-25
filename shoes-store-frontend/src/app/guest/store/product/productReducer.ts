@@ -1,3 +1,4 @@
+import {newArrivalProductListFeature} from './reducers';
 import {
   productDetailsAndRecomFeature,
   productListFeature,
@@ -34,3 +35,11 @@ export const {
   selectRecentProducts,
   selectRecentError,
 } = recentUpdateFeature;
+
+export const {
+  name: newArrivalProductsKey,
+  reducer: newArrivalProductsRecuder,
+  selectIsNewArrivalLoaded,
+  selectNewArrivalErrors,
+  selectNewArrivalList,
+} = newArrivalProductListFeature;

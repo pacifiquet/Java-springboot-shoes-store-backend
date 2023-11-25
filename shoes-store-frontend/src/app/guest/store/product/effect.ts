@@ -2,6 +2,7 @@ import {inject} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {ProductsService} from 'src/app/services/product/products.service';
 import {
+  newArrivalProductListActions,
   productAndRecommendationActions,
   productListActions,
   recentUpdateProductsActions,
@@ -104,6 +105,31 @@ export const recentUpdateEffect = createEffect(
           catchError((errorResponse: HttpErrorResponse) =>
             of(
               recentUpdateProductsActions.recentUpdateProductsFail({
+                errorResponse: errorResponse.error,
+              })
+            )
+          )
+        );
+      })
+    );
+  },
+  {functional: true}
+);
+
+export const newArrivalProductListEffect = createEffect(
+  (actions$ = inject(Actions), productService = inject(ProductsService)) => {
+    return actions$.pipe(
+      ofType(newArrivalProductListActions.newArrivalProductList),
+      switchMap(({request}) => {
+        return productService.getNewArrivalProducts(request).pipe(
+          map((response: ContentResponse) =>
+            newArrivalProductListActions.newArrivalProductListSuccess({
+              response,
+            })
+          ),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              newArrivalProductListActions.newArrivalProductListFail({
                 errorResponse: errorResponse.error,
               })
             )

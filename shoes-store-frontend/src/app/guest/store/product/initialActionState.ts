@@ -1,4 +1,5 @@
 import {
+  NewArrivalProductsStateStateInterface,
   ProductDetailsAndRecommendationInterface,
   ProductsStateStateInterface,
   RecentUpdateProductsStateInterace,
@@ -10,6 +11,13 @@ export const productListInitialState: ProductsStateStateInterface = {
   productList: null,
   errors: null,
 };
+
+export const newArrivalproductListInitialState: NewArrivalProductsStateStateInterface =
+  {
+    isNewArrivalLoaded: false,
+    newArrivalList: null,
+    newArrivalErrors: null,
+  };
 
 export const topSoldproductListInitialState: TopSoldProductInterface = {
   isProductsLoaded: false,

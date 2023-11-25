@@ -36,6 +36,7 @@ import {LoadingInterceptor} from './interceptor/loading.interceptor';
 import {SharedModule} from './shared/shared.module';
 import {profileReducer, userUpdateReducer} from './app.reducer';
 import {
+  newArrivalProductsRecuder,
   productAndRecomReducer,
   productListReducer,
   recentUpdateRecuder,
@@ -46,7 +47,6 @@ import {
   productDetailsReducer,
   uploadProductListReducer,
 } from './admin/store/admin.reducers';
-import {recentUpdateFeature} from './guest/store/product/reducers';
 
 @NgModule({
   declarations: [
@@ -85,6 +85,7 @@ import {recentUpdateFeature} from './guest/store/product/reducers';
         productDetails: productDetailsReducer,
         productAndRecom: productAndRecomReducer,
         recentUpdate: recentUpdateRecuder,
+        newArrivalProductList: newArrivalProductsRecuder,
       },
       {metaReducers: [clearState]}
     ),
