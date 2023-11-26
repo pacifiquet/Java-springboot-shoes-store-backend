@@ -15,6 +15,7 @@
                 <div class="desc">
                     <h1> {{product.data?.productResponse?.productName}}</h1>
                     <h4>{{product.data?.productResponse?.price| currency}}</h4>
+                    <h4>{{product.data?.productResponse?.category}}</h4>
                     <p>{{product.data?.productResponse?.description}}</p>
                     <button>add to cart</button>
                 </div>
@@ -30,9 +31,11 @@
                 <div *ngIf="recommendedList.length>0 then recommendProducts;else noRecommendedProducts"></div>
             </ul>
             <div class="pagination" *ngIf="recommendedList.length>0">
-                <button class="prev">PREV</button>
-                <h4>1</h4>
-                <button class="next">NEXT</button>
+                <button [disabled]="product.data?.recommendedProducts?.first"
+                    (click)="prevProductsByPage(product.data?.productResponse?.id)" class="prev">PREV</button>
+                <h4>{{currentPage}}</h4>
+                <button [disabled]="product.data?.recommendedProducts?.last"
+                    (click)="nextProductsByPage(product.data?.productResponse?.id)" class="next">NEXT</button>
             </div>
         </div>
     </section>
@@ -56,6 +59,7 @@
         </div>
         <h2>{{product.price | currency}}</h2>
         <h3>{{product.productName}}</h3>
+        <h3>{{product.category}}</h3>
         <div class="actions">
             <button (click)="productDetails(product.id)" class="view">view</button>
             <button class="add-cart">add to cart</button>

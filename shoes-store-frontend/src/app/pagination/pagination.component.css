@@ -1,0 +1,38 @@
+.pagination{
+    display: flex;
+    gap: 1rem;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0.4rem;
+    align-items: center;
+    padding: 1rem 2rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pagination button{
+    padding: 0.3rem 1rem;
+    background: #FFF;
+    font-family: "Raleway",sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border:0.06rem solid seagreen;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    border-radius: 0.4rem;
+}
+.pagination button:disabled{
+    background-color: gray;
+    cursor: no-drop;
+    pointer-events: all;
+    border: 1px solid #fff;
+    
+}
+
+.pagination h4{
+    font-family: "Raleway",sans-serif;
+    font-size: 1.6rem;
+    font-weight: 500;
+}

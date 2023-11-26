@@ -51,11 +51,6 @@ button{
     cursor: pointer;
 }
 
-.active{
-    background-color: seagreen;
-    color: #f4f4f5;
-}
-
 li{
     cursor: pointer;
 }
@@ -173,3 +168,4 @@ input div p{
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
     /* transform: translateX(50%); */
 }
+

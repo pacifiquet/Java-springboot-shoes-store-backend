@@ -37,7 +37,9 @@ export class ProductDetailsComponent implements OnInit {
   reviewStarHandler: Array<number> = [];
   unsub$ = new Subject<void>();
   reviewAverage: number = 0;
+  currentPage = 1;
   pageSize = 4;
+  productId = 0;
   pageNumber = 0;
   star = faStar;
   haflIcon = faStarHalfAlt;
@@ -62,6 +64,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   productDetails(id: any) {
+    this.productId = id;
     if (id) {
       if (id) {
         this.store.dispatch(
@@ -95,12 +98,40 @@ export class ProductDetailsComponent implements OnInit {
     this.products$.pipe(takeUntil(this.unsub$)).subscribe(({data}) => {
       if (data) {
         this.recommendedList = data.recommendedProducts.content;
-        console.log(this.recommendedList);
       }
     });
   }
 
   getProductReviewAverage(product: ProductInterface): number {
     return this.reviewAverage;
+  }
+
+  nextProductsByPage(id: any) {
+    this.pageNumber += 1;
+    this.currentPage += 1;
+
+    this.store.dispatch(
+      productAndRecommendationActions.productAndRecommendation({
+        request: {
+          id: Number(id),
+          pageSize: this.pageSize,
+          pageNumber: this.pageNumber,
+        },
+      })
+    );
+  }
+
+  prevProductsByPage(id: any) {
+    this.pageNumber -= 1;
+    this.currentPage -= 1;
+    this.store.dispatch(
+      productAndRecommendationActions.productAndRecommendation({
+        request: {
+          id: Number(id),
+          pageSize: this.pageSize,
+          pageNumber: this.pageNumber,
+        },
+      })
+    );
   }
 }

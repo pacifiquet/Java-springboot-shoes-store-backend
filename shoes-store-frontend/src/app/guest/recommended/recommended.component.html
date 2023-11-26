@@ -1,21 +1,25 @@
-<ng-container *ngIf="(productsRecommended$ | async)">
+<ng-container *ngIf="(productsRecommended$ | async) as products">
     <section>
         <div class="recommended">
             <div class="products">
                 <div class="recommended-header">
                     <h3>Recommended</h3>
                     <div>
-                        <button>Men</button>
-                        <button>Women</button>
-                        <button>Kids</button>
+                        <button [ngClass]="{active:isMenCategory}" (click)="byCategory('men')">Men</button>
+                        <button [ngClass]="{active:isWomenCategory}" (click)="byCategory('women')">Women</button>
+                        <button [ngClass]="{active:isKidsCategory}" (click)="byCategory('kids')">Kids</button>
+                        <button *ngIf="isCategoryFilter" [ngClass]="{reset: isCategoryFilter}"
+                            (click)="resetFilter()">Reset</button>
                     </div>
                 </div>
                 <ul>
                     <div *ngIf="recommendedList.length>0 then productsContent; else noProducts"></div>
                     <div class="pagination">
-                        <button class="prev">PREV</button>
-                        <h4>1</h4>
-                        <button class="next">NEXT</button>
+                        <button [disabled]="products.recommendedList?.first ||products.byCategoryProducts?.first"
+                            (click)="prevProductsByPage()" class="prev">PREV</button>
+                        <h4>{{currentPage}}</h4>
+                        <button [disabled]="products.recommendedList?.last || products.byCategoryProducts?.last"
+                            (click)="nextProductsByPage()" class="next">NEXT</button>
                     </div>
                 </ul>
                 <ng-template #productsContent>
@@ -37,6 +41,7 @@
                         </div>
                         <h2>{{product.price | currency}}</h2>
                         <h3>{{product.productName}}</h3>
+                        <h3>{{product.category}}</h3>
                         <div class="actions">
                             <button [routerLink]="['/product-details',product.id]" class="view">view</button>
                             <button class="add-cart">add to cart</button>

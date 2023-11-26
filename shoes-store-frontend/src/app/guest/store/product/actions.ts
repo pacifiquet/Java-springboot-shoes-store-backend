@@ -74,3 +74,33 @@ export const newArrivalProductListActions = createActionGroup({
     }>(),
   },
 });
+
+export const productListByCategiryActions = createActionGroup({
+  source: 'productsCategory',
+  events: {
+    ProductListByCategory: props<{
+      request: {category: string; pageSize: number; pageNumber: number};
+    }>(),
+    'ProductListByCategory success': props<{
+      response: ContentResponse;
+    }>(),
+    'ProductListByCategory fail': props<{
+      errorResponse: BackendErrorInterface;
+    }>(),
+  },
+});
+
+export const productListByCategiryNewArrivalActions = createActionGroup({
+  source: 'productsCategoryNewArrival',
+  events: {
+    ProductListByCategoryNewArrival: props<{
+      request: {category: string; pageSize: number; pageNumber: number};
+    }>(),
+    'ProductListByCategoryNewArrival success': props<{
+      response: ContentResponse;
+    }>(),
+    'ProductListByCategoryNewArrival fail': props<{
+      errorResponse: BackendErrorInterface;
+    }>(),
+  },
+});

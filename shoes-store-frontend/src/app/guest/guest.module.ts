@@ -13,8 +13,9 @@ import {PasswordResetSaveComponent} from './password-reset-save/password-reset-s
 import {AccountVerificationComponent} from './account-verification/account-verification.component';
 import {GuestRoutingModule} from './guest.routing.module';
 import {SharedModule} from '../shared/shared.module';
-import { TopSoldComponent } from './top-sold/top-sold.component';
-import { RecentlyUpdatedComponent } from './recently-updated/recently-updated.component';
+import {TopSoldComponent} from './top-sold/top-sold.component';
+import {RecentlyUpdatedComponent} from './recently-updated/recently-updated.component';
+import {PaginationComponent} from '../pagination/pagination.component';
 
 @NgModule({
   declarations: [

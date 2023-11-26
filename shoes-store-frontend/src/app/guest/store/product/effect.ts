@@ -5,6 +5,8 @@ import {
   newArrivalProductListActions,
   productAndRecommendationActions,
   productListActions,
+  productListByCategiryActions,
+  productListByCategiryNewArrivalActions,
   recentUpdateProductsActions,
   topSoldproductListActions,
 } from './actions';
@@ -132,6 +134,62 @@ export const newArrivalProductListEffect = createEffect(
               newArrivalProductListActions.newArrivalProductListFail({
                 errorResponse: errorResponse.error,
               })
+            )
+          )
+        );
+      })
+    );
+  },
+  {functional: true}
+);
+
+export const productListByCategoryEffect = createEffect(
+  (actions$ = inject(Actions), productService = inject(ProductsService)) => {
+    return actions$.pipe(
+      ofType(productListByCategiryActions.productListByCategory),
+      switchMap(({request}) => {
+        return productService.getProductsByCategory(request).pipe(
+          map((response: ContentResponse) =>
+            productListByCategiryActions.productListByCategorySuccess({
+              response,
+            })
+          ),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              productListByCategiryActions.productListByCategoryFail({
+                errorResponse: errorResponse.error,
+              })
+            )
+          )
+        );
+      })
+    );
+  },
+  {functional: true}
+);
+
+export const productListByCategoryNewArrivalEffect = createEffect(
+  (actions$ = inject(Actions), productService = inject(ProductsService)) => {
+    return actions$.pipe(
+      ofType(
+        productListByCategiryNewArrivalActions.productListByCategoryNewArrival
+      ),
+      switchMap(({request}) => {
+        return productService.getProductsByCategory(request).pipe(
+          map((response: ContentResponse) =>
+            productListByCategiryNewArrivalActions.productListByCategoryNewArrivalSuccess(
+              {
+                response,
+              }
+            )
+          ),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              productListByCategiryNewArrivalActions.productListByCategoryNewArrivalFail(
+                {
+                  errorResponse: errorResponse.error,
+                }
+              )
             )
           )
         );

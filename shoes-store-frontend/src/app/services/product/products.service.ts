@@ -75,4 +75,14 @@ export class ProductsService extends RequestBaseServiceService {
       `${BASE_URL}/products/new-arrival?pageNumber=${request.pageNumber}&pageSize=${request.pageSize}`
     );
   }
+
+  getProductsByCategory(request: {
+    category: string;
+    pageSize: number;
+    pageNumber: number;
+  }): Observable<any> {
+    return this.http.get(
+      `${BASE_URL}/products/product-by-category/${request.category}?pageSize=${request.pageSize}&pageNumber=${request.pageNumber}`
+    );
+  }
 }

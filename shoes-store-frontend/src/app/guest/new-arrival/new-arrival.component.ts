@@ -7,12 +7,17 @@ import {ProductInterface} from 'src/app/dto/product/product-interface';
 import {ProductsService} from 'src/app/services/product/products.service';
 import {
   newArrivalProductListActions,
+  productListActions,
+  productListByCategiryActions,
+  productListByCategiryNewArrivalActions,
   recentUpdateProductsActions,
 } from '../store/product/actions';
 import {Subject, combineLatest, takeUntil} from 'rxjs';
 import {ContentResponse} from '../store/product/types/ProductInterface';
 import {
   selectNewArrivalList,
+  selectProductListByCategory,
+  selectProductListByCategoryNewArrival,
   selectRecentProducts,
 } from '../store/product/productReducer';
 
@@ -30,12 +35,24 @@ export class NewArrivalComponent implements OnInit {
   offset = 0;
   pageSize = 3;
   pageNumber = 0;
+  currentPage = 1;
+  category = '';
   star = faStar;
+  productCategory = '';
+  isFirstPage: boolean = false;
+  isLastPage: boolean = false;
+  isMenCategory: boolean = false;
+  isWomenCategory: boolean = false;
+  isKidsCategory: boolean = false;
+  isCategoryFilter: boolean = false;
   haflIcon = faStarHalfAlt;
   unsub$ = new Subject<void>();
   productsList$ = combineLatest({
     recentUpdates: this.store.select(selectRecentProducts),
     newArrivals: this.store.select(selectNewArrivalList),
+    byCategoryProducts: this.store.select(
+      selectProductListByCategoryNewArrival
+    ),
   });
   constructor(
     private productService: ProductsService,
@@ -58,17 +75,105 @@ export class NewArrivalComponent implements OnInit {
     );
     this.productsList$
       .pipe(takeUntil(this.unsub$))
-      .subscribe(({recentUpdates, newArrivals}) => {
+      .subscribe(({recentUpdates, newArrivals, byCategoryProducts}) => {
         if (recentUpdates) {
           this.recentlyUpdated = recentUpdates;
         }
         if (newArrivals) {
           this.newArrival = newArrivals.content;
+          this.isFirstPage = newArrivals.first;
+          this.isLastPage = newArrivals.last;
+        }
+
+        if (byCategoryProducts) {
+          this.newArrival = byCategoryProducts.content;
+          this.isFirstPage = byCategoryProducts.first;
+          this.isLastPage = byCategoryProducts.last;
         }
       });
   }
 
+  byCategory(category: string) {
+    this.isCategoryFilter = true;
+    this.category = category;
+
+    if (category === 'men') {
+      this.isMenCategory = true;
+      this.isKidsCategory = false;
+      this.isWomenCategory = false;
+    } else if (category === 'women') {
+      this.isMenCategory = false;
+      this.isKidsCategory = false;
+      this.isWomenCategory = true;
+    } else if (category === 'kids') {
+      this.isMenCategory = false;
+      this.isKidsCategory = true;
+      this.isWomenCategory = false;
+    }
+
+    if (this.isCategoryFilter) {
+      this.store.dispatch(
+        productListByCategiryNewArrivalActions.productListByCategoryNewArrival({
+          request: {
+            category: this.category,
+            pageSize: this.pageSize,
+            pageNumber: this.pageNumber,
+          },
+        })
+      );
+    }
+  }
+
   getProductReviewAverage(product: ProductInterface) {
     return [];
+  }
+
+  nextProductsByPage() {
+    this.pageNumber += 1;
+    this.currentPage += 1;
+
+    if (this.category !== '') {
+      this.store.dispatch(
+        productListByCategiryNewArrivalActions.productListByCategoryNewArrival({
+          request: {
+            category: this.category,
+            pageSize: this.pageSize,
+            pageNumber: this.pageNumber,
+          },
+        })
+      );
+    } else {
+      this.store.dispatch(
+        newArrivalProductListActions.newArrivalProductList({
+          request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
+        })
+      );
+    }
+  }
+
+  prevProductsByPage() {
+    this.pageNumber -= 1;
+    this.currentPage -= 1;
+    if (this.category !== '') {
+      this.store.dispatch(
+        productListByCategiryNewArrivalActions.productListByCategoryNewArrival({
+          request: {
+            category: this.category,
+            pageSize: this.pageSize,
+            pageNumber: this.pageNumber,
+          },
+        })
+      );
+    } else {
+      this.store.dispatch(
+        newArrivalProductListActions.newArrivalProductList({
+          request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
+        })
+      );
+    }
+  }
+
+  resetFilter() {
+    window.location.reload();
   }
 }

@@ -5,13 +5,17 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import {ProductInterface} from '../dto/product/product-interface';
 import {Store} from '@ngrx/store';
 import {Subject, combineLatest, takeUntil} from 'rxjs';
-import {productListActions} from '../guest/store/product/actions';
+import {
+  productListActions,
+  productListByCategiryActions,
+} from '../guest/store/product/actions';
 import {
   selectErrors,
+  selectIsCategoryLoaded,
   selectProductList,
+  selectProductListByCategory,
 } from '../guest/store/product/productReducer';
 import {selectUserProfile} from '../app.reducer';
 import {userProfileActions} from '../profile/store/actions';
@@ -22,6 +26,8 @@ import {
 } from './store/admin.reducers';
 import {Router} from '@angular/router';
 import {productListUploadActions} from './store/actions';
+import {ContentResponse} from '../guest/store/product/types/ProductInterface';
+import {FormBuilder, Validators, FormArray, FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-admin',
@@ -35,14 +41,35 @@ export class AdminComponent implements OnInit, OnDestroy {
   pageSize: number = 3;
   currentPage: number = 0;
   totalPage!: number;
-  productList: Array<ProductInterface> = [];
+  productListAdmin: ContentResponse = {
+    content: [],
+    length: 0,
+    size: 0,
+    sort: {
+      sorted: false,
+      unsorted: false,
+      empty: false,
+    },
+    totalElements: 0,
+    totalPages: 0,
+    number: 0,
+    last: false,
+    first: false,
+  };
   ids: Array<number> = [];
   id!: number;
   fileMessage: string = '';
   productId: number = 0;
   successMessage = '';
   errorMessage = '';
+  category: string = '';
+  productCategory: string = '';
+  isMenCategory: boolean = false;
+  isWomenCategory: boolean = false;
+  isKidsCategory: boolean = false;
+  isCategoryFilter: boolean = false;
   isChecked: boolean = false;
+  form: any;
 
   isSelectDeleting: boolean = false;
   productListFile: File | undefined | null;
@@ -54,13 +81,19 @@ export class AdminComponent implements OnInit, OnDestroy {
     deleteResponse: this.store.select(selectResponse),
     uploadSuccess: this.store.select(selectUploadResponse),
     uploadError: this.store.select(selectUploadError),
+    byCategoryProducts: this.store.select(selectProductListByCategory),
+    isCategory: this.store.select(selectIsCategoryLoaded),
   });
 
   constructor(
     private store: Store,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private fb: FormBuilder
   ) {
+    this.form = this.fb.group({
+      productIds: this.fb.array([], [Validators.required]),
+    });
     this.store.dispatch(userProfileActions.userProfile());
     this.store.dispatch(
       productListActions.productList({
@@ -72,41 +105,55 @@ export class AdminComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.productList$
       .pipe(takeUntil(this.unsub$))
-      .subscribe(({products, deleteResponse, uploadSuccess, uploadError}) => {
-        if (products) {
-          this.productList = products.content;
-          this.currentPage = products.number + +1;
-          this.totalPage = products.totalPages;
-        }
+      .subscribe(
+        ({
+          products,
+          deleteResponse,
+          uploadSuccess,
+          uploadError,
+          byCategoryProducts,
+        }) => {
+          if (products) {
+            this.productListAdmin = products;
+            this.currentPage = products.number + 1;
+            this.totalPage = products.totalPages;
+          }
 
-        if (deleteResponse?.success) {
-          this.successMessage = deleteResponse.success;
-          this.cdr.markForCheck();
-          setTimeout(() => {
-            window.location.reload();
-            this.cdr.markForCheck();
-          }, 2000);
-        }
+          if (byCategoryProducts) {
+            this.productListAdmin = byCategoryProducts;
+            this.currentPage = byCategoryProducts.number + 1;
+          }
+          if (byCategoryProducts?.content.length === 0) {
+            this.pageNumber = 0;
+            this.pageSize = 3;
+            this.byCategory(this.productCategory);
+          }
 
-        if (uploadSuccess?.success) {
-          this.successMessage = uploadSuccess.success;
-          setTimeout(() => {
-            this.successMessage = '';
-            this.errorMessage = '';
-            window.location.reload();
-            this.cdr.markForCheck();
-          }, 2000);
-        }
+          if (deleteResponse?.success) {
+            this.successMessage = deleteResponse.success;
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }
 
-        if (uploadError?.message) {
-          this.successMessage = uploadError.message;
-          setTimeout(() => {
-            this.successMessage = '';
-            this.errorMessage = '';
-            this.cdr.markForCheck();
-          }, 2000);
+          if (uploadSuccess?.success) {
+            this.successMessage = uploadSuccess.success;
+            setTimeout(() => {
+              this.successMessage = '';
+              this.errorMessage = '';
+              window.location.reload();
+            }, 2000);
+          }
+
+          if (uploadError?.message) {
+            this.successMessage = uploadError.message;
+            setTimeout(() => {
+              this.successMessage = '';
+              this.errorMessage = '';
+            }, 2000);
+          }
         }
-      });
+      );
 
     if (this.ids.length === 0) {
       this.isSelectDeleting = false;
@@ -115,25 +162,58 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   nextProductsByPage() {
     this.pageNumber += 1;
-    this.store.dispatch(
-      productListActions.productList({
-        request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
-      })
-    );
+
+    if (this.productCategory !== '') {
+      this.store.dispatch(
+        productListByCategiryActions.productListByCategory({
+          request: {
+            category: this.productCategory,
+            pageSize: this.pageSize,
+            pageNumber: this.pageNumber,
+          },
+        })
+      );
+    } else {
+      this.store.dispatch(
+        productListActions.productList({
+          request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
+        })
+      );
+    }
   }
 
   prevProductsByPage() {
     this.pageNumber -= 1;
-    this.store.dispatch(
-      productListActions.productList({
-        request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
-      })
-    );
+    if (this.productCategory) {
+      this.store.dispatch(
+        productListByCategiryActions.productListByCategory({
+          request: {
+            category: this.productCategory,
+            pageSize: this.pageSize,
+            pageNumber: this.pageNumber,
+          },
+        })
+      );
+    } else {
+      this.store.dispatch(
+        productListActions.productList({
+          request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
+        })
+      );
+    }
   }
 
-  selectProductsTodelete(id: any) {
-    this.ids.push(id);
-    this.isSelectDeleting = !this.isSelectDeleting;
+  selectProductsTodelete(event: any) {
+    const productIds: FormArray = this.form.get('productIds') as FormArray;
+    if (event.target.checked) {
+      productIds.push(new FormControl(event.target.value));
+    } else {
+      const index = productIds.controls.findIndex(
+        (x) => x.value === event.target.value
+      );
+      productIds.removeAt(index);
+    }
+    this.ids = [...productIds.getRawValue()];
   }
 
   handleDeleteMultipleProducts() {
@@ -152,6 +232,39 @@ export class AdminComponent implements OnInit, OnDestroy {
         })
       );
     }
+  }
+
+  byCategory(category: string) {
+    this.productCategory = category;
+    this.isCategoryFilter = true;
+
+    if (category === 'men') {
+      this.isMenCategory = true;
+      this.isKidsCategory = false;
+      this.isWomenCategory = false;
+    } else if (category === 'women') {
+      this.isMenCategory = false;
+      this.isKidsCategory = false;
+      this.isWomenCategory = true;
+    } else if (category === 'kids') {
+      this.isMenCategory = false;
+      this.isKidsCategory = true;
+      this.isWomenCategory = false;
+    }
+
+    this.store.dispatch(
+      productListByCategiryActions.productListByCategory({
+        request: {
+          category: this.productCategory,
+          pageSize: this.pageSize,
+          pageNumber: this.pageNumber,
+        },
+      })
+    );
+  }
+
+  resetFilter() {
+    window.location.reload();
   }
 
   isLogout: boolean = false;
@@ -177,6 +290,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   cancelDelete(event: boolean) {
     this.isDeleting = event;
+    window.location.reload();
   }
 
   addProduct() {
@@ -187,7 +301,6 @@ export class AdminComponent implements OnInit, OnDestroy {
   viewProductAndEdit(id: any) {
     this.id = Number(id);
     this.isAddProductActive = true;
-    this.cdr.markForCheck();
   }
 
   hideAddProductModal(event: boolean) {
