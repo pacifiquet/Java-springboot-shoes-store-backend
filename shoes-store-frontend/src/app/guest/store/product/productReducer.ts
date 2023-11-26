@@ -1,4 +1,8 @@
-import {newArrivalProductListFeature} from './reducers';
+import {ProductListByCategoryNewArrivalFeature} from './reducers';
+import {
+  ProductListByCategoryFeature,
+  newArrivalProductListFeature,
+} from './reducers';
 import {
   productDetailsAndRecomFeature,
   productListFeature,
@@ -43,3 +47,19 @@ export const {
   selectNewArrivalErrors,
   selectNewArrivalList,
 } = newArrivalProductListFeature;
+
+export const {
+  name: productListByCategoryKey,
+  reducer: productListByCategoryRecuder,
+  selectIsCategoryLoaded,
+  selectErrorsByCategory,
+  selectProductListByCategory,
+} = ProductListByCategoryFeature;
+
+export const {
+  name: productListByCategoryNewArrivalKey,
+  reducer: productListByCategoryNewArrivalRecuder,
+  selectErrorsByCategoryNewArrival,
+  selectIsCategoryNewArrivalLoaded,
+  selectProductListByCategoryNewArrival,
+} = ProductListByCategoryNewArrivalFeature;

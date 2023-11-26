@@ -3,9 +3,9 @@
     <div *ngIf="recentProducts.length>0 then recentlyData; else noData"></div>
 
     <div class="pagination flex gap-2" *ngIf="recentProducts.length>0">
-        <button class="prev">PREV</button>
-        <h4>1</h4>
-        <button class="next">NEXT</button>
+        <button [disabled]="offset ===0" (click)="prevProductsByPage()" class="prev">PREV</button>
+        <h4>{{currentPage}}</h4>
+        <button [disabled]="offset === 5" (click)="nextProductsByPage()" class="next">NEXT</button>
     </div>
 </ng-container>
 

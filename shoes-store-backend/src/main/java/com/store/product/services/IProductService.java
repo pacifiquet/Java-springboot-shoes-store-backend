@@ -23,7 +23,7 @@ public interface IProductService {
 
     ProductResponse getProduct(long productId);
 
-    Page<ProductResponse> productListByCategory(String category,int pageSize, int pageNumber);
+    Page<ProductResponse> productListByCategory(String category,int pageNumber, int pageSize);
 
     List<ProductResponse> searchProduct(String searchKey,int pageSize, int pageNumber);
 

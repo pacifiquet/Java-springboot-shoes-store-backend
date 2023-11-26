@@ -127,7 +127,7 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public Page<ProductResponse> productListByCategory(String category,int pageSize, int pageNumber) {
+    public Page<ProductResponse> productListByCategory(String category,int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by("createdAt").descending());
         System.out.println(category);
         return productRepository.getProductListByCategory(pageable, category);

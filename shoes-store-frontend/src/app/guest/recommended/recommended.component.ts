@@ -11,9 +11,16 @@ import {Store} from '@ngrx/store';
 import {Subject, combineLatest, takeUntil} from 'rxjs';
 import {ProductInterface} from 'src/app/dto/product/product-interface';
 import {ProductsService} from 'src/app/services/product/products.service';
-import {selectProductList} from '../store/product/productReducer';
-import {productListActions} from '../store/product/actions';
+import {
+  selectProductList,
+  selectProductListByCategory,
+} from '../store/product/productReducer';
+import {
+  productListActions,
+  productListByCategiryActions,
+} from '../store/product/actions';
 import {ActivatedRoute, Router} from '@angular/router';
+import {ContentResponse} from '../store/product/types/ProductInterface';
 
 @Component({
   selector: 'app-recommended',
@@ -26,14 +33,38 @@ export class RecommendedComponent implements OnInit, OnDestroy {
   openProductModal: boolean = false;
   recommendedList: Array<ProductInterface> = [];
   average: number = 0;
-  page: number = 3;
+  pageSize: number = 3;
   pageNumber: number = 0;
+  currentPage = 1;
+  isFirstPage: boolean = false;
+  isLastPage: boolean = false;
+  isMenCategory: boolean = false;
+  isWomenCategory: boolean = false;
+  isKidsCategory: boolean = false;
+  isCategoryFilter: boolean = false;
   star = faStar;
+  category: string = '';
   name = 'recommended';
   haflIcon = faStarHalfAlt;
+  paginationData: ContentResponse = {
+    content: [],
+    length: 0,
+    size: 0,
+    sort: {
+      sorted: false,
+      unsorted: false,
+      empty: false,
+    },
+    totalElements: 0,
+    totalPages: 0,
+    number: 0,
+    last: false,
+    first: false,
+  };
 
   productsRecommended$ = combineLatest({
     recommendedList: this.store.select(selectProductList),
+    byCategoryProducts: this.store.select(selectProductListByCategory),
   });
 
   constructor(
@@ -43,26 +74,116 @@ export class RecommendedComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    cdr.markForCheck();
+    window.scrollTo(600, 0);
   }
 
   ngOnInit(): void {
     this.store.dispatch(
       productListActions.productList({
-        request: {pageNumber: this.pageNumber, pageSize: this.page},
+        request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
       })
     );
     this.productsRecommended$
       .pipe(takeUntil(this.unsub$))
-      .subscribe(({recommendedList}) => {
+      .subscribe(({recommendedList, byCategoryProducts}) => {
         if (recommendedList?.content) {
           this.recommendedList = recommendedList.content;
+          this.paginationData = recommendedList;
+        }
+
+        if (byCategoryProducts) {
+          this.recommendedList = byCategoryProducts.content;
+          this.paginationData = byCategoryProducts;
         }
       });
   }
 
   getProductReviewAverage(product: ProductInterface) {
     return [];
+  }
+
+  resetFilter() {
+    this.category = '';
+    this.isCategoryFilter = false;
+    this.isKidsCategory = false;
+    this.isMenCategory = false;
+    this.isWomenCategory = false;
+    window.location.reload();
+  }
+
+  byCategory(category: string) {
+    this.isCategoryFilter = true;
+    this.category = category;
+
+    if (category === 'men') {
+      this.isMenCategory = true;
+      this.isKidsCategory = false;
+      this.isWomenCategory = false;
+    } else if (category === 'women') {
+      this.isMenCategory = false;
+      this.isKidsCategory = false;
+      this.isWomenCategory = true;
+    } else if (category === 'kids') {
+      this.isMenCategory = false;
+      this.isKidsCategory = true;
+      this.isWomenCategory = false;
+    }
+    if (this.isCategoryFilter) {
+      this.store.dispatch(
+        productListByCategiryActions.productListByCategory({
+          request: {
+            category: this.category,
+            pageSize: this.pageSize,
+            pageNumber: this.pageNumber,
+          },
+        })
+      );
+    }
+  }
+
+  nextProductsByPage() {
+    this.pageNumber += 1;
+    this.currentPage += 1;
+
+    if (this.category !== '') {
+      this.store.dispatch(
+        productListByCategiryActions.productListByCategory({
+          request: {
+            category: this.category,
+            pageSize: this.pageSize,
+            pageNumber: this.pageNumber,
+          },
+        })
+      );
+    } else {
+      this.store.dispatch(
+        productListActions.productList({
+          request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
+        })
+      );
+    }
+  }
+
+  prevProductsByPage() {
+    this.pageNumber -= 1;
+    this.currentPage -= 1;
+    if (this.category !== '') {
+      this.store.dispatch(
+        productListByCategiryActions.productListByCategory({
+          request: {
+            category: this.category,
+            pageSize: this.pageSize,
+            pageNumber: this.pageNumber,
+          },
+        })
+      );
+    } else {
+      this.store.dispatch(
+        productListActions.productList({
+          request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
+        })
+      );
+    }
   }
 
   ngOnDestroy(): void {

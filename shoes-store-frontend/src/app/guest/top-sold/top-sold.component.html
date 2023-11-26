@@ -1,4 +1,4 @@
-<ng-container *ngIf="(topSold$ | async)">
+<ng-container *ngIf="(topSold$ | async) as products">
     <div class="top-rated-nav">
         <h1>TOP 10 SOLD</h1>
         <div> <button>DAILY</button>
@@ -6,13 +6,13 @@
             <button>MONTHLY</button>
         </div>
     </div>
-
     <div *ngIf="topTenProduct.length>0 then topSold; else noData"></div>
 
     <div class="pagination flex gap-2">
-        <button class="prev">PREV</button>
-        <h4>1</h4>
-        <button class="next">NEXT</button>
+        <button [disabled]="products.topSoldProducts?.first" (click)="prevProductsByPage()" class="prev">PREV</button>
+        <h4>{{currentPage}}</h4>
+        <button [disabled]="products.topSoldProducts?.last" (click)="nextProductsByPage()" class="next">NEXT</button>
+
     </div>
 
 </ng-container>

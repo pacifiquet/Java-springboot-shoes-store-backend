@@ -1,0 +1,9 @@
+<ng-container *ngIf="products || (paginationProducts$ |async) as paginationdata">
+    <div class="pagination">
+        <button [disabled]="products.first || paginationdata.first" (click)="prevProductsByPage()"
+            class="prev">PREV</button>
+        <h4>{{currentPage}}</h4>
+        <button [disabled]="products.last || paginationdata.last" (click)="nextProductsByPage()"
+            class="next">NEXT</button>
+    </div>
+</ng-container>

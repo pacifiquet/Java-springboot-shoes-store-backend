@@ -38,6 +38,8 @@ import {profileReducer, userUpdateReducer} from './app.reducer';
 import {
   newArrivalProductsRecuder,
   productAndRecomReducer,
+  productListByCategoryNewArrivalRecuder,
+  productListByCategoryRecuder,
   productListReducer,
   recentUpdateRecuder,
   topSoldReducer,
@@ -47,6 +49,7 @@ import {
   productDetailsReducer,
   uploadProductListReducer,
 } from './admin/store/admin.reducers';
+import {PaginationComponent} from './pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +89,8 @@ import {
         productAndRecom: productAndRecomReducer,
         recentUpdate: recentUpdateRecuder,
         newArrivalProductList: newArrivalProductsRecuder,
+        productsCategory: productListByCategoryRecuder,
+        productsCategoryNewArrival: productListByCategoryNewArrivalRecuder,
       },
       {metaReducers: [clearState]}
     ),

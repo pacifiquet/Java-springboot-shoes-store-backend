@@ -6,6 +6,7 @@ import {
   topSoldproductListActions,
 } from '../store/product/actions';
 import {Subject, combineLatest, takeUntil} from 'rxjs';
+import {ContentResponse} from '../store/product/types/ProductInterface';
 import {
   selectProductList,
   selectTopSold,
@@ -18,8 +19,9 @@ import {
 })
 export class TopSoldComponent implements OnInit, OnDestroy {
   unsub$ = new Subject<void>();
-  topTenProduct: Array<ProductInterface> = [];
+  topTenProduct: ProductInterface[] = [];
   pageNumber = 0;
+  currentPage = 1;
   pageSize = 5;
 
   topSold$ = combineLatest({
@@ -46,4 +48,30 @@ export class TopSoldComponent implements OnInit, OnDestroy {
   }
 
   constructor(private store: Store) {}
+
+  nextProductsByPage() {
+    this.pageNumber += 1;
+    this.currentPage += 1;
+    this.store.dispatch(
+      topSoldproductListActions.topSoldProductList({
+        request: {
+          pageSize: this.pageSize,
+          pageNumber: this.pageNumber,
+        },
+      })
+    );
+  }
+
+  prevProductsByPage() {
+    this.pageNumber -= 1;
+    this.currentPage -= 1;
+    this.store.dispatch(
+      topSoldproductListActions.topSoldProductList({
+        request: {
+          pageSize: this.pageSize,
+          pageNumber: this.pageNumber,
+        },
+      })
+    );
+  }
 }

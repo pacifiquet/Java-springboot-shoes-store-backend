@@ -1,4 +1,4 @@
-<ng-container *ngIf="(productList$ |async) as products">
+<ng-container *ngIf="(productList$ |async) as productList">
     <div class="admin shadow shadow-gray-500 rounded-lg">
         <button (click)="addProduct()"
             class="absolute flex  bg-zinc-100 text-xl shadow-lg ring-1 p-4 ring-white-900 rounded-lg">Add
@@ -36,7 +36,7 @@
                 </div>
                 <div class="ml-2">
                     <p class="text-xl">All Products:<span class="text-xl font-500">
-                            {{products.products?.totalElements}}</span></p>
+                            {{productList.products?.totalElements}}</span></p>
                 </div>
             </div>
             <div class="filtering">
@@ -45,9 +45,12 @@
                     <button class="shadow">DESC</button>
                 </div>
                 <ul>
-                    <li [ngClass]="{active: isMenNavActive}"><button>Men</button></li>
-                    <li><button>Women</button></li>
-                    <li><button>Kids</button></li>
+                    <li [ngClass]="{active: isMenCategory}"><button (click)="byCategory('men')">Men</button>
+                    </li>
+                    <li [ngClass]="{active: isWomenCategory}"><button (click)="byCategory('women')">Women</button></li>
+                    <li [ngClass]="{active: isKidsCategory}"><button (click)="byCategory('kids')">Kids</button></li>
+                    <li *ngIf="isCategoryFilter" [ngClass]="{reset: isCategoryFilter}"><button
+                            (click)="resetFilter()">Reset</button></li>
                 </ul>
                 <div>
                     <form>
@@ -59,7 +62,7 @@
 
 
         <div class="products-table shadow rounded-lg"
-            *ngIf="productList.length>0 then productsContent; else noProducts">
+            *ngIf="productListAdmin?.content then productsContent; else noProducts">
         </div>
         <ng-template #productsContent>
             <table class="table-auto">
@@ -80,8 +83,7 @@
                 <!--table body-->
 
                 <tbody>
-                    <tr *ngFor="let product of products.products?.content"
-                        class="spaceUnder shadow-md rounded-lg y-2xl">
+                    <tr *ngFor="let product of productListAdmin?.content" class="spaceUnder shadow-md rounded-lg y-2xl">
                         <td>{{product.id}}</td>
                         <td>
                             <img [src]="product.productUrl" [alt]="product.productName" class="img-center">
@@ -114,7 +116,10 @@
                                 </svg>
 
                             </button>
-                            <input type="checkbox" (click)="selectProductsTodelete(product.id)">
+                            <form [formGroup]="form">
+                                <input type="checkbox" [checked]="isChecked" [value]="product.id"
+                                    (change)="selectProductsTodelete($event)">
+                            </form>
                         </td>
                     </tr>
                 </tbody>
@@ -131,12 +136,13 @@
 
                 <button>Export Product CSV</button>
                 <button class="delete-products" *ngIf="ids.length>0" (click)="handleDeleteMultipleProducts()">Delete
-                    Products</button>
+                    {{ids.length}} <span *ngIf="ids.length===1">Item</span> <span *ngIf="ids.length > 1">Items</span>
+                </button>
             </div>
             <div class="pagination shadow-lg rounded-lg shadow-gray-500">
-                <button (click)="prevProductsByPage()" [disabled]="products.products?.first">PREV</button>
+                <button (click)="prevProductsByPage()" [disabled]="productListAdmin.first">PREV</button>
                 <span *ngIf="currentPage">{{currentPage}}</span>
-                <button (click)="nextProductsByPage()" [disabled]="products.products?.last">NEXT</button>
+                <button (click)="nextProductsByPage()" [disabled]="productListAdmin.last">NEXT</button>
             </div>
 
         </div>

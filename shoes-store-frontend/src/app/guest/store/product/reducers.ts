@@ -1,11 +1,15 @@
 import {createFeature, createReducer, on} from '@ngrx/store';
 import {
   newArrivalProductListActions,
+  productListByCategiryActions,
+  productListByCategiryNewArrivalActions,
   recentUpdateProductsActions,
 } from './actions';
 import {
   newArrivalproductListInitialState,
   productAndRecommendationInitialState,
+  productListByCategoryInitialState,
+  productListByCategoryNewArrivalInitialState,
   productListInitialState,
   recentUpdateProductsInitialState,
   topSoldproductListInitialState,
@@ -137,6 +141,63 @@ export const newArrivalProductListFeature = createFeature({
         ...state,
         isNewArrivalLoaded: false,
         newArrivalErrors: action.errorResponse,
+      })
+    )
+  ),
+});
+
+export const ProductListByCategoryFeature = createFeature({
+  name: 'productsCategory',
+  reducer: createReducer(
+    productListByCategoryInitialState,
+    on(productListByCategiryActions.productListByCategory, (state) => ({
+      ...state,
+      isCategoryLoaded: false,
+    })),
+    on(
+      productListByCategiryActions.productListByCategorySuccess,
+      (state, action) => ({
+        ...state,
+        isCategoryLoaded: true,
+        productListByCategory: action.response,
+      })
+    ),
+    on(
+      productListByCategiryActions.productListByCategoryFail,
+      (state, action) => ({
+        ...state,
+        isCategoryLoaded: false,
+        errorsByCategory: action.errorResponse,
+      })
+    )
+  ),
+});
+
+export const ProductListByCategoryNewArrivalFeature = createFeature({
+  name: 'productsCategoryNewArrival',
+  reducer: createReducer(
+    productListByCategoryNewArrivalInitialState,
+    on(
+      productListByCategiryNewArrivalActions.productListByCategoryNewArrival,
+      (state) => ({
+        ...state,
+        isCategoryNewArrivalLoaded: false,
+      })
+    ),
+    on(
+      productListByCategiryNewArrivalActions.productListByCategoryNewArrivalSuccess,
+      (state, action) => ({
+        ...state,
+        isCategoryNewArrivalLoaded: true,
+        productListByCategoryNewArrival: action.response,
+      })
+    ),
+    on(
+      productListByCategiryNewArrivalActions.productListByCategoryNewArrivalFail,
+      (state, action) => ({
+        ...state,
+        isCategoryNewArrivalLoaded: false,
+        errorsByCategoryNewArrival: action.errorResponse,
       })
     )
   ),

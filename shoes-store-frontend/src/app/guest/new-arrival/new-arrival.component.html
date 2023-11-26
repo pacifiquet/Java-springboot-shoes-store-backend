@@ -5,9 +5,11 @@
                 <div class="new-arrival-header">
                     <h3>New Arrival</h3>
                     <div>
-                        <button>Men</button>
-                        <button>Women</button>
-                        <button>Kids</button>
+                        <button [ngClass]="{active:isMenCategory}" (click)="byCategory('men')">Men</button>
+                        <button [ngClass]="{active:isWomenCategory}" (click)="byCategory('women')">Women</button>
+                        <button [ngClass]="{active:isKidsCategory}" (click)="byCategory('kids')">Kids</button>
+                        <button *ngIf="isCategoryFilter" [ngClass]="{reset: isCategoryFilter}"
+                            (click)="resetFilter()">Reset</button>
                     </div>
                 </div>
                 <ul>
@@ -29,17 +31,18 @@
                         </div>
                         <h2>{{product.price | currency}}</h2>
                         <h3>{{product.productName}}</h3>
+                        <h3>{{product.category}}</h3>
                         <div class="actions">
                             <button [routerLink]="['/product-details',product.id]" routerLinkActive="router-link-active"
                                 class="view">view</button>
                             <button class="add-cart">add to cart</button>
                         </div>
                     </li>
-
-                    <div class="pagination" *ngIf="products.newArrivals">
-                        <button class="prev">PREV</button>
-                        <h4>1</h4>
-                        <button class="next">NEXT</button>
+                    <app-pagination [category]="productCategory" *ngIf="products"></app-pagination>
+                    <div class="pagination">
+                        <button [disabled]="isFirstPage" (click)="prevProductsByPage()" class="prev">PREV</button>
+                        <h4>{{currentPage}}</h4>
+                        <button [disabled]="isLastPage" (click)="nextProductsByPage()" class="next">NEXT</button>
                     </div>
                 </ul>
             </div>

@@ -8,6 +8,7 @@ import {
   selectIsRecentLoaded,
   selectRecentProducts,
 } from '../store/product/productReducer';
+import {recentUpdateProductsActions} from '../store/product/actions';
 
 @Component({
   selector: 'app-recently-updated',
@@ -16,6 +17,11 @@ import {
 })
 export class RecentlyUpdatedComponent implements OnInit, OnDestroy {
   recentlyUpdated: RecentUpdateProductsResponse[] = [];
+  currentPage = 1;
+  firstPage = false;
+  lastPage = false;
+  limit = 5;
+  offset = 0;
   products$ = combineLatest({
     recentUpdatesProducts: this.store.select(selectRecentProducts),
     isLoaded: this.store.select(selectIsRecentLoaded),
@@ -26,7 +32,37 @@ export class RecentlyUpdatedComponent implements OnInit, OnDestroy {
   @Input() message: string = '';
   constructor(private store: Store) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.offset === 0) {
+      this.firstPage = true;
+    } else if (this.offset === 5) {
+      this.lastPage = true;
+    } else {
+      this.lastPage = false;
+      this.firstPage = false;
+    }
+  }
+
+  nextProductsByPage() {
+    this.currentPage += 1;
+    this.offset = 5;
+
+    this.store.dispatch(
+      recentUpdateProductsActions.recentUpdateProducts({
+        request: {limit: this.limit, offset: this.offset},
+      })
+    );
+  }
+
+  prevProductsByPage() {
+    this.currentPage -= 1;
+    this.offset = 0;
+    this.store.dispatch(
+      recentUpdateProductsActions.recentUpdateProducts({
+        request: {limit: this.limit, offset: this.offset},
+      })
+    );
+  }
 
   ngOnDestroy(): void {
     this.unsub$.next();

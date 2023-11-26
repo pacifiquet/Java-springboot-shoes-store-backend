@@ -35,7 +35,7 @@ interface Pageable {
 export interface ContentResponse {
   content: ProductInterface[];
   length: number;
-  pageable: Pageable;
+  pageable?: Pageable;
   size: number;
   sort: {
     sorted: boolean;
@@ -58,6 +58,18 @@ export interface ProductsStateStateInterface {
   isProductsLoaded: boolean;
   productList: ContentResponse | null | undefined;
   errors: BackendErrorInterface | null | undefined;
+}
+
+export interface ProductsByCategoryStateStateInterface {
+  isCategoryLoaded: boolean;
+  productListByCategory: ContentResponse | null | undefined;
+  errorsByCategory: BackendErrorInterface | null | undefined;
+}
+
+export interface ProductsByCategoryNewArrivalStateStateInterface {
+  isCategoryNewArrivalLoaded: boolean;
+  productListByCategoryNewArrival: ContentResponse | null | undefined;
+  errorsByCategoryNewArrival: BackendErrorInterface | null | undefined;
 }
 
 export interface NewArrivalProductsStateStateInterface {
