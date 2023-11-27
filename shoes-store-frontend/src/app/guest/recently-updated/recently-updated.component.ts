@@ -1,8 +1,9 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subject, combineLatest, takeUntil} from 'rxjs';
-import {ProductInterface} from 'src/app/dto/product/product-interface';
-import {ProductsService} from 'src/app/services/product/products.service';
-import {RecentUpdateProductsResponse} from '../store/product/types/ProductInterface';
+import {Subject, combineLatest, takeUntil} from 'rxjs';
+import {
+  ProductInterface,
+  RecentUpdateProductsResponse,
+} from '../store/product/types/ProductInterface';
 import {Store} from '@ngrx/store';
 import {
   selectIsRecentLoaded,

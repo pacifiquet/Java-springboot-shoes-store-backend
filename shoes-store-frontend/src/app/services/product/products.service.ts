@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {ProductInterface, Review} from '../../dto/product/product-interface';
 import {envirnoment} from 'src/app/env/env';
 import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from '../user/authentication.service';
 import {RequestBaseServiceService} from '../request-base-service.service';
 import {Observable} from 'rxjs';
+import {ProductInterface} from 'src/app/guest/store/product/types/ProductInterface';
 
 const BASE_URL = `${envirnoment.BASE_URL}`;
 

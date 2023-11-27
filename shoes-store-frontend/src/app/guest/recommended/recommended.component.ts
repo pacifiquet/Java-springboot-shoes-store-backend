@@ -9,7 +9,6 @@ import {faStarHalfAlt} from '@fortawesome/free-regular-svg-icons';
 import {faStar} from '@fortawesome/free-solid-svg-icons';
 import {Store} from '@ngrx/store';
 import {Subject, combineLatest, takeUntil} from 'rxjs';
-import {ProductInterface} from 'src/app/dto/product/product-interface';
 import {ProductsService} from 'src/app/services/product/products.service';
 import {
   selectProductList,
@@ -20,7 +19,10 @@ import {
   productListByCategiryActions,
 } from '../store/product/actions';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ContentResponse} from '../store/product/types/ProductInterface';
+import {
+  ContentResponse,
+  ProductInterface,
+} from '../store/product/types/ProductInterface';
 
 @Component({
   selector: 'app-recommended',
@@ -50,11 +52,6 @@ export class RecommendedComponent implements OnInit, OnDestroy {
     content: [],
     length: 0,
     size: 0,
-    sort: {
-      sorted: false,
-      unsorted: false,
-      empty: false,
-    },
     totalElements: 0,
     totalPages: 0,
     number: 0,

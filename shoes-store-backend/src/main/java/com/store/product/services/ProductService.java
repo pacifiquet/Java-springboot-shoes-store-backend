@@ -127,15 +127,13 @@ public class ProductService implements IProductService{
     @Override
     public ProductResponse getProduct(long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
-        float floats = productDao.productAverageReview(productId);
-        System.out.println(floats);
+        System.out.println(product.getTotalRatings());
         return ProductUtils.getProductResponseHandler().apply(product);
     }
 
     @Override
     public Page<ProductResponse> productListByCategory(String category,int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by("createdAt").descending());
-        System.out.println(category);
         return productRepository.getProductListByCategory(pageable, category);
     }
 
@@ -192,6 +190,7 @@ public class ProductService implements IProductService{
         Page<Review> reviewByProduct = reviewRepository.getReviewByProduct(product, pageable);
 
         Page<ProductResponse> productRecommendationByCategory = productRepository.getProductListByCategory(pageable, product.getCategory());
+
         Page<ReviewResponse> reviewResponses = reviewByProduct.map(review -> ProductUtils.reviewResponse().apply(review));
         ProductResponse productResponse = ProductUtils.getProductResponseHandler().apply(product);
 

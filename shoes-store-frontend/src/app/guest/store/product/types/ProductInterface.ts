@@ -5,11 +5,33 @@ export interface ProductInterface {
   category?: string;
   stock?: number;
   rating?: number;
+  totalRatings?: string;
   productName?: string;
   productUrl?: string;
   price?: number;
   description?: string;
-  createAt?: Date;
+  createdAt?: Date;
+}
+interface ReviewInterface {
+  rating: number;
+  comment: string;
+  createdAt: string;
+  reviewUserResponse: {
+    firstName: string;
+    lastName: string;
+    profileImage: string;
+  };
+}
+
+interface ReviewResponse {
+  content: ReviewInterface[];
+  length: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  last: boolean;
+  first: boolean;
 }
 
 export interface RecentUpdateProductsResponse {
@@ -20,28 +42,10 @@ export interface RecentUpdateProductsResponse {
   price?: number;
 }
 
-interface Pageable {
-  pageNumber: number;
-  pageSize: number;
-  sort: {
-    sorted: boolean;
-    unsorted: boolean;
-    empty: boolean;
-  };
-  offset: number;
-  paged: boolean;
-}
-
 export interface ContentResponse {
   content: ProductInterface[];
   length: number;
-  pageable?: Pageable;
   size: number;
-  sort: {
-    sorted: boolean;
-    unsorted: boolean;
-    empty: boolean;
-  };
   totalElements: number;
   totalPages: number;
   number: number;
@@ -52,6 +56,7 @@ export interface ContentResponse {
 export interface ProductAndRecommendationResponse {
   productResponse: ProductInterface;
   recommendedProducts: ContentResponse;
+  reviewResponse: ReviewResponse;
 }
 
 export interface ProductsStateStateInterface {

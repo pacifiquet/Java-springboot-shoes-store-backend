@@ -9,7 +9,6 @@ import {SignupComponent} from '../guest/signup/signup.component';
 import {NotificationsComponent} from '../guest/notifications/notifications.component';
 import {CartComponent} from '../guest/cart/cart.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {PaginationComponent} from '../pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +16,6 @@ import {PaginationComponent} from '../pagination/pagination.component';
     LoginComponent,
     ResetPasswordComponent,
     SignupComponent,
-    PaginationComponent,
     NotificationsComponent,
     HeaderComponent,
     CartComponent,
@@ -28,11 +26,9 @@ import {PaginationComponent} from '../pagination/pagination.component';
     LoginComponent,
     ResetPasswordComponent,
     SignupComponent,
-    PaginationComponent,
     NotificationsComponent,
     HeaderComponent,
     CartComponent,
-    PaginationComponent,
   ],
 })
 export class SharedModule {}
