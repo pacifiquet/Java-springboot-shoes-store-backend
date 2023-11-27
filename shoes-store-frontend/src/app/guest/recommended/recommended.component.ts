@@ -89,11 +89,15 @@ export class RecommendedComponent implements OnInit, OnDestroy {
         if (recommendedList?.content) {
           this.recommendedList = recommendedList.content;
           this.paginationData = recommendedList;
+          this.isFirstPage = recommendedList.first;
+          this.isLastPage = recommendedList.last;
         }
 
         if (byCategoryProducts) {
           this.recommendedList = byCategoryProducts.content;
           this.paginationData = byCategoryProducts;
+          this.isFirstPage = byCategoryProducts.first;
+          this.isLastPage = byCategoryProducts.last;
         }
       });
   }
@@ -103,11 +107,6 @@ export class RecommendedComponent implements OnInit, OnDestroy {
   }
 
   resetFilter() {
-    this.category = '';
-    this.isCategoryFilter = false;
-    this.isKidsCategory = false;
-    this.isMenCategory = false;
-    this.isWomenCategory = false;
     window.location.reload();
   }
 

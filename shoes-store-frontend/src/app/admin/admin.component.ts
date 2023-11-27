@@ -123,6 +123,7 @@ export class AdminComponent implements OnInit, OnDestroy {
             this.productListAdmin = byCategoryProducts;
             this.currentPage = byCategoryProducts.number + 1;
           }
+
           if (byCategoryProducts?.content.length === 0) {
             this.pageNumber = 0;
             this.pageSize = 3;

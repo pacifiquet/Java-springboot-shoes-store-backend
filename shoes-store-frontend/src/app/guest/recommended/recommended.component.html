@@ -15,11 +15,9 @@
                 <ul>
                     <div *ngIf="recommendedList.length>0 then productsContent; else noProducts"></div>
                     <div class="pagination">
-                        <button [disabled]="products.recommendedList?.first ||products.byCategoryProducts?.first"
-                            (click)="prevProductsByPage()" class="prev">PREV</button>
+                        <button [disabled]="isFirstPage" (click)="prevProductsByPage()" class="prev">PREV</button>
                         <h4>{{currentPage}}</h4>
-                        <button [disabled]="products.recommendedList?.last || products.byCategoryProducts?.last"
-                            (click)="nextProductsByPage()" class="next">NEXT</button>
+                        <button [disabled]="isLastPage" (click)="nextProductsByPage()" class="next">NEXT</button>
                     </div>
                 </ul>
                 <ng-template #productsContent>
