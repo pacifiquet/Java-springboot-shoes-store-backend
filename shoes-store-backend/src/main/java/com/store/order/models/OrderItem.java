@@ -25,9 +25,9 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderItem_id_sequence")
     private long id;
     @ManyToOne
-    private Product productId;
+    private Product product;
     @ManyToOne
-    private Order orderId;
+    private Order order;
     private int quantity;
     private float price;
 }

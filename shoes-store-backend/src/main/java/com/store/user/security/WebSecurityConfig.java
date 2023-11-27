@@ -34,6 +34,7 @@ public record WebSecurityConfig(
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
+                .exceptionHandling(httpExceptionHandler -> httpExceptionHandler.authenticationEntryPoint(authEntryPointJwt))
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers(WHITE_LIST_PATH).permitAll()
                                 .requestMatchers(POST, "/api/v1/users").permitAll()
