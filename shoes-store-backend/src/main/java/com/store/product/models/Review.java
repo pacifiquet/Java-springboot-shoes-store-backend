@@ -27,9 +27,9 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_id_sequence")
     private long id;
     @ManyToOne
-    private Product productId;
+    private Product product;
     @ManyToOne
-    private User userId;
+    private User user;
     private float rating;
     private String comment;
     private LocalDateTime createdAt;

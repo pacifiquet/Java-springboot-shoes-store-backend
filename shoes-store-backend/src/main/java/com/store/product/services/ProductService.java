@@ -7,13 +7,16 @@ import com.store.config.AwsConfigProperties;
 import com.store.exceptions.ProductException;
 import com.store.exceptions.UserException;
 import com.store.product.dao.IProductDao;
-import com.store.product.dto.RecentUpdateProducts;
 import com.store.product.dto.ProductAndRecommendedResponse;
 import com.store.product.dto.ProductRequest;
 import com.store.product.dto.ProductResponse;
 import com.store.product.dto.ProductUpdateRequest;
+import com.store.product.dto.RecentUpdateProducts;
+import com.store.product.dto.ReviewResponse;
 import com.store.product.models.Product;
+import com.store.product.models.Review;
 import com.store.product.repository.IProductRepository;
+import com.store.product.repository.IReviewRepository;
 import com.store.product.utils.ProductUtils;
 import com.store.user.models.Role;
 import com.store.user.security.CustomerUserDetailsService;
@@ -49,6 +52,7 @@ import static com.store.utils.Constants.SUCCESS;
 public class ProductService implements IProductService{
 
     private final IProductRepository productRepository;
+    private final IReviewRepository reviewRepository;
     private final AmazonS3 amazonS3;
     private final AwsConfigProperties awsConfigProperties;
     private final ObjectMapper objectMapper;
@@ -123,6 +127,8 @@ public class ProductService implements IProductService{
     @Override
     public ProductResponse getProduct(long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
+        float floats = productDao.productAverageReview(productId);
+        System.out.println(floats);
         return ProductUtils.getProductResponseHandler().apply(product);
     }
 
@@ -180,11 +186,16 @@ public class ProductService implements IProductService{
 
     @Override
     public ProductAndRecommendedResponse getProductAndRecommendedProducts(long productId, int pageSize, int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,Sort.by("createdAt").descending());
+
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductException(PRODUCT_NOT_FOUND));
-        Pageable pageable = PageRequest.of(pageNumber,pageSize,Sort.by("createdAt"));
-        Page<ProductResponse> productListByCategory = productRepository.getProductListByCategory(pageable, product.getCategory());
-        ProductResponse response = ProductUtils.getProductResponseHandler().apply(product);
-        return new ProductAndRecommendedResponse(response,productListByCategory);
+        Page<Review> reviewByProduct = reviewRepository.getReviewByProduct(product, pageable);
+
+        Page<ProductResponse> productRecommendationByCategory = productRepository.getProductListByCategory(pageable, product.getCategory());
+        Page<ReviewResponse> reviewResponses = reviewByProduct.map(review -> ProductUtils.reviewResponse().apply(review));
+        ProductResponse productResponse = ProductUtils.getProductResponseHandler().apply(product);
+
+        return new ProductAndRecommendedResponse(productResponse,reviewResponses,productRecommendationByCategory);
 
     }
 

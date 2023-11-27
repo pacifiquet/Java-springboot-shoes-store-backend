@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -29,8 +30,8 @@ public class ExceptionsDefaultHandler {
         return ResponseEntity.status(BAD_REQUEST).body(apiErrorMessage);
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    ResponseEntity<ApiErrorMessage> handleBandCredentialsExceptionMessage(HttpServletRequest request, BadCredentialsException exception) {
+    @ExceptionHandler({BadCredentialsException.class, AccessDeniedException.class})
+    ResponseEntity<ApiErrorMessage> handleBandCredentialsExceptionMessage(HttpServletRequest request, Exception exception) {
         ApiErrorMessage apiErrorMessage = new ApiErrorMessage(
                 request.getRequestURI(),
                 exception.getMessage(),

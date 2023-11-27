@@ -1,7 +1,6 @@
 package com.store.user.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +18,12 @@ import java.util.Map;
 @Slf4j
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     @Override
-    public void commence(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, AuthenticationException authException) throws IOException {
         log.error("Unauthorized error: {}",authException.getMessage());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         final Map<String,Object> body = new HashMap<>();
         body.put("status",HttpServletResponse.SC_UNAUTHORIZED);
-        body.put("error","Unauthorized");
         body.put("message",authException.getMessage());
         body.put("path",request.getRequestURI());
         new ObjectMapper().writeValue(response.getOutputStream(),body);

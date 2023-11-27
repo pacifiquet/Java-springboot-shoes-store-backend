@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IProductDao {
     List<Product> getRecentUpdateProducts(int limit, int offset);
+    float productAverageReview(long productId);
 }

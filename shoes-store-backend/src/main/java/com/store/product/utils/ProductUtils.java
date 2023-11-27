@@ -3,10 +3,14 @@ package com.store.product.utils;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.store.config.AwsConfigProperties;
-import com.store.product.dto.RecentUpdateProducts;
 import com.store.product.dto.ProductRequest;
 import com.store.product.dto.ProductResponse;
+import com.store.product.dto.RecentUpdateProducts;
+import com.store.product.dto.ReviewResponse;
+import com.store.product.dto.ReviewUserResponse;
 import com.store.product.models.Product;
+import com.store.product.models.Review;
+import com.store.user.models.User;
 import com.store.user.security.CustomerUserDetailsService;
 import com.store.utils.FileHandlerUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -120,9 +124,21 @@ public class ProductUtils {
                 product.getCreatedAt().toString()));
     }
 
+
+    public static Function<Review, ReviewResponse> reviewResponse(){
+        return (review -> new ReviewResponse(
+                review.getRating(), review.getComment(), review.getCreatedAt().toString(),reviewUserResponse().apply(review.getUser())
+        ));
+    }
+
+    private static Function<User, ReviewUserResponse> reviewUserResponse(){
+        return (user -> new ReviewUserResponse(user.getFirstName(),user.getLastName(),user.getProfile()));
+    }
+
     public static Function<Product, RecentUpdateProducts> getRecentProductResponseHandler(){
         return (product -> new RecentUpdateProducts(product.getId(), product.getRating(), product.getName(),product.getUrl(),product.getPrice()));
     }
+
 
     public static String getProductUrl(MultipartFile productFile, Product product, AmazonS3 amazonS3, AwsConfigProperties awsConfigProperties){
         File file = FileHandlerUtils.convertMultiPartFileToFile(productFile);

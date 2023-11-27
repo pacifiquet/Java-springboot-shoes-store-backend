@@ -34,18 +34,5 @@ public class VerificationToken {
             foreignKey = @ForeignKey(name = "FK_USER_VERIFY_TOKEN"))
     private User user;
 
-//    public VerificationToken(String token, User user) {
-//        super();
-//        this.token = token;
-//        this.user = user;
-//        this.expirationTime = calculateExpirationDate();
-//    }
-//
-//    public VerificationToken(String token) {
-//        super();
-//        this.token = token;
-//        this.expirationTime = calculateExpirationDate();
-//    }
-
 
 }

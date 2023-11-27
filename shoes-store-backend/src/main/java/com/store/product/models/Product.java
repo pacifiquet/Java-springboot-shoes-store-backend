@@ -3,6 +3,7 @@ package com.store.product.models;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,6 +16,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -34,7 +39,7 @@ public class Product {
     private String url;
     private String category;
     private float price;
-    private int rating;
+    private float rating;
     private int stock;
     @Column(columnDefinition = "TEXT",length = 700)
     private String description;
@@ -42,7 +47,4 @@ public class Product {
     private LocalDateTime updatedAt;
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Review> reviews;
-
-
-    public Product(String name, String url, float price, int rating) {}
 }
