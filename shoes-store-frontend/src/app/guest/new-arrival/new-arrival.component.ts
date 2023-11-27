@@ -90,6 +90,11 @@ export class NewArrivalComponent implements OnInit {
           this.isFirstPage = byCategoryProducts.first;
           this.isLastPage = byCategoryProducts.last;
         }
+        if (byCategoryProducts?.content.length === 0) {
+          this.pageNumber = 0;
+          this.pageSize = 3;
+          this.byCategory(this.category);
+        }
       });
   }
 
