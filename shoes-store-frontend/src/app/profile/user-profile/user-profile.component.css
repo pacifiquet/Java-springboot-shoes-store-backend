@@ -140,6 +140,11 @@ input{
     border: 1px solid seagreen;
 }
 
+.active{
+    background-color: seagreen;
+    color: #fff;
+    font-weight: 700;
+}
 .update-actions button{
     border: 1px seagreen;
     padding: 0.5rem 1rem;

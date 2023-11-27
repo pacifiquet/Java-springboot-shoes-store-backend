@@ -1,16 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {ProductInterface} from 'src/app/dto/product/product-interface';
-import {
-  productListActions,
-  topSoldproductListActions,
-} from '../store/product/actions';
+import {topSoldproductListActions} from '../store/product/actions';
 import {Subject, combineLatest, takeUntil} from 'rxjs';
-import {ContentResponse} from '../store/product/types/ProductInterface';
-import {
-  selectProductList,
-  selectTopSold,
-} from '../store/product/productReducer';
+import {selectTopSold} from '../store/product/productReducer';
+import {ProductInterface} from '../store/product/types/ProductInterface';
 
 @Component({
   selector: 'app-top-sold',

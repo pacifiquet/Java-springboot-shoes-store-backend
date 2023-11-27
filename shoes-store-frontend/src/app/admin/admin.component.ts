@@ -45,11 +45,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     content: [],
     length: 0,
     size: 0,
-    sort: {
-      sorted: false,
-      unsorted: false,
-      empty: false,
-    },
     totalElements: 0,
     totalPages: 0,
     number: 0,

@@ -1,9 +1,9 @@
 <ng-container *ngIf="userProfile$ | async as data">
     <div class="p-3 mt-3 ml-3">
-        <button (click)="handleAccountProfile()" [ngClass]="{'router-link-active': isAccountProfile}"
+        <button (click)="handleAccountProfile()" [ngClass]="{'active': isAccountProfile}"
             class="bg-[#f4f4g5] ring-1 ring-green-900 p-3 mx-3 rounded-lg ml-[4.5rem] shadow-md shadow-gray-400">
             Account Details</button>
-        <button (click)="handleAccountOrders()" [ngClass]="{'router-link-active': isTransactions}"
+        <button (click)="handleAccountOrders()" [ngClass]="{'active': isTransactions}"
             class="bg-[#f4f4g5] font-bold ring-1 ring-green-900 p-3 mx-3 rounded-lg shadow-md shadow-gray-400">Transactions</button>
     </div>
     <div *ngIf="isSuccessMessage" class="successMessage relative">

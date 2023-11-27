@@ -49,7 +49,6 @@ import {
   productDetailsReducer,
   uploadProductListReducer,
 } from './admin/store/admin.reducers';
-import {PaginationComponent} from './pagination/pagination.component';
 
 @NgModule({
   declarations: [

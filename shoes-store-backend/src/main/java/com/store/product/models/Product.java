@@ -40,11 +40,12 @@ public class Product {
     private String category;
     private float price;
     private float rating;
+    private int totalRatings;
     private int stock;
     @Column(columnDefinition = "TEXT",length = 700)
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE)
     private Set<Review> reviews;
 }

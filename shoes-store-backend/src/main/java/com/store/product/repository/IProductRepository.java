@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT" +
-            " NEW com.store.product.dto.ProductResponse(product.id, product.stock,product.rating,product.category,product.name,product.url,product.price,product.description,cast(product.createdAt as string) )"+
+            " NEW com.store.product.dto.ProductResponse(product.id, product.stock,product.rating,product.totalRatings,product.category,product.name,product.url,product.price,product.description,cast(product.createdAt as string) )"+
             "FROM Product product  WHERE product.category ILIKE :category"
     )
     Page<ProductResponse>getProductListByCategory(Pageable pageable, @Param(value = "category")String category);

@@ -1,6 +1,6 @@
 package com.store.product.dao;
 
-import com.store.product.dao.rowMapper.ProductAverageReviewRowMapper;
+import com.store.product.dao.rowMapper.ProductReviewsRowMapper;
 import com.store.product.dao.rowMapper.RecentProductUpdateRowMapper;
 import com.store.product.models.Product;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class ProductDao implements IProductDao{
     @Override
     public float productAverageReview(long productId) {
         var sql = "SELECT  avg(review.rating) as product_rating FROM reviews review where review.product_id = ?";
-        return jdbcTemplate.query(sql,new ProductAverageReviewRowMapper(),productId).get(0);
+        return jdbcTemplate.query(sql,new ProductReviewsRowMapper(),productId).get(0);
     }
 
 }

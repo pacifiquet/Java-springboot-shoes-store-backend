@@ -116,6 +116,7 @@ public class ProductUtils {
                 product.getId(),
                 product.getStock(),
                 product.getRating(),
+                product.getTotalRatings(),
                 product.getCategory(),
                 product.getName(),
                 product.getUrl(),

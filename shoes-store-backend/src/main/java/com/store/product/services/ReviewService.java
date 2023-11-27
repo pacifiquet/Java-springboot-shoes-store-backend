@@ -48,6 +48,7 @@ public class ReviewService implements IReviewService{
                         .createdAt(LocalDateTime.now()).build());
 
         product.setRating(productDao.productAverageReview(product.getId()));
+        product.setTotalRatings(reviewRepository.getReviewByProduct(product).size());
         productRepository.save(product);
         return ProductUtils.reviewResponse().apply(savedReview);
 

@@ -3,23 +3,19 @@ import {ActivatedRoute} from '@angular/router';
 import {faStarHalfAlt} from '@fortawesome/free-regular-svg-icons';
 import {faStar} from '@fortawesome/free-solid-svg-icons';
 import {Store} from '@ngrx/store';
-import {ProductInterface} from 'src/app/dto/product/product-interface';
 import {ProductsService} from 'src/app/services/product/products.service';
 import {
   newArrivalProductListActions,
-  productListActions,
-  productListByCategiryActions,
   productListByCategiryNewArrivalActions,
   recentUpdateProductsActions,
 } from '../store/product/actions';
 import {Subject, combineLatest, takeUntil} from 'rxjs';
-import {ContentResponse} from '../store/product/types/ProductInterface';
 import {
   selectNewArrivalList,
-  selectProductListByCategory,
   selectProductListByCategoryNewArrival,
   selectRecentProducts,
 } from '../store/product/productReducer';
+import {ProductInterface} from '../store/product/types/ProductInterface';
 
 @Component({
   selector: 'app-new-arrival',

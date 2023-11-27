@@ -4,6 +4,7 @@ public record ProductResponse(
         long id,
         int stock,
         float rating,
+        int totalRatings,
         String category,
         String productName,
         String productUrl,

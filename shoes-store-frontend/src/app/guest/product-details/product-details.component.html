@@ -9,7 +9,9 @@
                     <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
                     <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
                     <fa-icon style="color: #F79522;" [icon]="haflIcon"></fa-icon>
-                    <p> {{product.data?.productResponse?.rating}} Reviews
+                    <p> {{product.data?.productResponse?.rating}} of ({{product.data?.productResponse?.totalRatings}}
+                        Reviews)
+
                     </p>
                 </div>
                 <div class="desc">
@@ -20,6 +22,42 @@
                     <button>add to cart</button>
                 </div>
 
+            </div>
+        </div>
+        <!-- review section -->
+        <div class="product-review">
+            <div class="reviews-user">
+                <div>
+                    <button>add review</button>
+                </div>
+                <div>
+                    <div class="user-info">
+                        <img [src]="product.user?.profile" alt="user">
+                        <div class="user-names">
+                            <span>{{product.user?.firstName}}</span>
+                            <span>{{product.user?.lastName}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="reviews-list">
+                <ul *ngFor="let review of product.data?.reviewResponse?.content">
+                    <li>
+                        <div class="rating-info">
+                            <h1>{{review.rating}}</h1>
+                            <p class="comment">{{review.comment}}</p>
+                        </div>
+
+                        <div class="rating-user">
+                            <div>
+                                <img [src]="review.reviewUserResponse.profileImage"
+                                    [alt]="review.reviewUserResponse.firstName">
+                                <p>{{review.reviewUserResponse.firstName}} {{review.reviewUserResponse.lastName}}</p>
+                            </div>
+                            <p>{{review.createdAt | date :'short'}}</p>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
         <!-- recommended -->
@@ -53,7 +91,7 @@
                 <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
                 <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
                 <fa-icon style="color: #F79522;" [icon]="haflIcon"></fa-icon>
-                <p>{{getProductReviewAverage(product)}} of 5 ({{product.reviews?.length || 0}} Reviews )
+                <p>{{product.rating}} of 5 ({{product.totalRatings}} reviews)
                 </p>
             </div>
         </div>
