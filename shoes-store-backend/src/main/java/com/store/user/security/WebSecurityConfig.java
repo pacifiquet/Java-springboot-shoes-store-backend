@@ -34,13 +34,14 @@ public record WebSecurityConfig(
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .exceptionHandling(httpExceptionHandler -> httpExceptionHandler.authenticationEntryPoint(authEntryPointJwt))
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers(WHITE_LIST_PATH).permitAll()
                                 .requestMatchers(POST, "/api/v1/users").permitAll()
                                 .requestMatchers(GET,"/api/v1/products/**").permitAll()
                                 .requestMatchers(GET, "/api/v1/users").hasRole(ADMIN.name())
                                 .requestMatchers("/api/v1/users/**").hasAnyRole(USER.name(), ADMIN.name())
+                                .requestMatchers(POST,"/api/v1/reviews/**").hasAnyRole(USER.name(),ADMIN.name())
+                                .requestMatchers(GET,"/api/v1/reviews/**").permitAll()
                                 .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

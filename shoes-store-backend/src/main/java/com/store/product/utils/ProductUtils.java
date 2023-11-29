@@ -8,6 +8,7 @@ import com.store.product.dto.ProductResponse;
 import com.store.product.dto.RecentUpdateProducts;
 import com.store.product.dto.ReviewResponse;
 import com.store.product.dto.ReviewUserResponse;
+import com.store.product.dto.ToRatedProductResponse;
 import com.store.product.models.Product;
 import com.store.product.models.Review;
 import com.store.user.models.User;
@@ -123,6 +124,12 @@ public class ProductUtils {
                 product.getPrice(),
                 product.getDescription(),
                 product.getCreatedAt().toString()));
+    }
+
+    public static Function<Product, ToRatedProductResponse> getTopRatedProductResponse(){
+        return (product -> new ToRatedProductResponse(
+                product.getId(),product.getRating(),product.getName(),product.getUrl(), product.getPrice()
+        ));
     }
 
 

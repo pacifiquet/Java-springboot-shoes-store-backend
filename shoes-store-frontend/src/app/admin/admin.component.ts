@@ -110,19 +110,11 @@ export class AdminComponent implements OnInit, OnDestroy {
         }) => {
           if (products) {
             this.productListAdmin = products;
-            this.currentPage = products.number + 1;
             this.totalPage = products.totalPages;
           }
 
           if (byCategoryProducts) {
             this.productListAdmin = byCategoryProducts;
-            this.currentPage = byCategoryProducts.number + 1;
-          }
-
-          if (byCategoryProducts?.content.length === 0) {
-            this.pageNumber = 0;
-            this.pageSize = 3;
-            this.byCategory(this.productCategory);
           }
 
           if (deleteResponse?.success) {
@@ -158,6 +150,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   nextProductsByPage() {
     this.pageNumber += 1;
+    this.currentPage += 1;
 
     if (this.productCategory !== '') {
       this.store.dispatch(
@@ -180,6 +173,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   prevProductsByPage() {
     this.pageNumber -= 1;
+    this.currentPage -= 1;
     if (this.productCategory) {
       this.store.dispatch(
         productListByCategiryActions.productListByCategory({
@@ -233,6 +227,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   byCategory(category: string) {
     this.productCategory = category;
     this.isCategoryFilter = true;
+    this.pageNumber = 0;
+    this.currentPage = 1;
 
     if (category === 'men') {
       this.isMenCategory = true;

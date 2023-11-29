@@ -4,7 +4,11 @@ import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from '../user/authentication.service';
 import {RequestBaseServiceService} from '../request-base-service.service';
 import {Observable} from 'rxjs';
-import {ProductInterface} from 'src/app/guest/store/product/types/ProductInterface';
+import {
+  ProductInterface,
+  RecommndedProductResponse,
+  ReviewResponse,
+} from 'src/app/guest/store/product/types/ProductInterface';
 
 const BASE_URL = `${envirnoment.BASE_URL}`;
 
@@ -83,6 +87,35 @@ export class ProductsService extends RequestBaseServiceService {
   }): Observable<any> {
     return this.http.get(
       `${BASE_URL}/products/product-by-category/${request.category}?pageSize=${request.pageSize}&pageNumber=${request.pageNumber}`
+    );
+  }
+
+  getReviewsByProduct(request: {
+    productId: number;
+    pageSize: number;
+    pageNumber: number;
+  }): Observable<ReviewResponse> {
+    return this.http.get(
+      `${BASE_URL}/reviews/${request.productId}?pageNumber=${request.pageNumber}&pageSize=${request.pageSize}`
+    );
+  }
+
+  getProductRecommendation(request: {
+    productId: number;
+    pageSize: number;
+    pageNumber: number;
+  }): Observable<RecommndedProductResponse> {
+    return this.http.get(
+      `${BASE_URL}/products/${request.productId}/recommendation?pageSize=${request.pageSize}&pageNumber=${request.pageNumber}`
+    );
+  }
+
+  getTopTenRatedProducts(request: {
+    limit: number;
+    offset: number;
+  }): Observable<any> {
+    return this.http.get(
+      `${BASE_URL}/products/top-ten-rated-products?offset=${request.offset}&limit=${request.limit}`
     );
   }
 }

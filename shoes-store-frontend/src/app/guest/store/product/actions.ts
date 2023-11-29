@@ -4,6 +4,7 @@ import {
   ContentResponse,
   ProductAndRecommendationResponse,
   RecentUpdateProductsResponse,
+  ReviewResponse,
 } from './types/ProductInterface';
 
 export const productListActions = createActionGroup({
