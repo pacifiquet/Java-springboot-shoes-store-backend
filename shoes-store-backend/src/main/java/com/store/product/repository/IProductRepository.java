@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT" +
@@ -19,4 +21,15 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     Page<ProductResponse>getProductListByCategory(Pageable pageable, @Param(value = "category")String category);
 
     Page<Product> getProductsByNameContainingIgnoreCase(String name,Pageable pageable);
+    @Query("SELECT" +
+            " NEW com.store.product.dto.ProductResponse(product.id, product.stock,product.rating,product.totalRatings,product.category,product.name,product.url,product.price,product.description,cast(product.createdAt as string) )"+
+            "FROM Product product  WHERE product.category ILIKE :category AND product.id <> :id"
+    )
+    Page<ProductResponse> getProductRecommendation(@Param(value = "category")String category,@Param("id") long id,Pageable pageable);
+
+    @Query(value = "SELECT" +
+            " * "+
+            "FROM products product order by product.rating desc offset ? limit ?",nativeQuery = true
+    )
+    List<Product> topTenRatedProduct(@Param("offset") int offset, @Param("limit") int limit);
 }

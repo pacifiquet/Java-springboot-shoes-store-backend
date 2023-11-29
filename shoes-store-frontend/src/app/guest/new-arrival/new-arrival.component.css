@@ -65,6 +65,7 @@
     background-color: #e32b3a;
     color: #F4FDFF;
     font-weight: 600;
+    cursor: pointer;
     outline: none;
     border: none;
 }

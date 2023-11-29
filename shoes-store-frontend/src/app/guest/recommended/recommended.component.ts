@@ -110,6 +110,8 @@ export class RecommendedComponent implements OnInit, OnDestroy {
   byCategory(category: string) {
     this.isCategoryFilter = true;
     this.category = category;
+    this.pageNumber = 0;
+    this.currentPage = 1;
 
     if (category === 'men') {
       this.isMenCategory = true;
@@ -124,6 +126,7 @@ export class RecommendedComponent implements OnInit, OnDestroy {
       this.isKidsCategory = true;
       this.isWomenCategory = false;
     }
+
     if (this.isCategoryFilter) {
       this.store.dispatch(
         productListByCategiryActions.productListByCategory({

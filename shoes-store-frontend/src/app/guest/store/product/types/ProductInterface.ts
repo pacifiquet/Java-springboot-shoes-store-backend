@@ -1,5 +1,17 @@
 import {BackendErrorInterface} from 'src/app/types/backend.error.interface';
 
+interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+  sort: {
+    sorted: boolean;
+    unsorted: boolean;
+    empty: boolean;
+  };
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+}
 export interface ProductInterface {
   id?: number;
   category?: string;
@@ -12,26 +24,54 @@ export interface ProductInterface {
   description?: string;
   createdAt?: Date;
 }
-interface ReviewInterface {
-  rating: number;
-  comment: string;
-  createdAt: string;
-  reviewUserResponse: {
-    firstName: string;
-    lastName: string;
-    profileImage: string;
+
+export interface ReviewInterface {
+  rating?: number;
+  comment?: string;
+  createdAt?: string;
+  reviewUserResponse?: {
+    firstName?: string;
+    lastName?: string;
+    profileImage?: string;
   };
 }
 
-interface ReviewResponse {
-  content: ReviewInterface[];
-  length: number;
-  size: number;
-  totalElements: number;
-  totalPages: number;
-  number: number;
-  last: boolean;
-  first: boolean;
+export interface RecommndedProductResponse {
+  content?: ProductInterface[];
+  length?: number;
+  size?: number;
+  sort?: {
+    sorted: boolean;
+    unsorted: boolean;
+    empty: boolean;
+  };
+  pageable?: Pageable | undefined | null;
+
+  totalElements?: number;
+  numberOfElements?: number;
+  totalPages?: number;
+  number?: number;
+  last?: boolean;
+  first?: boolean;
+}
+
+export interface ReviewResponse {
+  content?: ReviewInterface[];
+  length?: number;
+  size?: number;
+  sort?: {
+    sorted: boolean;
+    unsorted: boolean;
+    empty: boolean;
+  };
+  pageable?: Pageable | undefined | null;
+
+  totalElements?: number;
+  numberOfElements?: number;
+  totalPages?: number;
+  number?: number;
+  last?: boolean;
+  first?: boolean;
 }
 
 export interface RecentUpdateProductsResponse {
@@ -56,7 +96,6 @@ export interface ContentResponse {
 export interface ProductAndRecommendationResponse {
   productResponse: ProductInterface;
   recommendedProducts: ContentResponse;
-  reviewResponse: ReviewResponse;
 }
 
 export interface ProductsStateStateInterface {

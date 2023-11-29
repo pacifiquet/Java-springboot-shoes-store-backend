@@ -86,17 +86,14 @@ export class NewArrivalComponent implements OnInit {
           this.isFirstPage = byCategoryProducts.first;
           this.isLastPage = byCategoryProducts.last;
         }
-        if (byCategoryProducts?.content.length === 0) {
-          this.pageNumber = 0;
-          this.pageSize = 3;
-          this.byCategory(this.category);
-        }
       });
   }
 
   byCategory(category: string) {
     this.isCategoryFilter = true;
     this.category = category;
+    this.pageNumber = 0;
+    this.currentPage = 1;
 
     if (category === 'men') {
       this.isMenCategory = true;

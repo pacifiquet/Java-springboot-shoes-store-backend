@@ -19,8 +19,8 @@ import {recentUpdateProductsActions} from '../store/product/actions';
 export class RecentlyUpdatedComponent implements OnInit, OnDestroy {
   recentlyUpdated: RecentUpdateProductsResponse[] = [];
   currentPage = 1;
-  firstPage = false;
-  lastPage = false;
+  isNext = false;
+  isPrev = true;
   limit = 5;
   offset = 0;
   products$ = combineLatest({
@@ -33,21 +33,13 @@ export class RecentlyUpdatedComponent implements OnInit, OnDestroy {
   @Input() message: string = '';
   constructor(private store: Store) {}
 
-  ngOnInit(): void {
-    if (this.offset === 0) {
-      this.firstPage = true;
-    } else if (this.offset === 5) {
-      this.lastPage = true;
-    } else {
-      this.lastPage = false;
-      this.firstPage = false;
-    }
-  }
+  ngOnInit(): void {}
 
   nextProductsByPage() {
     this.currentPage += 1;
     this.offset = 5;
-
+    this.isNext = true;
+    this.isPrev = false;
     this.store.dispatch(
       recentUpdateProductsActions.recentUpdateProducts({
         request: {limit: this.limit, offset: this.offset},
@@ -58,6 +50,8 @@ export class RecentlyUpdatedComponent implements OnInit, OnDestroy {
   prevProductsByPage() {
     this.currentPage -= 1;
     this.offset = 0;
+    this.isNext = false;
+    this.isPrev = true;
     this.store.dispatch(
       recentUpdateProductsActions.recentUpdateProducts({
         request: {limit: this.limit, offset: this.offset},

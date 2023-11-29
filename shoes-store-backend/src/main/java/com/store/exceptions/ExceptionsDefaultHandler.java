@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @RestControllerAdvice
 public class ExceptionsDefaultHandler {
-    @ExceptionHandler({UserException.class, UsernameNotFoundException.class, DisabledException.class, ProductException.class})
+    @ExceptionHandler({UserException.class, UsernameNotFoundException.class, DisabledException.class, ProductException.class,IllegalArgumentException.class})
     ResponseEntity<ApiErrorMessage> handleExceptionMessage(HttpServletRequest request, Exception exception) {
         ApiErrorMessage apiErrorMessage = new ApiErrorMessage(
                 request.getRequestURI(),

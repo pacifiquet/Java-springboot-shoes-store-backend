@@ -1,9 +1,9 @@
 package com.store.product.controller;
 
 import com.store.product.dto.RecentUpdateProducts;
-import com.store.product.dto.ProductAndRecommendedResponse;
 import com.store.product.dto.ProductRequest;
 import com.store.product.dto.ProductResponse;
+import com.store.product.dto.ToRatedProductResponse;
 import com.store.product.services.IProductService;
 import com.store.user.security.CustomerUserDetailsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -102,13 +102,21 @@ public class ProductController {
 
     @GetMapping(value = "/{productId}/recommendation")
     @Operation(summary = "get a product and recommended products")
-    ResponseEntity<ProductAndRecommendedResponse> getProductAndRecommendedProduct(@PathVariable long productId,@RequestParam int pageSize, @RequestParam int pageNumber){
+    ResponseEntity<Page<ProductResponse>> getProductAndRecommendedProduct(@PathVariable long productId,@RequestParam int pageSize, @RequestParam int pageNumber){
         return ResponseEntity.ok(productService.getProductAndRecommendedProducts(productId,pageSize,pageNumber));
     }
+
+
 
     @GetMapping(value = "/new-arrival")
     @Operation(summary = "new arrival products")
     ResponseEntity<Page<ProductResponse>> getNewArrivalProducts(@RequestParam("pageNumber")int pageNumber,@RequestParam("pageSize")int pageSize){
         return ResponseEntity.ok(productService.newArrivalProducts(pageSize,pageNumber));
+    }
+
+    @GetMapping(value = "/top-ten-rated-products")
+    @Operation(summary = "Top Ten rated products")
+    ResponseEntity<List<ToRatedProductResponse>> topTenRatedProduct(@RequestParam int offset, @RequestParam int limit){
+        return ResponseEntity.ok(productService.topTenRatedProducts(offset,limit));
     }
 }

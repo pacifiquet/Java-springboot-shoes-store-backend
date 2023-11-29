@@ -14,6 +14,10 @@ import com.store.user.repository.IUserRepository;
 import com.store.user.security.CustomerUserDetailsService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -53,4 +57,13 @@ public class ReviewService implements IReviewService{
         return ProductUtils.reviewResponse().apply(savedReview);
 
     }
+
+    @Override
+    public Page<ReviewResponse> reviewList(long productId,int pageNumber,int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by("createdAt").descending());
+        Product product = productRepository.getReferenceById(productId);
+        return reviewRepository.getReviewByProduct(product,pageable).map(review -> ProductUtils.reviewResponse().apply(review));
+    }
+
+
 }
