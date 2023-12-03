@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { AuthenticationService } from './user/authentication.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { LoginUserResponse } from '../dto/user/login-user-response';
+import {Injectable} from '@angular/core';
+import {AuthenticationService} from './user/authentication.service';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {LoginUserResponse} from '../dto/user/login-user-response';
 
 @Injectable({
   providedIn: 'root',

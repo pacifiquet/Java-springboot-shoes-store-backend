@@ -44,15 +44,7 @@ export class TopSoldComponent implements OnInit, OnDestroy {
       this.productService.getTopTenRatedProducts(request);
   }
 
-  ngOnInit(): void {
-    // if (this.offset === 0) {
-    //   this.isNext = false;
-    //   this.isPrev = true;
-    // } else if (this.offset === 5) {
-    //   this.isNext = true;
-    //   this.isPrev = false;
-    // }
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.unsub$.next();

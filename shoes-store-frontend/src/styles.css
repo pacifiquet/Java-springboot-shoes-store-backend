@@ -1,3 +1,9 @@
+@import '~@fortawesome/fontawesome-free/css/all.css';
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/material.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -64,6 +70,7 @@ li{
 }
 section {
     margin:4rem;
+    height: fit-content;
 }
 
 /* custom-modal */

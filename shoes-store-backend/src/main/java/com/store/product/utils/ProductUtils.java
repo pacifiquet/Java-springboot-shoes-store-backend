@@ -3,6 +3,7 @@ package com.store.product.utils;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.store.config.AwsConfigProperties;
+import com.store.product.dto.ProductRecommendedResponse;
 import com.store.product.dto.ProductRequest;
 import com.store.product.dto.ProductResponse;
 import com.store.product.dto.RecentUpdateProducts;
@@ -107,7 +108,6 @@ public class ProductUtils {
             .stock(productReq.stock())
             .category(productReq.category())
             .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
             .userId(requestUser.getId())
             .build();
     }
@@ -126,6 +126,19 @@ public class ProductUtils {
                 product.getCreatedAt().toString()));
     }
 
+    public static Function<Product, ProductRecommendedResponse> getProductRecommendedResponseHandler(){
+        return (product -> new ProductRecommendedResponse(
+                product.getId(),
+                product.getRating(),
+                product.getTotalRatings(),
+                product.getCategory(),
+                product.getName(),
+                product.getUrl(),
+                product.getPrice()
+        ));
+    }
+
+
     public static Function<Product, ToRatedProductResponse> getTopRatedProductResponse(){
         return (product -> new ToRatedProductResponse(
                 product.getId(),product.getRating(),product.getName(),product.getUrl(), product.getPrice()
@@ -135,6 +148,7 @@ public class ProductUtils {
 
     public static Function<Review, ReviewResponse> reviewResponse(){
         return (review -> new ReviewResponse(
+                review.getId(),
                 review.getRating(), review.getComment(), review.getCreatedAt().toString(),reviewUserResponse().apply(review.getUser())
         ));
     }

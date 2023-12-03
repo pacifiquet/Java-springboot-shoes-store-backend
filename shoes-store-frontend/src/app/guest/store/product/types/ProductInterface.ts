@@ -12,6 +12,16 @@ interface Pageable {
   paged: boolean;
   unpaged: boolean;
 }
+
+export interface ProductRecommendedInterface {
+  id?: number;
+  rating?: number;
+  totalRatings: number;
+  category?: string;
+  productName?: string;
+  productUrl?: string;
+  price?: number;
+}
 export interface ProductInterface {
   id?: number;
   category?: string;
@@ -26,6 +36,7 @@ export interface ProductInterface {
 }
 
 export interface ReviewInterface {
+  id?: number;
   rating?: number;
   comment?: string;
   createdAt?: string;

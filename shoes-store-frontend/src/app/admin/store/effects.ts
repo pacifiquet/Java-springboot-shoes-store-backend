@@ -2,9 +2,12 @@ import {inject} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {ProductsService} from 'src/app/services/product/products.service';
 import {
+  addProductActions,
   deleteListProductActions,
+  deleteProductActions,
   productDetailsActions,
   productListUploadActions,
+  updateProductActions,
 } from './actions';
 import {catchError, map, of, switchMap} from 'rxjs';
 import {BackendSuccessResponseInterface} from 'src/app/types/BackendSuccessResponse.interface';
@@ -69,6 +72,77 @@ export const productDetailsEffect = createEffect(
           catchError((errorResponse: HttpErrorResponse) =>
             of(
               productDetailsActions.productDetailsFail({
+                errorResponse: errorResponse.error,
+              })
+            )
+          )
+        );
+      })
+    );
+  },
+  {functional: true}
+);
+
+export const addProductEffect = createEffect(
+  (actions$ = inject(Actions), productService = inject(ProductsService)) => {
+    return actions$.pipe(
+      ofType(addProductActions.addProduct),
+      switchMap(({request}) => {
+        return productService.addProduct(request).pipe(
+          map((response: BackendSuccessResponseInterface) =>
+            addProductActions.addProductSuccess({response})
+          ),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              addProductActions.addProductFail({
+                errorResponse: errorResponse.error,
+              })
+            )
+          )
+        );
+      })
+    );
+  },
+  {functional: true}
+);
+
+export const deleteProductEffect = createEffect(
+  (actions$ = inject(Actions), productService = inject(ProductsService)) => {
+    return actions$.pipe(
+      ofType(deleteProductActions.deleteProduct),
+      switchMap(({request}) => {
+        return productService.deleteProduct(request.id).pipe(
+          map((deleteProductSuccessResponse: BackendSuccessResponseInterface) =>
+            deleteProductActions.deleteProductSuccess({
+              deleteProductSuccessResponse,
+            })
+          ),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              deleteProductActions.deleteProductFail({
+                deleteProductErrorResponse: errorResponse.error,
+              })
+            )
+          )
+        );
+      })
+    );
+  },
+  {functional: true}
+);
+
+export const updateProductEffect = createEffect(
+  (actions$ = inject(Actions), productService = inject(ProductsService)) => {
+    return actions$.pipe(
+      ofType(updateProductActions.updateProduct),
+      switchMap(({request}) => {
+        return productService.updateProduct(request).pipe(
+          map((response: BackendSuccessResponseInterface) =>
+            updateProductActions.updateProductSuccess({response})
+          ),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              updateProductActions.updateProductFail({
                 errorResponse: errorResponse.error,
               })
             )

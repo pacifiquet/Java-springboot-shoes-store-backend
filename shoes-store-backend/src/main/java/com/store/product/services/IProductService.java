@@ -1,6 +1,6 @@
 package com.store.product.services;
 
-import com.store.product.dto.ProductRequest;
+import com.store.product.dto.ProductRecommendedResponse;
 import com.store.product.dto.ProductResponse;
 import com.store.product.dto.RecentUpdateProducts;
 import com.store.product.dto.ToRatedProductResponse;
@@ -14,9 +14,9 @@ import java.util.Map;
 public interface IProductService {
     Map<String,String> uploadProductsCSV(MultipartFile products, CustomerUserDetailsService userDetailsService);
 
-    Map<String, String> addProduct(ProductRequest productRequest, CustomerUserDetailsService customerUserDetailsService);
+    Map<String, String> addProduct(String productRequest, MultipartFile productImage, CustomerUserDetailsService customerUserDetailsService);
 
-    Map<String, String> updateProduct(long productId, Map<String,String> productRequest, CustomerUserDetailsService customerUserDetailsService, MultipartFile productFile);
+    Map<String, String> updateProduct(long productId, String productRequest, CustomerUserDetailsService customerUserDetailsService, MultipartFile productFile);
 
     Page<ProductResponse> productList(int pageSize, int pageNumber);
 
@@ -41,4 +41,8 @@ public interface IProductService {
     Page<ProductResponse>newArrivalProducts(int pageSize,int pageNumber);
 
     List<ToRatedProductResponse> topTenRatedProducts(int offset, int limit);
+
+    Page<ProductRecommendedResponse> productRecommendation(int pageNumber, int pageSize, String category);
+
+    List<ProductRecommendedResponse> recommendedProductsByCategory(String category, int offset, int limit);
 }

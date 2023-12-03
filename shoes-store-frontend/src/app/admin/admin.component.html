@@ -1,16 +1,18 @@
-<ng-container *ngIf="(productList$ |async) as productList">
+<ng-container *ngIf="(adminData$ |async) as adminData">
     <div class="admin shadow shadow-gray-500 rounded-lg">
         <button (click)="addProduct()"
             class="absolute flex  bg-zinc-100 text-xl shadow-lg ring-1 p-4 ring-white-900 rounded-lg">Add
             Product <img src="../../assets/ic_baseline-plus.svg" alt="add-product">
         </button>
 
-        <app-add-product [id]="id" (addProductModalEvent)="hideAddProductModal($event)"
+        <app-add-product [productData]="productDetail" [id]="id" [isAddingProduct]="isAddingProduct"
+            [isUpdatingProduct]="isUpdatingProduct" (addProductModalEvent)="hideAddProductModal($event)"
+            (addOrUpdateProductEventRequest)="handleAddOrUpdateProductEvent($event)"
             *ngIf="isAddProductActive"></app-add-product>
         <app-delete-modal [ids]="ids" (cancelEvent)="cancelDelete($event)" (deleteEvent)="approveDelete($event)"
             *ngIf="isDeleting"></app-delete-modal>
 
-        <div class="successMessage" *ngIf="successMessage">
+        <div *ngIf="successMessage" class="successMessage">
             <p>{{successMessage}}</p>
         </div>
 
@@ -36,7 +38,7 @@
                 </div>
                 <div class="ml-2">
                     <p class="text-xl">All Products:<span class="text-xl font-500">
-                            {{productList.products?.totalElements}}</span></p>
+                            {{adminData.products?.totalElements}}</span></p>
                 </div>
             </div>
             <div class="filtering">
@@ -107,7 +109,7 @@
                                         stroke-linejoin="round" />
                                 </svg>
                             </button>
-                            <button (click)="deleteProduct()">
+                            <button (click)="deleteProduct(product.id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
                                     fill="none">
                                     <path

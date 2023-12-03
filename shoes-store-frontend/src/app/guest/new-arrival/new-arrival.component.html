@@ -19,19 +19,15 @@
                         </div>
                         <div class="ratings">
                             <div class="start-rating">
-                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                                <fa-icon style="color: #F79522;" [icon]="haflIcon"></fa-icon>
+                                <app-review [starRating]="product.rating"></app-review>
                             </div>
-                            <p>{{product.rating | number}} of 5 ({{product.totalRatings}} Reviews
+                            <p>{{product.rating | number:'1.1-1'}} of 5 ({{product.totalRatings}} Reviews
                                 )
                             </p>
                         </div>
                         <h2>{{product.price | currency}}</h2>
                         <h3>{{product.productName}}</h3>
-                        <h3>{{product.category}}</h3>
+                        <h3>{{product.category}}'s Shoes</h3>
                         <div class="actions">
                             <button [routerLink]="['/product-details',product.id]" routerLinkActive="router-link-active"
                                 class="view">view</button>

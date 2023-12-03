@@ -45,10 +45,14 @@ import {
   topSoldReducer,
 } from './guest/store/product/productReducer';
 import {
+  addProductReducer,
   deleteListProductRecuder,
+  deleteProductReducer,
   productDetailsReducer,
+  updateProductReduder,
   uploadProductListReducer,
 } from './admin/store/admin.reducers';
+import {RatingModule} from '@syncfusion/ej2-angular-inputs';
 
 @NgModule({
   declarations: [
@@ -90,6 +94,9 @@ import {
         newArrivalProductList: newArrivalProductsRecuder,
         productsCategory: productListByCategoryRecuder,
         productsCategoryNewArrival: productListByCategoryNewArrivalRecuder,
+        addProduct: addProductReducer,
+        deleteProduct: deleteProductReducer,
+        updateProduct: updateProductReduder,
       },
       {metaReducers: [clearState]}
     ),

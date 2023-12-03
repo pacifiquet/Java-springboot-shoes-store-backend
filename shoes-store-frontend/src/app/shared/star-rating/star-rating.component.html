@@ -1,0 +1,50 @@
+<ng-container>
+    <div class="container">
+        <div class="reviewadded-message" *ngIf="addedReview">
+            <div>Thanks for rating us!</div>
+            <button *ngIf="(addReviewData$ |async) as review" (click)="editReview(review.id)">Edit Review</button>
+        </div>
+        <div class="star-widget" *ngIf="!addedReview">
+            <input type="radio" name="rate" id="rate-5" [value]="5" (input)="getRatingValue($event)">
+            <label for="rate-5"> &#9733;</label>
+            <input type="radio" name="rate" id="rate-4" [value]="4" (input)="getRatingValue($event)">
+            <label for="rate-4">&#9733;</label>
+            <input type="radio" name="rate" id="rate-3" [value]="3" (input)="getRatingValue($event)">
+            <label for="rate-3">&#9733;</label>
+            <input type="radio" name="rate" id="rate-2" [value]="2" (input)="getRatingValue($event)">
+            <label for="rate-2">&#9733;</label>
+            <input [value]="1" type="radio" name="rate" id="rate-1" (input)="getRatingValue($event)">
+            <label for="rate-1">&#9733;</label>
+            <form #f="ngForm" (ngSubmit)="saveReview(f)" *ngIf="!editingReview">
+                <div>
+                    <header></header>
+                </div>
+                <div class="textarea">
+                    <textarea required ngModel #comment="ngModel" (change)="getValue(comment)"
+                        (ngModelChange)="updateComment()"
+                        [ngClass]="{error:comment.touched && comment.invalid,success:comment.valid,touched:!comment.touched}"
+                        name="comment" id="comment" cols="30" rows="10" [(ngModel)]="commentValue"></textarea>
+
+                </div>
+                <div class="btn" *ngIf="!editingReview">
+                    <button [disabled]="comment.invalid" type="submit">Submit</button>
+                </div>
+            </form>
+            <form #f="ngForm" (ngSubmit)="saveUpdateReview(f)" *ngIf="(addReviewDetail$ |async)">
+                <div>
+                    <header></header>
+                </div>
+                <div class="textarea">
+                    <textarea required ngModel #comment="ngModel" (change)="getValue(comment)"
+                        (ngModelChange)="updateComment()"
+                        [ngClass]="{error:comment.touched && comment.invalid,success:comment.valid,touched:!comment.touched}"
+                        name="comment" id="comment" cols="30" rows="10" [(ngModel)]="commentValue"></textarea>
+
+                </div>
+                <div class="btn">
+                    <button [disabled]="comment.invalid" type="submit">Save Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-container>

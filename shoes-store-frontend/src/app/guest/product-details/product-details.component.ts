@@ -21,6 +21,7 @@ import {
 import {selectUserProfile} from 'src/app/app.reducer';
 import {ProductsService} from 'src/app/services/product/products.service';
 import {productDetailsActions} from 'src/app/admin/store/actions';
+import {FormBuilder, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-product-details',
@@ -41,13 +42,20 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   reviewPageNumber = 0;
   productId = 0;
   productPageNumber = 0;
+  rating: number = 0;
+  hoveredIndex: number = 3;
   star = faStar;
-
+  haflIcon = faStarHalfAlt;
+  form: any;
   closeProductDetails: boolean = false;
   addingReview: boolean = false;
   openProductModal: boolean = false;
+  userRating: number = 0;
 
-  haflIcon = faStarHalfAlt;
+  value = 2.5; //addition of .5
+  starList: string[] = [];
+  isNewReview = false;
+
   productReviews$: Observable<ReviewResponse> = new Subject<ReviewResponse>();
   productRecommendation$: Observable<RecommndedProductResponse> =
     new Subject<RecommndedProductResponse>();
@@ -62,8 +70,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store,
     private router: Router,
-    private productService: ProductsService
-  ) {}
+    private productService: ProductsService,
+    private fb: FormBuilder
+  ) {
+    this.form = fb.group({
+      comment: ['', Validators.required],
+    });
+  }
 
   addReview() {
     this.addingReview = !this.addingReview;
@@ -80,7 +93,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       this.store.dispatch(
         productDetailsActions.productDetails({
           request: {
-            id: Number(id),
+            id: Number(this.productId),
           },
         })
       );
@@ -102,6 +115,17 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    let i = 1;
+    for (i = 1; i <= 5; i++) {
+      if (i <= this.value) {
+        this.starList.push('fas fa-star');
+      } else if (i <= this.value + 0.5) {
+        this.starList.push('fas fa-star-half');
+      } else {
+        this.starList.push('far fa-star');
+      }
+    }
+
     let id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.store.dispatch(
@@ -124,6 +148,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       pageNumber: this.productPageNumber,
       pageSize: this.productPageSize,
     });
+
+    this.hoveredIndex = this.rating + 1;
   }
 
   nextProductsByPage(id: any) {
@@ -180,6 +206,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       };
       this.productReviews$ = this.productService.getReviewsByProduct(request);
     }
+  }
+
+  get fc() {
+    return this.form.controls;
   }
 
   ngOnDestroy(): void {

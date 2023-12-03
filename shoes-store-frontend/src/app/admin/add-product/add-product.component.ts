@@ -11,9 +11,18 @@ import {
 } from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
-import {Subject, combineLatest, takeUntil} from 'rxjs';
-import {selectProduct} from '../store/admin.reducers';
+import {Observable, Subject, combineLatest, takeUntil} from 'rxjs';
+import {
+  selectIsAddingProduct,
+  selectIsUpdatingProduct,
+  selectProduct,
+} from '../store/admin.reducers';
 import {productDetailsActions} from '../store/actions';
+import {ProductsService} from 'src/app/services/product/products.service';
+import {BackendSuccessResponseInterface} from 'src/app/types/BackendSuccessResponse.interface';
+import {selectIsUpdated} from 'src/app/app.reducer';
+import {ProductDetailsInterface} from 'src/app/guest/store/product/types/ProductInterface';
+import {ProductInterface} from '../../guest/store/product/types/ProductInterface';
 
 @Component({
   selector: 'app-add-product',
@@ -25,23 +34,28 @@ export class AddProductComponent implements OnInit, OnDestroy {
   isModalOpen: boolean = true;
   form: any;
   unsub$ = new Subject<void>();
+  productImage: any;
+  addProductResponse$: Observable<BackendSuccessResponseInterface> =
+    new Observable<BackendSuccessResponseInterface>();
 
   product$ = combineLatest({
     data: this.store.select(selectProduct),
   });
 
   @Input() id!: number;
+  @Input() isAddingProduct!: boolean;
+  @Input() isUpdatingProduct!: boolean;
+  @Input() productData!: ProductInterface;
 
   @Output() addProductModalEvent = new EventEmitter<boolean>();
+  @Output() addOrUpdateProductEventRequest = new EventEmitter<{
+    productInfo: string;
+    productImage: File;
+  }>();
 
-  constructor(
-    fb: FormBuilder,
-    private store: Store,
-    private cdr: ChangeDetectorRef
-  ) {
+  constructor(fb: FormBuilder, private store: Store) {
     this.form = fb.group({
       productName: ['', Validators.required],
-      image: ['', Validators.required],
       category: ['', Validators.required],
       description: ['', Validators.required],
       price: ['', Validators.required],
@@ -50,7 +64,6 @@ export class AddProductComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.id);
     if (this.id) {
       this.store.dispatch(
         productDetailsActions.productDetails({request: {id: this.id}})
@@ -62,13 +75,10 @@ export class AddProductComponent implements OnInit, OnDestroy {
         this.form.setValue({
           productName: data?.productName,
           category: data?.category,
-          image: data.productUrl,
           description: data?.description,
           price: data.price,
           stock: data.stock,
         });
-        console.log(this.form.getRawValue());
-        this.cdr.markForCheck();
       }
     });
   }
@@ -78,8 +88,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
   }
 
   onImagePicked(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    this.form.patchValue({image: file});
+    this.productImage = (event.target as HTMLInputElement).files?.[0];
   }
 
   get fc() {
@@ -87,7 +96,16 @@ export class AddProductComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log(this.form.value);
+    const request = {
+      productInfo: JSON.stringify(this.form.value),
+      productImage: this.productImage,
+    };
+
+    if (this.isAddingProduct) {
+      this.addOrUpdateProductEventRequest.emit(request);
+    } else if (this.isUpdatingProduct) {
+      this.addOrUpdateProductEventRequest.emit(request);
+    }
   }
 
   ngOnDestroy(): void {

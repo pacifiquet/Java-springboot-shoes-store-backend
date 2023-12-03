@@ -1,4 +1,6 @@
+import {deleteProductFeature, updateProductFeature} from './reducers';
 import {
+  addProductFeature,
   productDetailsFeature,
   productListDeleteFeature,
   uploadProductListFeature,
@@ -27,3 +29,27 @@ export const {
   selectProductError,
   selectIsLoaded,
 } = productDetailsFeature;
+
+export const {
+  name: addProductKey,
+  reducer: addProductReducer,
+  selectAddProductErrors,
+  selectAddProductResponse,
+  selectIsAddingProduct,
+} = addProductFeature;
+
+export const {
+  name: deleteProductKey,
+  reducer: deleteProductReducer,
+  selectDeleteProductresponse,
+  selectDeleteProducterror,
+  selectIsSingleProductDelete,
+} = deleteProductFeature;
+
+export const {
+  name: updateProductKey,
+  reducer: updateProductReduder,
+  selectIsUpdatingProduct,
+  selectUpdateProductError,
+  selectUpdateProductResponse,
+} = updateProductFeature;

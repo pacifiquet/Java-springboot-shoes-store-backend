@@ -4,12 +4,12 @@
             <img [src]="product.data?.productUrl" [alt]="product.data?.productName">
             <div class="product-desc">
                 <div class="icons">
-                    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                    <fa-icon style="color: #F79522;" [icon]="haflIcon"></fa-icon>
-                    <p> {{product.data?.rating | number}} of
+                    <span *ngFor="let star of starList">
+                        <!-- <fa-icon icon="{star}"></fa-icon> -->
+                        <i class="fas fa-star"></i>
+                    </span>
+                    <app-review [value]="3.5" [text]="'Average Rating'" [color]="'gold'"></app-review>
+                    <p> {{product.data?.rating | number:'1.1-1'}} of
                         ({{product.data?.totalRatings}}
                         Reviews)
                     </p>
@@ -17,7 +17,7 @@
                 <div class="desc">
                     <h1> {{product.data?.productName}}</h1>
                     <h4>{{product.data?.price| currency}}</h4>
-                    <h4>{{product.data?.category}}</h4>
+                    <h4>{{product.data?.category}}'s Shoes</h4>
                     <p>{{product.data?.description}}</p>
                     <button>add to cart</button>
                 </div>
@@ -28,7 +28,7 @@
         <div class="product-review">
             <div class="reviews-user" *ngIf="product.user?.email">
                 <div>
-                    <button>add review</button>
+                    <button (click)="addReview()">add review</button>
                 </div>
                 <div>
                     <div class="user-info">
@@ -40,10 +40,12 @@
                     </div>
                 </div>
             </div>
+            <app-star-rating [productId]="product.data?.id" *ngIf="addingReview"></app-star-rating>
             <ng-container *ngIf="(productReviews$ |async) as reviews">
                 <div class="reviews-list" *ngIf="reviews.content?.length else noReview">
                     <div class="header-review">
-                        <h1>{{product.data?.productName}} Reviews</h1>
+                        <h1><span class="text-green-900 text-bold">{{product.data?.totalRatings}} Reviews</span> for
+                            {{product.data?.productName}}</h1>
                     </div>
                     <div class="reviviews-data" *ngIf="reviews.content else noReview">
                         <ul *ngFor="let review of reviews.content">
@@ -65,7 +67,7 @@
                                         </p>
                                     </div>
                                     <p class="time">{{review.createdAt | date :'short'}}</p>
-                                    <h1 class="rating">{{review.rating}}</h1>
+                                    <h1 class="rating">{{review.rating | number:'1.1-1'}}</h1>
                                 </div>
                             </li>
 
@@ -102,18 +104,14 @@
                         </div>
                         <div class="ratings">
                             <div class="icons">
-                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                                <fa-icon style="color: #F79522;" [icon]="haflIcon"></fa-icon>
-                                <p>{{product.rating |number}} of 5 ({{product.totalRatings}} reviews)
+                                <app-review [starRating]="product.rating"></app-review>
+                                <p>{{product.rating |number:'1.1-1'}} of 5 ({{product.totalRatings}} reviews)
                                 </p>
                             </div>
                         </div>
                         <h2>{{product.price | currency}}</h2>
                         <h3>{{product.productName}}</h3>
-                        <h3>{{product.category}}</h3>
+                        <h3>{{product.category}}'s Shoes</h3>
                         <div class="actions">
                             <button (click)="productDetails(product.id)" class="view">view</button>
                             <button class="add-cart">add to cart</button>
