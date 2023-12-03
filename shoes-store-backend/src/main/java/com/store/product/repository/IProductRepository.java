@@ -1,5 +1,6 @@
 package com.store.product.repository;
 
+import com.store.product.dto.ProductRecommendedResponse;
 import com.store.product.dto.ProductResponse;
 import com.store.product.models.Product;
 import com.store.product.models.Review;
@@ -19,6 +20,12 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "FROM Product product  WHERE product.category ILIKE :category"
     )
     Page<ProductResponse>getProductListByCategory(Pageable pageable, @Param(value = "category")String category);
+    @Query("SELECT" +
+            " NEW com.store.product.dto.ProductRecommendedResponse(product.id,product.rating,product.totalRatings,product.category,product.name,product.url,product.price )"+
+            "FROM Product product  WHERE product.category ILIKE :category"
+    )
+    Page<ProductRecommendedResponse> getRecommendationProductsByCategory(Pageable pageable,@Param(value = "category")String category);
+
 
     Page<Product> getProductsByNameContainingIgnoreCase(String name,Pageable pageable);
     @Query("SELECT" +

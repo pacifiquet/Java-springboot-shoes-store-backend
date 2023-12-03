@@ -1,7 +1,15 @@
 import {createFeature, createReducer, on} from '@ngrx/store';
 import {
-  deleteListProductInitialState,
+  addProductActions,
+  deleteProductActions,
+  updateProductActions,
+} from './actions';
+import {
+  addProductInitialState,
+  deleteProductInitialState,
+  deleteProductListInitialState,
   productDetailsInitialState,
+  updateProductInitialState,
   uploadProductsInitialState,
 } from './initialStateActions';
 import {
@@ -13,7 +21,7 @@ import {
 export const productListDeleteFeature = createFeature({
   name: 'deleteProducts',
   reducer: createReducer(
-    deleteListProductInitialState,
+    deleteProductListInitialState,
     on(deleteListProductActions.productListDelete, (state) => ({
       ...state,
       isDeleting: true,
@@ -69,6 +77,69 @@ export const productDetailsFeature = createFeature({
       ...state,
       isLoaded: false,
       productError: action.errorResponse,
+    }))
+  ),
+});
+
+export const addProductFeature = createFeature({
+  name: 'addProduct',
+  reducer: createReducer(
+    addProductInitialState,
+    on(addProductActions.addProduct, (state) => ({
+      ...state,
+      isAddingProduct: true,
+    })),
+    on(addProductActions.addProductSuccess, (state, action) => ({
+      ...state,
+      isAddingProduct: false,
+      addProductResponse: action.response,
+    })),
+    on(addProductActions.addProductFail, (state, action) => ({
+      ...state,
+      isAddingProduct: false,
+      addProductErrors: action.errorResponse,
+    }))
+  ),
+});
+
+export const deleteProductFeature = createFeature({
+  name: 'deleteProduct',
+  reducer: createReducer(
+    deleteProductInitialState,
+    on(deleteProductActions.deleteProduct, (state) => ({
+      ...state,
+      isSingleProductDelete: true,
+    })),
+    on(deleteProductActions.deleteProductSuccess, (state, action) => ({
+      ...state,
+      isSingleProductDelete: false,
+      deleteProductresponse: action.deleteProductSuccessResponse,
+    })),
+    on(deleteProductActions.deleteProductFail, (state, action) => ({
+      ...state,
+      isSingleProductDelete: false,
+      deleteProducterror: action.deleteProductErrorResponse,
+    }))
+  ),
+});
+
+export const updateProductFeature = createFeature({
+  name: 'updateProduct',
+  reducer: createReducer(
+    updateProductInitialState,
+    on(updateProductActions.updateProduct, (state) => ({
+      ...state,
+      isUpdatingProduct: true,
+    })),
+    on(updateProductActions.updateProductSuccess, (state, action) => ({
+      ...state,
+      isUpdatingProduct: false,
+      updateProductResponse: action.response,
+    })),
+    on(updateProductActions.updateProductFail, (state, action) => ({
+      ...state,
+      isUpdatingProduct: false,
+      updateProductError: action.errorResponse,
     }))
   ),
 });

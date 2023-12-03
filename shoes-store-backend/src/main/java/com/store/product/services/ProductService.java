@@ -7,6 +7,7 @@ import com.store.config.AwsConfigProperties;
 import com.store.exceptions.ProductException;
 import com.store.exceptions.UserException;
 import com.store.product.dao.IProductDao;
+import com.store.product.dto.ProductRecommendedResponse;
 import com.store.product.dto.ProductRequest;
 import com.store.product.dto.ProductResponse;
 import com.store.product.dto.ProductUpdateRequest;
@@ -30,9 +31,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.store.product.utils.Constants.FAILED_TO_DELETE_PRODUCTS;
 import static com.store.product.utils.Constants.FAILED_TO_UPLOAD_PRODUCTS;
+import static com.store.product.utils.Constants.PRODUCT_ADD_FAILED;
 import static com.store.product.utils.Constants.PRODUCT_DELETED_SUCCESSFULLY;
 import static com.store.product.utils.Constants.PRODUCT_NOT_FOUND;
 import static com.store.product.utils.Constants.SUCCESSFULLY_ADDED_PRODUCT;
@@ -73,39 +76,56 @@ public class ProductService implements IProductService{
 
     @Override
     @Transactional
-    public Map<String, String> addProduct(ProductRequest productRequest, CustomerUserDetailsService customerUserDetailsService) {
+    public Map<String, String> addProduct(String productRequest, MultipartFile productImage, CustomerUserDetailsService customerUserDetailsService) {
+        ProductRequest request;
         if (!customerUserDetailsService.getAuthorities().contains(new SimpleGrantedAuthority(ROLE_PREFIX + Role.ADMIN))) {
             throw new UserException(ACCESS_DENIED);
         }
 
-        Product product = ProductUtils.getProductRequestHandler().apply(productRequest, customerUserDetailsService);
-        productRepository.save(product);
+        try {
+            request = objectMapper.readValue(productRequest, ProductRequest.class);
+        } catch (JsonProcessingException e) {
+            throw new ProductException(PRODUCT_ADD_FAILED);
+        }
 
+
+        Product product = ProductUtils.getProductRequestHandler().apply(request, customerUserDetailsService);
+        String productUrl = ProductUtils.getProductUrl(productImage, product, amazonS3, awsConfigProperties);
+
+        if (productUrl.isEmpty()){
+            throw new ProductException(PRODUCT_ADD_FAILED);
+        }
+
+        product.setUrl(productUrl);
+        productRepository.save(product);
         return Map.of(SUCCESS,SUCCESSFULLY_ADDED_PRODUCT);
     }
 
     @Override
     @Transactional
-    public Map<String, String> updateProduct(long productId, Map<String,String> productRequest, CustomerUserDetailsService customerUserDetailsService, MultipartFile productFile) {
+    public Map<String, String> updateProduct(long productId, String productRequest, CustomerUserDetailsService customerUserDetailsService, MultipartFile productFile) {
         Product product = productRepository.findById(productId).orElseThrow(()->new ProductException(PRODUCT_NOT_FOUND));
         ProductUpdateRequest productUpdateRequest;
         if (!customerUserDetailsService.getAuthorities().contains(new SimpleGrantedAuthority(ROLE_PREFIX+Role.ADMIN))){
             throw new UserException(ACCESS_DENIED);
         }
+
        try {
-           String productData = objectMapper.writeValueAsString(productRequest);
-           productUpdateRequest = objectMapper.readValue(productData, ProductUpdateRequest.class);
+           productUpdateRequest = objectMapper.readValue(productRequest, ProductUpdateRequest.class);
        } catch (JsonProcessingException e) {
            throw new RuntimeException(e);
        }
 
-        String productUrl = ProductUtils.getProductUrl(productFile, product, amazonS3, awsConfigProperties);
-        product.setUrl(productUrl);
+       if (productFile != null){
+           String productUrl = ProductUtils.getProductUrl(productFile, product, amazonS3, awsConfigProperties);
+           product.setUrl(productUrl);
+       }
         product.setName(productUpdateRequest.productName());
         product.setStock(productUpdateRequest.stock());
         product.setDescription(productUpdateRequest.description());
         product.setPrice(productUpdateRequest.price());
         product.setCategory(productUpdateRequest.category());
+        product.setUpdatedAt(LocalDateTime.now());
         product.setUpdatedAt(LocalDateTime.now());
 
         return Map.of(SUCCESS,SUCCESSFULLY_UPDATED_PRODUCT);
@@ -114,7 +134,7 @@ public class ProductService implements IProductService{
 
     @Override
     public Page<ProductResponse> productList(int pageNumber,int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by("createdAt").ascending());
+        Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by("createdAt").descending());
         Page<Product> products = productRepository.findAll(pageable);
         return products.map(product -> ProductUtils.getProductResponseHandler().apply(product));
 
@@ -196,5 +216,22 @@ public class ProductService implements IProductService{
     public List<ToRatedProductResponse> topTenRatedProducts(int offset, int limit) {
         List<Product> products = productRepository.topTenRatedProduct(offset, limit);
         return products.stream().map(product -> ProductUtils.getTopRatedProductResponse().apply(product)).toList();
+    }
+
+    @Override
+    public Page<ProductRecommendedResponse> productRecommendation(int pageNumber, int pageSize, String category) {
+        PageRequest pageRequest = PageRequest.of(
+                pageNumber, pageSize, Sort.by("rating").descending());
+
+        if (!Objects.isNull(category)){
+            return productRepository.getRecommendationProductsByCategory(pageRequest, category);
+        }
+
+       return productRepository.findAll(pageRequest).map(product -> ProductUtils.getProductRecommendedResponseHandler().apply(product));
+    }
+
+    @Override
+    public List<ProductRecommendedResponse> recommendedProductsByCategory(String category, int offset, int limit) {
+        return productDao.recommendedProductsByCategory(category,offset,limit).stream().map(product -> ProductUtils.getProductRecommendedResponseHandler().apply(product)).toList();
     }
 }

@@ -6,13 +6,12 @@ import {
   OnInit,
 } from '@angular/core';
 import {Store} from '@ngrx/store';
-import {Subject, combineLatest, takeUntil} from 'rxjs';
+import {Observable, Subject, combineLatest, takeUntil} from 'rxjs';
 import {
   productListActions,
   productListByCategiryActions,
 } from '../guest/store/product/actions';
 import {
-  selectErrors,
   selectIsCategoryLoaded,
   selectProductList,
   selectProductListByCategory,
@@ -20,13 +19,30 @@ import {
 import {selectUserProfile} from '../app.reducer';
 import {userProfileActions} from '../profile/store/actions';
 import {
+  selectAddProductErrors,
+  selectAddProductResponse,
+  selectDeleteProducterror,
+  selectDeleteProductresponse,
+  selectIsSingleProductDelete,
+  selectProduct,
   selectResponse,
+  selectUpdateProductError,
+  selectUpdateProductResponse,
   selectUploadError,
   selectUploadResponse,
 } from './store/admin.reducers';
 import {Router} from '@angular/router';
-import {productListUploadActions} from './store/actions';
-import {ContentResponse} from '../guest/store/product/types/ProductInterface';
+import {
+  addProductActions,
+  deleteProductActions,
+  productDetailsActions,
+  productListUploadActions,
+  updateProductActions,
+} from './store/actions';
+import {
+  ContentResponse,
+  ProductInterface,
+} from '../guest/store/product/types/ProductInterface';
 import {FormBuilder, Validators, FormArray, FormControl} from '@angular/forms';
 
 @Component({
@@ -55,7 +71,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   id!: number;
   fileMessage: string = '';
   productId: number = 0;
-  successMessage = '';
+  successMessage: string = '';
   errorMessage = '';
   category: string = '';
   productCategory: string = '';
@@ -64,20 +80,43 @@ export class AdminComponent implements OnInit, OnDestroy {
   isKidsCategory: boolean = false;
   isCategoryFilter: boolean = false;
   isChecked: boolean = false;
+  isLogout: boolean = false;
+  isDayActive: boolean = true;
+  isWeekActive: boolean = false;
+  isMonthActive: boolean = false;
+  isYearActive: boolean = false;
+  isDashboardActive: boolean = true;
+  isAddProductActive: boolean = false;
+  isDeleting: boolean = false;
+  isUpdatingProduct = false;
+  isAddingProduct = false;
+
+  isMenNavActive: boolean = true;
+  isWomenNavActive: boolean = true;
+  isKidsNavActive: boolean = false;
   form: any;
 
   isSelectDeleting: boolean = false;
   productListFile: File | undefined | null;
 
-  productList$ = combineLatest({
+  productDetail!: ProductInterface;
+  adminData$ = combineLatest({
     products: this.store.select(selectProductList),
-    errorMessage: this.store.select(selectErrors),
     profile: this.store.select(selectUserProfile),
-    deleteResponse: this.store.select(selectResponse),
+    deleteListProductResponse: this.store.select(selectResponse),
     uploadSuccess: this.store.select(selectUploadResponse),
     uploadError: this.store.select(selectUploadError),
     byCategoryProducts: this.store.select(selectProductListByCategory),
     isCategory: this.store.select(selectIsCategoryLoaded),
+    deleteProductResponse: this.store.select(selectDeleteProductresponse),
+    deleteProductError: this.store.select(selectDeleteProducterror),
+    isOneProductDelete: this.store.select(selectIsSingleProductDelete),
+    addProductSuccessResponse: this.store.select(selectAddProductResponse),
+    addProductErrorResponse: this.store.select(selectAddProductErrors),
+    updateProductSuccessResponse: this.store.select(
+      selectUpdateProductResponse
+    ),
+    updateProductErrorResponse: this.store.select(selectUpdateProductError),
   });
 
   constructor(
@@ -98,15 +137,21 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.productList$
+    this.adminData$
       .pipe(takeUntil(this.unsub$))
       .subscribe(
         ({
           products,
-          deleteResponse,
-          uploadSuccess,
-          uploadError,
           byCategoryProducts,
+          uploadSuccess,
+          deleteProductResponse,
+          deleteListProductResponse,
+          deleteProductError,
+          uploadError,
+          addProductErrorResponse,
+          addProductSuccessResponse,
+          updateProductErrorResponse,
+          updateProductSuccessResponse,
         }) => {
           if (products) {
             this.productListAdmin = products;
@@ -117,28 +162,41 @@ export class AdminComponent implements OnInit, OnDestroy {
             this.productListAdmin = byCategoryProducts;
           }
 
-          if (deleteResponse?.success) {
-            this.successMessage = deleteResponse.success;
+          if (deleteListProductResponse?.success) {
+            this.successMessage = deleteListProductResponse.success;
             setTimeout(() => {
               window.location.reload();
             }, 2000);
-          }
-
-          if (uploadSuccess?.success) {
+          } else if (deleteProductResponse?.success) {
+            this.successMessage = deleteProductResponse.success;
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          } else if (uploadSuccess?.success) {
             this.successMessage = uploadSuccess.success;
             setTimeout(() => {
-              this.successMessage = '';
-              this.errorMessage = '';
+              window.location.reload();
+            }, 2000);
+          } else if (addProductSuccessResponse?.success) {
+            this.successMessage = addProductSuccessResponse.success;
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          } else if (updateProductSuccessResponse?.success) {
+            this.successMessage = updateProductSuccessResponse.success;
+            setTimeout(() => {
               window.location.reload();
             }, 2000);
           }
 
           if (uploadError?.message) {
-            this.successMessage = uploadError.message;
-            setTimeout(() => {
-              this.successMessage = '';
-              this.errorMessage = '';
-            }, 2000);
+            this.errorMessage = uploadError?.message;
+          } else if (deleteProductError?.message) {
+            this.errorMessage = deleteProductError.message;
+          } else if (addProductErrorResponse?.message) {
+            this.errorMessage = addProductErrorResponse.message;
+          } else if (updateProductErrorResponse?.message) {
+            this.errorMessage = updateProductErrorResponse.message;
           }
         }
       );
@@ -259,25 +317,18 @@ export class AdminComponent implements OnInit, OnDestroy {
     window.location.reload();
   }
 
-  isLogout: boolean = false;
-  isDayActive: boolean = true;
-  isWeekActive: boolean = false;
-  isMonthActive: boolean = false;
-  isYearActive: boolean = false;
-  isDashboardActive: boolean = true;
-  isAddProductActive: boolean = false;
-  isDeleting: boolean = false;
-
-  isMenNavActive: boolean = true;
-  isWomenNavActive: boolean = true;
-  isKidsNavActive: boolean = false;
-
-  deleteProduct() {
+  deleteProduct(id: any) {
+    this.id = id;
     this.isDeleting = true;
   }
 
   approveDelete(event: boolean) {
     this.isDeleting = !event;
+    if (event) {
+      this.store.dispatch(
+        deleteProductActions.deleteProduct({request: {id: this.id}})
+      );
+    }
   }
 
   cancelDelete(event: boolean) {
@@ -288,10 +339,38 @@ export class AdminComponent implements OnInit, OnDestroy {
   addProduct() {
     this.isDashboardActive = false;
     this.isAddProductActive = true;
+    this.isAddingProduct = true;
+  }
+
+  handleAddOrUpdateProductEvent(event: any) {
+    if (this.isAddingProduct) {
+      this.store.dispatch(
+        addProductActions.addProduct({
+          request: {
+            productImage: event.productImage,
+            productInfo: event.productInfo,
+          },
+        })
+      );
+      this.isAddingProduct = false;
+    } else if (this.isUpdatingProduct) {
+      this.store.dispatch(
+        updateProductActions.updateProduct({
+          request: {
+            id: this.id,
+            productRequest: event.productInfo,
+            productImage: event.productImage,
+          },
+        })
+      );
+      this.isUpdatingProduct = false;
+      this.isAddProductActive = false;
+    }
   }
 
   viewProductAndEdit(id: any) {
     this.id = Number(id);
+    this.isUpdatingProduct = true;
     this.isAddProductActive = true;
   }
 

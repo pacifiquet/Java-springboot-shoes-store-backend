@@ -1,3 +1,5 @@
+@import '~@fortawesome/fontawesome-free/css/all.css';
+
 .product-details  img{
     width: 30rem;
     height: 40rem;
@@ -282,6 +284,7 @@ f-icon{
     display: flex;
     flex: 25rem;
     width: 25rem;
+    height: fit-content;
     padding: 0.5rem;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
     border-radius: 0.5rem;
@@ -387,4 +390,95 @@ p.time {
     font-family: "Raleway",sans-serif;
     font-size: 1.6rem;
     font-weight: 500;
+}
+
+form{
+    margin: 1rem auto;
+    box-shadow:  0 0 3px rgba(0, 0, 0, 0.2);
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+form input {
+    padding: 1rem;
+    border-radius: 0.6rem;
+    border: 0.06rem solid seagreen;
+    outline: none;
+
+}
+
+form textarea {
+    resize: none;
+    padding: 1rem;
+    border-radius: 0.6rem;
+    border: 0.06rem solid seagreen;
+    font-size: 1.3rem;
+    outline: none;
+}
+
+form textarea.error{
+    border: 1px solid red;
+}
+
+ form textarea.touched{
+    border: 1px solid seagreen;
+    }
+    
+form textarea.success{
+    border: 1px solid seagreen;
+    }
+
+form button {
+    border-radius: 0.4rem;
+    border: 0.06rem solid seagreen;
+    outline: none;
+    width: 50%;
+    padding: 0.6rem 1rem;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+
+}
+
+form button:hover{
+    background-color: seagreen;
+    color: #f4f4f5;
+}
+
+.star-rating {
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+.half {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    width: 50%;
+  }
+
+.star {
+    color: #ccc;
+    display: inline-block;
+    font-size: 1.3rem;
+    transition: color 0.3s;
+  }
+  
+.highlight {
+    color: #F79522;
+  }
+  
+.star-rating span{
+    font-size: 3.7rem;
+}
+
+textarea.touched{
+border: 1px solid seagreen;
+}
+
+textarea.success{
+border: 1px solid seagreen;
 }

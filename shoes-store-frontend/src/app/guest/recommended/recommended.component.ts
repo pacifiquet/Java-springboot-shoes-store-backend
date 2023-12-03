@@ -8,7 +8,7 @@ import {
 import {faStarHalfAlt} from '@fortawesome/free-regular-svg-icons';
 import {faStar} from '@fortawesome/free-solid-svg-icons';
 import {Store} from '@ngrx/store';
-import {Subject, combineLatest, takeUntil} from 'rxjs';
+import {Observable, Subject, combineLatest, takeUntil} from 'rxjs';
 import {ProductsService} from 'src/app/services/product/products.service';
 import {
   selectProductList,
@@ -48,6 +48,8 @@ export class RecommendedComponent implements OnInit, OnDestroy {
   category: string = '';
   name = 'recommended';
   haflIcon = faStarHalfAlt;
+  productsRecommendationData$: Observable<ContentResponse> =
+    new Subject<ContentResponse>();
   paginationData: ContentResponse = {
     content: [],
     length: 0,
@@ -64,47 +66,18 @@ export class RecommendedComponent implements OnInit, OnDestroy {
     byCategoryProducts: this.store.select(selectProductListByCategory),
   });
 
-  constructor(
-    private productServie: ProductsService,
-    private cdr: ChangeDetectorRef,
-    private store: Store,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
-    window.scrollTo(600, 0);
-  }
+  constructor(private store: Store, private productService: ProductsService) {}
 
   ngOnInit(): void {
-    this.store.dispatch(
-      productListActions.productList({
-        request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
-      })
-    );
-    this.productsRecommended$
-      .pipe(takeUntil(this.unsub$))
-      .subscribe(({recommendedList, byCategoryProducts}) => {
-        if (recommendedList?.content) {
-          this.recommendedList = recommendedList.content;
-          this.paginationData = recommendedList;
-          this.isFirstPage = recommendedList.first;
-          this.isLastPage = recommendedList.last;
-        }
-
-        if (byCategoryProducts) {
-          this.recommendedList = byCategoryProducts.content;
-          this.paginationData = byCategoryProducts;
-          this.isFirstPage = byCategoryProducts.first;
-          this.isLastPage = byCategoryProducts.last;
-        }
+    this.productsRecommendationData$ =
+      this.productService.getRecommendationProducts({
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize,
       });
   }
 
-  getProductReviewAverage(product: ProductInterface) {
+  getProductReviewAverage() {
     return [];
-  }
-
-  resetFilter() {
-    window.location.reload();
   }
 
   byCategory(category: string) {
@@ -127,16 +100,13 @@ export class RecommendedComponent implements OnInit, OnDestroy {
       this.isWomenCategory = false;
     }
 
-    if (this.isCategoryFilter) {
-      this.store.dispatch(
-        productListByCategiryActions.productListByCategory({
-          request: {
-            category: this.category,
-            pageSize: this.pageSize,
-            pageNumber: this.pageNumber,
-          },
-        })
-      );
+    if (this.isCategoryFilter && category) {
+      this.productsRecommendationData$ =
+        this.productService.getRecommendationProducts({
+          pageNumber: this.pageNumber,
+          pageSize: this.pageSize,
+          category: category,
+        });
     }
   }
 
@@ -145,21 +115,18 @@ export class RecommendedComponent implements OnInit, OnDestroy {
     this.currentPage += 1;
 
     if (this.category !== '') {
-      this.store.dispatch(
-        productListByCategiryActions.productListByCategory({
-          request: {
-            category: this.category,
-            pageSize: this.pageSize,
-            pageNumber: this.pageNumber,
-          },
-        })
-      );
+      this.productsRecommendationData$ =
+        this.productService.getRecommendationProducts({
+          pageNumber: this.pageNumber,
+          pageSize: this.pageSize,
+          category: this.category,
+        });
     } else {
-      this.store.dispatch(
-        productListActions.productList({
-          request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
-        })
-      );
+      this.productsRecommendationData$ =
+        this.productService.getRecommendationProducts({
+          pageNumber: this.pageNumber,
+          pageSize: this.pageSize,
+        });
     }
   }
 
@@ -167,27 +134,32 @@ export class RecommendedComponent implements OnInit, OnDestroy {
     this.pageNumber -= 1;
     this.currentPage -= 1;
     if (this.category !== '') {
-      this.store.dispatch(
-        productListByCategiryActions.productListByCategory({
-          request: {
-            category: this.category,
-            pageSize: this.pageSize,
-            pageNumber: this.pageNumber,
-          },
-        })
-      );
+      this.productsRecommendationData$ =
+        this.productService.getRecommendationProducts({
+          pageNumber: this.pageNumber,
+          pageSize: this.pageSize,
+          category: this.category,
+        });
     } else {
-      this.store.dispatch(
-        productListActions.productList({
-          request: {pageNumber: this.pageNumber, pageSize: this.pageSize},
-        })
-      );
+      this.productsRecommendationData$ =
+        this.productService.getRecommendationProducts({
+          pageNumber: this.pageNumber,
+          pageSize: this.pageSize,
+        });
     }
+  }
+
+  resetFilter() {
+    window.location.reload();
+    // this.router
+    //   .navigateByUrl('/RefreshComponent', {skipLocationChange: true})
+    //   .then(() => {
+    //     this.router.navigate(['Your actualComponent']);
+    //   });
   }
 
   ngOnDestroy(): void {
     this.unsub$.next();
     this.unsub$.complete();
-    this.unsub$.unsubscribe();
   }
 }

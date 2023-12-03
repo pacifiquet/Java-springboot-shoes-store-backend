@@ -8,7 +8,10 @@ import {ResetPasswordComponent} from '../guest/reset-password/reset-password.com
 import {SignupComponent} from '../guest/signup/signup.component';
 import {NotificationsComponent} from '../guest/notifications/notifications.component';
 import {CartComponent} from '../guest/cart/cart.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ReviewComponent} from './review/review.component';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {StarRatingComponent} from './star-rating/star-rating.component';
 
 @NgModule({
   declarations: [
@@ -19,8 +22,16 @@ import {ReactiveFormsModule} from '@angular/forms';
     NotificationsComponent,
     HeaderComponent,
     CartComponent,
+    ReviewComponent,
+    StarRatingComponent,
   ],
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    RouterLink,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   exports: [
     DeleteModalComponent,
     LoginComponent,
@@ -29,6 +40,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     NotificationsComponent,
     HeaderComponent,
     CartComponent,
+    ReviewComponent,
+    StarRatingComponent,
   ],
 })
 export class SharedModule {}

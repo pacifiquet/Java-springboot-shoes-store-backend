@@ -8,13 +8,17 @@ import {ProductDetailsComponent} from './product-details/product-details.compone
 import {RecommendedComponent} from './recommended/recommended.component';
 import {RouterModule} from '@angular/router';
 import {ReactiveFormsModule} from '@angular/forms';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {
+  FaIconLibrary,
+  FontAwesomeModule,
+} from '@fortawesome/angular-fontawesome';
 import {PasswordResetSaveComponent} from './password-reset-save/password-reset-save.component';
 import {AccountVerificationComponent} from './account-verification/account-verification.component';
 import {GuestRoutingModule} from './guest.routing.module';
 import {SharedModule} from '../shared/shared.module';
 import {TopSoldComponent} from './top-sold/top-sold.component';
 import {RecentlyUpdatedComponent} from './recently-updated/recently-updated.component';
+import {fas} from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   declarations: [
@@ -50,4 +54,8 @@ import {RecentlyUpdatedComponent} from './recently-updated/recently-updated.comp
     RecentlyUpdatedComponent,
   ],
 })
-export class GuestModule {}
+export class GuestModule {
+  constructor(libray: FaIconLibrary) {
+    libray.addIconPacks(fas);
+  }
+}

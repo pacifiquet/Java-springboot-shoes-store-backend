@@ -1,9 +1,9 @@
-<ng-container *ngIf="(productsRecommended$ | async) as products">
+<ng-container *ngIf="(productsRecommendationData$ | async) as products">
     <section>
         <div class="recommended">
             <div class="products">
                 <div class="recommended-header">
-                    <h3>Recommended</h3>
+                    <h3>Recommended </h3>
                     <div>
                         <button [ngClass]="{active:isMenCategory}" (click)="byCategory('men')">Men</button>
                         <button [ngClass]="{active:isWomenCategory}" (click)="byCategory('women')">Women</button>
@@ -13,33 +13,29 @@
                     </div>
                 </div>
                 <ul>
-                    <div *ngIf="recommendedList.length>0 then productsContent; else noProducts"></div>
+                    <div *ngIf="products.content.length>0 then productsContent; else noProducts"></div>
                     <div class="pagination">
-                        <button [disabled]="isFirstPage" (click)="prevProductsByPage()" class="prev">PREV</button>
+                        <button [disabled]="products.first" (click)="prevProductsByPage()" class="prev">PREV</button>
                         <h4>{{currentPage}}</h4>
-                        <button [disabled]="isLastPage" (click)="nextProductsByPage()" class="next">NEXT</button>
+                        <button [disabled]="products.last" (click)="nextProductsByPage()" class="next">NEXT</button>
                     </div>
                 </ul>
                 <ng-template #productsContent>
-                    <li *ngFor="let product of recommendedList">
+                    <li *ngFor="let product of products.content">
                         <div class="product-image">
                             <img [src]="product.productUrl" [alt]="product.productName">
                         </div>
                         <div class="ratings">
                             <div class="start-rating">
-                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                                <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
-                                <fa-icon style="color: #F79522;" [icon]="haflIcon"></fa-icon>
+                                <app-review [starRating]="product.rating"></app-review>
                             </div>
-                            <p>{{product.rating |number}} of 5 ({{product.totalRatings}} Reviews
+                            <p>{{product.rating |number:'1.1-1'}} of 5 ({{product.totalRatings}} Reviews
                                 )
                             </p>
                         </div>
-                        <h2>{{product.price | currency}}</h2>
+                        <h2>{{product.price| currency}}</h2>
                         <h3>{{product.productName}}</h3>
-                        <h3>{{product.category}}</h3>
+                        <h3>{{product.category}}'s Shoes</h3>
                         <div class="actions">
                             <button [routerLink]="['/product-details',product.id]" class="view">view</button>
                             <button class="add-cart">add to cart</button>

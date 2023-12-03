@@ -1,0 +1,49 @@
+<!-- <ng-container *ngIf="starRating === 5">
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+</ng-container>
+
+
+<ng-container *ngIf="starRating === 4.4">
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+    <fa-icon style="color: #F79522;" [icon]="haflIcon"></fa-icon>
+</ng-container>
+
+
+
+<ng-container *ngIf="starRating ===4">
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+    <fa-icon style="color: #F79522;" [icon]="star"></fa-icon>
+    <fa-icon [icon]="star"></fa-icon>
+</ng-container>
+
+
+<ng-container *ngIf="starRating ===0">
+    <fa-icon [icon]="star"></fa-icon>
+    <fa-icon [icon]="star"></fa-icon>
+    <fa-icon [icon]="star"></fa-icon>
+    <fa-icon [icon]="star"></fa-icon>
+    <fa-icon [icon]="star"></fa-icon>
+</ng-container> -->
+
+<div class="rating">
+    <span>
+        <i [style.color]="color" class="fas" [ngClass]="{
+        'fa-star': value >= 1,
+        'fa-star-half-alt': value >= 0.5 && value < 1,
+        'far fa-star': value < 0.5
+      }"></i>
+    </span>
+
+    <!-- Repeat the above span block for each star -->
+
+    <span>{{ text }}</span>
+</div>

@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   Output,
 } from '@angular/core';
 import {Store} from '@ngrx/store';
@@ -16,7 +17,7 @@ import {selectCurrentUser, selectUserProfile} from 'src/app/app.reducer';
   styleUrls: ['./delete-modal.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DeleteModalComponent {
+export class DeleteModalComponent implements OnInit {
   message: string = 'Are you sure to approve this request?';
   isCanceling: boolean = true;
 
@@ -24,19 +25,22 @@ export class DeleteModalComponent {
   @Output() cancelEvent = new EventEmitter<boolean>();
   @Input() isDeleting: boolean = true;
   @Input() ids: number[] = [];
+  @Input() id!: number;
 
   user$ = combineLatest({
     currentUser: this.store.select(selectUserProfile),
   });
 
   constructor(private store: Store) {}
+  ngOnInit(): void {}
 
   approveDelete() {
     this.deleteEvent.emit(this.isCanceling);
-    if (this.ids) {
+    if (this.ids.length > 0) {
       this.store.dispatch(
         deleteListProductActions.productListDelete({request: this.ids})
       );
+      window.location.reload();
     }
   }
 
