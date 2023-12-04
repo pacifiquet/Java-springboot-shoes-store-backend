@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
                         url = "https://github.com/pacifiquet"
                 ),
                 description = "API documentation for Shoes Store",
-                title = " E-COMMERCE APPLICATION DOCS",
+                title = " SHOES STORE BACKEND SPRINGBOOT API DOCS",
                 version = "1.0",
                 license = @License(name = "Licence name", url = ""),
                 termsOfService = "Terms of awsService"

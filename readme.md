@@ -1,7 +1,6 @@
-# Full-Stack Shoe Store Project
+# Shoe Store Project Backend Springboot
 
-![image](https://drive.google.com/uc?export=view&id=1Z7D7SY2ukVmiQyv0eHIrExE8QFTqaidU)
-
+![image](https://drive.google.com/uc?export=view&id=1WKERbdF0WQvXtsN23SUdj2QlGgiMQwoY)
 ## Table of Contents
 
 - [Overview](#overview)
@@ -14,7 +13,9 @@
 
 ## Overview
 
-This is a personal full-stack shoe store project that utilizes Angular for the frontend and Spring Boot for the backend. The project aims to provide essential functionalities for an online shoe store, including user management, product management, order processing, and more.
+This is a personal  shoe store project that utilizes Spring Boot for the backend.
+The project aims to provide essential functionalities for an online shoe store,
+including user management, product management, order processing, and more.
 
 ## Features
 
@@ -50,10 +51,9 @@ The project includes the following key features:
 
 ## Technologies Used
 
-- Angular for the frontend
 - Spring Boot for the backend
 - PostgreSQL database
-- Gradle as the build tool
+- Maven as the build tool
 - Java 17
 - Twilio for sending emails
 - RabbitMQ for handling asynchronous actions

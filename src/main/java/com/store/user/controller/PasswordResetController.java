@@ -21,7 +21,7 @@ import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
-@Tag(name = "Password Reset and Forgot Controller")
+@Tag(name = "Password Reset Controller")
 @RestController
 @RequestMapping("/api/v1/users/account/password")
 public record PasswordResetController(IPasswordResetTokenService passwordResetTokenService) {
