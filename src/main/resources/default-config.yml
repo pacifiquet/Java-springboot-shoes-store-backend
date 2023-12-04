@@ -1,0 +1,26 @@
+logging:
+  level:
+    org:
+    springframework:
+    security:
+      DEBUG
+springdoc:
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+application:
+  front-end-url: http://localhost:4200
+  front-end-url-nginx: http://localhost
+  authentication-key:
+    internal-api-key: springbootbackendapplicationsecretinternalkey1234
+
+  jwt-security-key:
+    jwt:
+      secret-key: 2D4A614E645267556B58703272357538782F413F4428472B4B6250655368566D
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
+    jwt-for-testing:
+      secret-key: 2D4A614E645267556B58703272357538782F413F4428472B4B6250655368566D
+      internal-api-key: springbootbackendapplicationsecretinternalkey1234
+      token-prefix: Bearer

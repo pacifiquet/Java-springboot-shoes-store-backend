@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>new account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        html,
+        *,
+        *:before,
+        *:after {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body{
+            background-color: #f4f4f5;
+            width: 50%;
+            margin: 3rem auto;
+            padding: 3rem;
+        }
+
+        .email-template{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .email-template .email-header {
+            padding: 1rem;
+        }
+        .email-template .email-header h1{
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .email-template .email-action a {
+            padding: 0.4rem 0.6rem;
+            box-shadow: 0 0 4px rgba(0 , 0, 0, 0.4);
+            border-radius: 0.4rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            /*color: #f4f4f5;*/
+        }
+        a{
+            cursor: pointer;
+            text-decoration: none;
+        }
+        p{
+            font-weight: 500;
+            padding: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+<div class="email-template">
+   <div>
+       <div class="email-header">
+           <h1>Hello, <span th:text="${recipientName}"></span></h1>
+       </div>
+       <div class="email-action" th:switch="${purpose}">
+           <div th:case="register">
+               <p>Click the following link to verify your account:</p>
+               <a th:href="@{${link}}">Verify Account</a>
+           </div>
+           <div th:case="reset">
+               <p>Click the following link to rest your password:</p>
+               <a th:href="@{${link}}">Reset Password</a>
+           </div>
+       </div>
+       <p>or use the link below</p>
+       <span th:text="@{${link}}"></span>
+   </div>
+</div>
+</body>
+</html>
