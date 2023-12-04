@@ -10,7 +10,7 @@ import com.amazonaws.services.secretsmanager.AWSSecretsManagerClient;
 import com.amazonaws.services.secretsmanager.model.GetSecretValueRequest;
 import com.amazonaws.services.secretsmanager.model.GetSecretValueResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.store.email.SendGridApiKeys;
+import com.store.email.SenderGridApiKeys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ import static com.store.utils.Constants.FAILED_TO_FETCH_SECRET_ERROR;
 public record AwsService(AwsConfigProperties configProperties, ObjectMapper objectMapper) {
     static String apiKey;
 
-    public SendGridApiKeys getSenderGridApiKey() {
+    public SenderGridApiKeys getSenderGridApiKey() {
         AWSStaticCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(new BasicAWSCredentials(configProperties().accessKey(), configProperties().secretKey()));
         AWSSecretsManager secretsManager = AWSSecretsManagerClient.builder()
                 .withRegion(configProperties.region())
@@ -35,7 +35,7 @@ public record AwsService(AwsConfigProperties configProperties, ObjectMapper obje
         }
 
         try {
-            return objectMapper.readValue(apiKey, SendGridApiKeys.class);
+            return objectMapper.readValue(apiKey, SenderGridApiKeys.class);
         } catch (Exception e) {
             log.error(FAILED_TO_FETCH_SECRET_ERROR, e.getMessage());
         }

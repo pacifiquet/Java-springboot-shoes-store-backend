@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44dbee11-66aa-45c4-bfe4-95d51b97f6a2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/f7b43583-da86-427c-b058-7aea025d9ee6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/f7b43583-da86-427c-b058-7aea025d9ee6.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/store/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/store/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/store/user/controller/PasswordResetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/store/user/controller/PasswordResetController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/store/config/AwsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/store/config/AwsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/store/email/SendGridApiKeys.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/store/email/SenderGridApiKeys.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +100,7 @@
       <workItem from="1699318777597" duration="3120000" />
       <workItem from="1701610234144" duration="2382000" />
       <workItem from="1701647718738" duration="12430000" />
-      <workItem from="1701661273676" duration="882000" />
+      <workItem from="1701661273676" duration="1531000" />
     </task>
     <servers />
   </component>
