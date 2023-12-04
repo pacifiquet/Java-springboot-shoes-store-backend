@@ -1,0 +1,295 @@
+{
+  "groups": [
+    {
+      "name": "app.main.datasource",
+      "type": "com.zaxxer.hikari.HikariDataSource",
+      "sourceType": "com.store.config.DataSourceConfig",
+      "sourceMethod": "hikariDataSource()"
+    },
+    {
+      "name": "app.main.datasource.health-check-registry",
+      "type": "java.lang.Object",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource",
+      "sourceMethod": "getHealthCheckRegistry()"
+    },
+    {
+      "name": "app.main.datasource.metric-registry",
+      "type": "java.lang.Object",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource",
+      "sourceMethod": "getMetricRegistry()"
+    },
+    {
+      "name": "application",
+      "type": "com.store.config.StoreConfigProperties",
+      "sourceType": "com.store.config.StoreConfigProperties"
+    },
+    {
+      "name": "application.authentication-key",
+      "type": "com.store.config.StoreConfigProperties$AuthenticationKey",
+      "sourceType": "com.store.config.StoreConfigProperties"
+    },
+    {
+      "name": "application.jwt-security-key",
+      "type": "com.store.config.StoreConfigProperties$JwtSecurityKey",
+      "sourceType": "com.store.config.StoreConfigProperties"
+    },
+    {
+      "name": "application.jwt-security-key.jwt",
+      "type": "com.store.config.StoreConfigProperties$JwtSecurityKey$Jwt",
+      "sourceType": "com.store.config.StoreConfigProperties$JwtSecurityKey"
+    },
+    {
+      "name": "application.jwt-security-key.jwt.refresh-token",
+      "type": "com.store.config.StoreConfigProperties$JwtSecurityKey$Jwt$RefreshToken",
+      "sourceType": "com.store.config.StoreConfigProperties$JwtSecurityKey$Jwt"
+    },
+    {
+      "name": "cloud.aws",
+      "type": "com.store.config.AwsConfigProperties",
+      "sourceType": "com.store.config.AwsConfigProperties"
+    },
+    {
+      "name": "email-config",
+      "type": "com.store.email.EmailConfigProperties",
+      "sourceType": "com.store.email.EmailConfigProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.main.datasource.allow-pool-suspension",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.auto-commit",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.catalog",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.connection-init-sql",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.connection-test-query",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.connection-timeout",
+      "type": "java.lang.Long",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.data-source-class-name",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.data-source-j-n-d-i",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.data-source-properties",
+      "type": "java.util.Properties",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.driver-class-name",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.exception-override-class-name",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.health-check-properties",
+      "type": "java.util.Properties",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.idle-timeout",
+      "type": "java.lang.Long",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.initialization-fail-timeout",
+      "type": "java.lang.Long",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.isolate-internal-queries",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.jdbc-url",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.keepalive-time",
+      "type": "java.lang.Long",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.leak-detection-threshold",
+      "type": "java.lang.Long",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.login-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.max-lifetime",
+      "type": "java.lang.Long",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.maximum-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.metrics-tracker-factory",
+      "type": "com.zaxxer.hikari.metrics.MetricsTrackerFactory",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.minimum-idle",
+      "type": "java.lang.Integer",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.password",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.pool-name",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.read-only",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.register-mbeans",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.scheduled-executor",
+      "type": "java.util.concurrent.ScheduledExecutorService",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.schema",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.transaction-isolation",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.username",
+      "type": "java.lang.String",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "app.main.datasource.validation-timeout",
+      "type": "java.lang.Long",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.authentication-key.internal-api-key",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.StoreConfigProperties$AuthenticationKey"
+    },
+    {
+      "name": "application.front-end-url",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.StoreConfigProperties"
+    },
+    {
+      "name": "application.front-end-url-nginx",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.StoreConfigProperties"
+    },
+    {
+      "name": "application.jwt-security-key.jwt.expiration",
+      "type": "java.lang.Long",
+      "sourceType": "com.store.config.StoreConfigProperties$JwtSecurityKey$Jwt"
+    },
+    {
+      "name": "application.jwt-security-key.jwt.refresh-token.expiration",
+      "type": "java.lang.Long",
+      "sourceType": "com.store.config.StoreConfigProperties$JwtSecurityKey$Jwt$RefreshToken"
+    },
+    {
+      "name": "application.jwt-security-key.jwt.secret-key",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.StoreConfigProperties$JwtSecurityKey$Jwt"
+    },
+    {
+      "name": "cloud.aws.access-key",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.AwsConfigProperties"
+    },
+    {
+      "name": "cloud.aws.bucket-name",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.AwsConfigProperties"
+    },
+    {
+      "name": "cloud.aws.bucket-url-endpoint",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.AwsConfigProperties"
+    },
+    {
+      "name": "cloud.aws.bucket-url-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.AwsConfigProperties"
+    },
+    {
+      "name": "cloud.aws.region",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.AwsConfigProperties"
+    },
+    {
+      "name": "cloud.aws.secret-key",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.AwsConfigProperties"
+    },
+    {
+      "name": "cloud.aws.sender-grid-secret-name",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.AwsConfigProperties"
+    },
+    {
+      "name": "email-config.email-sender",
+      "type": "java.lang.String",
+      "sourceType": "com.store.email.EmailConfigProperties"
+    },
+    {
+      "name": "email-config.sender-grid",
+      "type": "java.lang.String",
+      "sourceType": "com.store.email.EmailConfigProperties"
+    }
+  ],
+  "hints": []
+}

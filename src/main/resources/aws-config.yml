@@ -1,0 +1,9 @@
+cloud:
+  aws:
+    access-key: ""
+    secret-key: ""
+    region: ap-southeast-1
+    bucket-name: user-profiles-bucket
+    bucket-url-secret: bucket-file-url
+    bucket-url-endpoint: https://user-profiles-bucket.s3.ap-southeast-1.amazonaws.com/
+    sender-grid-secret-name: sender-grid-secret-keys
