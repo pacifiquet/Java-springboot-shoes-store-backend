@@ -42,6 +42,7 @@ public record WebSecurityConfig(
                                 .requestMatchers("/api/v1/users/**").hasAnyRole(USER.name(), ADMIN.name())
                                 .requestMatchers(POST,"/api/v1/reviews/**").hasAnyRole(USER.name(),ADMIN.name())
                                 .requestMatchers(GET,"/api/v1/reviews/**").permitAll()
+                                .requestMatchers("/api/v1/payments/**").permitAll()
                                 .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

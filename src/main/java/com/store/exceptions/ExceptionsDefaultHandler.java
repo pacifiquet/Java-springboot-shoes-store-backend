@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
@@ -41,7 +42,7 @@ public class ExceptionsDefaultHandler {
         return ResponseEntity.status(FORBIDDEN).body(apiErrorMessage);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class, HttpClientErrorException.class, PaymentException.class})
     public ResponseEntity<ApiErrorMessage> defaultHandler(
             MethodArgumentNotValidException e, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

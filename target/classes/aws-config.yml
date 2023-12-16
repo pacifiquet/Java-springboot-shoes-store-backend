@@ -1,7 +1,7 @@
 cloud:
   aws:
-    access-key: ""
-    secret-key: ""
+    access-key: AKIAT7WPJ6YGONBZNPNI
+    secret-key: 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
     region: ap-southeast-1
     bucket-name: user-profiles-bucket
     bucket-url-secret: bucket-file-url

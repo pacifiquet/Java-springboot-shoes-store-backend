@@ -52,6 +52,31 @@
       "name": "email-config",
       "type": "com.store.email.EmailConfigProperties",
       "sourceType": "com.store.email.EmailConfigProperties"
+    },
+    {
+      "name": "pay-mongo.payment-resource.attributes.payment-method-options",
+      "type": "com.store.config.PaymentResourceProperties$PaymentMethodOptions",
+      "sourceType": "com.store.config.PaymentResourceProperties$Attributes"
+    },
+    {
+      "name": "pay-mongo.payment-resource.data",
+      "type": "com.store.config.PaymentResourceProperties",
+      "sourceType": "com.store.config.PaymentResourceProperties"
+    },
+    {
+      "name": "pay-mongo.payment-resource.data.attributes",
+      "type": "com.store.config.PaymentResourceProperties$Attributes",
+      "sourceType": "com.store.config.PaymentResourceProperties"
+    },
+    {
+      "name": "pay-mongo.payment-resource.data.attributes.payment-method-options",
+      "type": "com.store.config.PaymentResourceProperties$PaymentMethodOptions",
+      "sourceType": "com.store.config.PaymentResourceProperties$Attributes"
+    },
+    {
+      "name": "payment-service",
+      "type": "com.store.config.PaymentServiceConfigProperties",
+      "sourceType": "com.store.config.PaymentServiceConfigProperties"
     }
   ],
   "properties": [
@@ -233,12 +258,14 @@
     {
       "name": "application.jwt-security-key.jwt.expiration",
       "type": "java.lang.Long",
-      "sourceType": "com.store.config.StoreConfigProperties$JwtSecurityKey$Jwt"
+      "sourceType": "com.store.config.StoreConfigProperties$JwtSecurityKey$Jwt",
+      "defaultValue": 0
     },
     {
       "name": "application.jwt-security-key.jwt.refresh-token.expiration",
       "type": "java.lang.Long",
-      "sourceType": "com.store.config.StoreConfigProperties$JwtSecurityKey$Jwt$RefreshToken"
+      "sourceType": "com.store.config.StoreConfigProperties$JwtSecurityKey$Jwt$RefreshToken",
+      "defaultValue": 0
     },
     {
       "name": "application.jwt-security-key.jwt.secret-key",
@@ -289,6 +316,72 @@
       "name": "email-config.sender-grid",
       "type": "java.lang.String",
       "sourceType": "com.store.email.EmailConfigProperties"
+    },
+    {
+      "name": "pay-mongo.payment-resource.attributes.amount",
+      "type": "java.lang.Integer",
+      "sourceType": "com.store.config.PaymentResourceProperties$Attributes"
+    },
+    {
+      "name": "pay-mongo.payment-resource.attributes.capture-type",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.PaymentResourceProperties$Attributes"
+    },
+    {
+      "name": "pay-mongo.payment-resource.attributes.currency",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.PaymentResourceProperties$Attributes"
+    },
+    {
+      "name": "pay-mongo.payment-resource.attributes.payment-method-allowed",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.store.config.PaymentResourceProperties$Attributes"
+    },
+    {
+      "name": "pay-mongo.payment-resource.attributes.payment-method-options.card",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "sourceType": "com.store.config.PaymentResourceProperties$PaymentMethodOptions"
+    },
+    {
+      "name": "pay-mongo.payment-resource.data.attributes.amount",
+      "type": "java.lang.Integer",
+      "sourceType": "com.store.config.PaymentResourceProperties$Attributes",
+      "defaultValue": 0
+    },
+    {
+      "name": "pay-mongo.payment-resource.data.attributes.capture-type",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.PaymentResourceProperties$Attributes"
+    },
+    {
+      "name": "pay-mongo.payment-resource.data.attributes.currency",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.PaymentResourceProperties$Attributes"
+    },
+    {
+      "name": "pay-mongo.payment-resource.data.attributes.payment-method-allowed",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.store.config.PaymentResourceProperties$Attributes"
+    },
+    {
+      "name": "pay-mongo.payment-resource.data.attributes.payment-method-options.card",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "sourceType": "com.store.config.PaymentResourceProperties$PaymentMethodOptions"
+    },
+    {
+      "name": "payment-service.payment-intent-url",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.PaymentServiceConfigProperties"
+    },
+    {
+      "name": "payment-service.possible-payment-methods-url",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.PaymentServiceConfigProperties"
+    },
+    {
+      "name": "payment-service.secret-key",
+      "type": "java.lang.String",
+      "sourceType": "com.store.config.PaymentServiceConfigProperties"
     }
   ],
   "hints": []

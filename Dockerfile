@@ -31,6 +31,6 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /store/app
 RUN addgroup -S demo && adduser -S demo -G demo
 
 USER demo
-EXPOSE 8080
+EXPOSE 8081
 
 ENTRYPOINT ["java","-cp","/store/app:/store/app/lib/*","com.store.ShoesStoreBackendApplication"]

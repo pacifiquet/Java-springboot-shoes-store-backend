@@ -8,7 +8,7 @@ spring:
       max-file-size: 20MB
       max-request-size: 30MB
   config:
-    import: optional:aws-config.yml, optional:jdb-database-config.yaml
+    import: optional:aws-config.yml, optional:jdb-database-config.yaml,optional:payment-config.yml
   thymeleaf:
     cache: false
   rabbitmq:
@@ -48,7 +48,7 @@ spring:
     username: pacifique
     password: pacifique
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5432/storedb
+    url: jdbc:postgresql://localhost:5432/storedb
   jpa:
     hibernate:
       ddl-auto: update

@@ -1,0 +1,8 @@
+payment-service:
+  possible-payment-methods-url: https://api.paymongo.com/v1/merchants/capabilities/payment_methods
+  payment-intent-url: https://api.paymongo.com/v1/payment_intents/
+#  secret-key: sk_test_gpeXWxD3xvnaGEBag4pZrGen
+  secret-key: c2tfdGVzdF9ncGVYV3hEM3h2bmFHRUJhZzRwWnJHZW46
+spring:
+  config:
+    import: optional:payment-resource-config.yaml

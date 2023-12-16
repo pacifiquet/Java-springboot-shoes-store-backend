@@ -8,7 +8,7 @@ spring:
       max-file-size: 20MB
       max-request-size: 30MB
   config:
-    import: optional:aws-config.yml, optional:jdb-database-config.yaml
+    import: optional:aws-config.yml, optional:jdb-database-config.yaml,optional:payment-config.yml
   thymeleaf:
     cache: false
   rabbitmq:
@@ -16,7 +16,6 @@ spring:
     username: guest
     password: guest
     port: 5672
-
 
 logging:
   level:

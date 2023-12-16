@@ -1,0 +1,18 @@
+pay-mongo:
+ payment-resource:
+  data:
+    attributes:
+       amount: 500
+       currency: PHP
+       capture_type: automatic
+       payment_method_allowed:
+         - billease
+         - atome
+         - paymaya
+         - grab_pay
+         - gcash
+         - card
+         - dob
+       payment_method_options:
+         card:
+           request_three_d_secure: any
